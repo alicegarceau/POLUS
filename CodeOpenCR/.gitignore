@@ -1,5 +1,90 @@
+build*
+*.user
+*DS_Store
+
 .pio
 .vscode/.browse.c_cpp.db*
 .vscode/c_cpp_properties.json
 .vscode/launch.json
 .vscode/ipch
+
+build/piolibdeps/megaatmega2560/Adafruit TCS34725/
+build/piolibdeps/megaatmega2560/LibRobus/
+build/piolibdeps/megaatmega2560/QTRSensors/
+build/piolibdeps/megaatmega2560/TimerOne/
+
+# Ignore everything inside root sub-directories, but keep the sub-directories themselves
+# Only exception is src directory, where we want to keep custom .cpp and include dir where we keep corresponding .h
+.vscode/**
+!.vscode/.gitkeep
+.pio/**
+!.pio/.gitkeep
+!.pio/libdeps/.gitkeep
+build/**
+!build/.gitkeep
+lib/**
+!lib/.gitkeep
+lib/**
+!lib/.gitkeep
+
+# Ignore users gitconfig
+.gitconfig
+
+# Packages
+# it's better to unpack these files and commit the raw source
+# git has its own built in compression methods
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# Logs and databases
+*.log
+*.sql
+*.sqlite
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
