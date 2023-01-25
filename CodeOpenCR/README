@@ -1,0 +1,8 @@
+Télécharger le zip https://github.com/cguimaraes/platform-ststm32/tree/opencr-support et décompresser
+Ouvrir le dossier et copier le fichier \boards\opencr.json dans le dossier C:\Users\%USERNAME%\.platformio\platforms\ststm32\boards
+
+Télécharger le zip https://github.com/cguimaraes/framework-arduinoststm32-opencr et décompresser
+Copier le dossier complet dans C:\Users\%USERNAME%\.platformio\packages\
+
+Si le projet vient d'être créé, ajouter la ligne suivante au fichier platformio.ini :
+upload_command = ${platformio.packages_dir}/framework-arduinoststm32-opencr/tools/linux/opencr_ld /dev/ttyACM* 115200 $SOURCE 1
