@@ -1,3 +1,9 @@
+*** ARDUINO IDE ***
+Suivre les instructions : https://emanual.robotis.com/docs/en/parts/controller/opencr10/#install-on-windows
+Télécharger Github Desktop : https://desktop.github.com/
+
+
+*** PLATFORMIO *** (ne fonctionne pas avec la librairie Dynamixel Workbench)
 Télécharger le zip https://github.com/cguimaraes/platform-ststm32/tree/opencr-support et décompresser
 Ouvrir le dossier et copier le fichier \boards\opencr.json dans le dossier C:\Users\%USERNAME%\.platformio\platforms\ststm32\boards
 
