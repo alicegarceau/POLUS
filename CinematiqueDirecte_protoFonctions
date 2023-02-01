@@ -1,20 +1,26 @@
+// Bouger les actuateurs individuellement. Pour jogger dans l'interface graphique
 mvBaseZ
 mvJointCoude 
 mvJointPoignet
-openGripper
-closeGripper
-homeAllJoints
-homeCoude
-HomeBaseZ
-HomePoignet
-setZeroPoignet
-setZeroCoude
-setZeroBaseZ
+openGripper() // Position 
+closeGripper()
 
+// Homing (trouver les positions zero) et setter les positions zero (enregistrer la position actuelle comme le zero)
+homeAllJoints()
+homeCoude()
+HomeBaseZ()
+HomePoignet()
+setZeroPoignet()
+setZeroCoude()
+setZeroBaseZ()
+
+// Setter les variables de position absolue en Z associées aux états de la pince
 setZpenDown
 setZpenUp
 setZUpToolChange
 setZDownToolChange
 
-tournerCarousselCW
-tournerCarousselCCW
+// Indexer le caroussel
+carousselTournerCW
+carousselTournerCCW
+carousselPresenterCrayon( int indexCrayon )
