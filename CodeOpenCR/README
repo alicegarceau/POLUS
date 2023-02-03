@@ -1,9 +1,11 @@
 *** ARDUINO IDE ***
 Suivre les instructions : https://emanual.robotis.com/docs/en/parts/controller/opencr10/#install-on-windows
+* Attention : ne pas installer manuellement le driver USB de ST. Le bon driver sera installé automatiquement par Windows.
+
 Télécharger Github Desktop : https://desktop.github.com/
+C'est un client Git facile d'utilisation. Nécessaire, car Arduino IDE n'inclut pas de client Git comme VS Code.
 
-
-*** PLATFORMIO *** (ne fonctionne pas avec la librairie Dynamixel Workbench)
+*** PLATFORM IO ***
 Télécharger le zip https://github.com/cguimaraes/platform-ststm32/tree/opencr-support et décompresser
 Ouvrir le dossier et copier le fichier \boards\opencr.json dans le dossier C:\Users\%USERNAME%\.platformio\platforms\ststm32\boards
 
@@ -11,4 +13,14 @@ Télécharger le zip https://github.com/cguimaraes/framework-arduinoststm32-open
 Copier le dossier complet dans C:\Users\%USERNAME%\.platformio\packages\
 
 Si le projet vient d'être créé, ajouter la ligne suivante au fichier platformio.ini :
+Sur Linux (ex. RaspberryPi)
 upload_command = ${platformio.packages_dir}/framework-arduinoststm32-opencr/tools/linux/opencr_ld /dev/ttyACM* 115200 $SOURCE 1
+Sur Windows
+upload_command = !!! A COMPLETER
+
+Dans le même fichier, ajouter aussi les lignes suivantes 
+lib_deps = 
+robotis-git/Dynamixel2Arduino@^0.6.2
+
+Ainsi, les librairies suivantes seront installées la première fois qu'on "build" le projet :
+Dynamixel2Arduino.h, actuator.h, config.h, master.h, port_handler.h, protocol.h, slave.h
