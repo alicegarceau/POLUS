@@ -12,6 +12,7 @@ Authors: Alec Gagnon,      gaga2120
 #include <DynamixelWorkbench.h>
 #include <vector>
 #include "actuators.hpp"
+#include "inverseKinematics.hpp"
 /*#include "comm_functions.hpp"
 #include "inverse_kinematics.hpp"
 */
@@ -23,7 +24,7 @@ enum class State { Sleep, Wait, Parse, Moving };
 // ---------- Constants ----------
 // --- Motors ---
 //const std::vector<uint8_t> MOTOR_IDS = { (const uint8_t)1, (const uint8_t)2 };
-const std::vector<uint8_t> MOTOR_IDS = { (const uint8_t)3, (const uint8_t)15 }; //epaule ID = 15, coude ID = 3, caroussel ID = 2
+const std::vector<uint8_t> MOTOR_IDS = { (const uint8_t)15, (const uint8_t)3 }; //epaule ID = 15, coude ID = 3, caroussel ID = 2
 const uint8_t LINEAR_PIN = 5;
 //const uint8_t SOLENOID_PIN = 6;
 
@@ -36,7 +37,7 @@ State current_state = State::Sleep;
 String msg = String();
 float motor_angles[2] = {0, 0};
 float motor_angles1[2] = {0,0};
-float motor_angles2[2] = {-115, 115};
+float motor_angles2[2] = {115, -115};
 
 // ---------- Main functions ----------
 void setup()
@@ -53,10 +54,16 @@ void loop()
 {
   start_motors(dyna, MOTOR_IDS);
 
-  delay(1500);
+  /*Serial.println(motor_angles[0]);
+  Serial.println(motor_angles[1]);
+  Serial.println(" ");*/
+
+  inverse_kinematics(120, 150, motor_angles);
+
+  /*delay(1500);
   move_to_pos(dyna, MOTOR_IDS, motor_angles1);
   delay(1500);
-  move_to_pos(dyna, MOTOR_IDS, motor_angles2);
+  move_to_pos(dyna, MOTOR_IDS, motor_angles2);*/
   
   
     /*switch (current_state)
@@ -123,5 +130,5 @@ void loop()
             break;
         }
     }*/
-    delay(10);
+    delay(1000);
 }
