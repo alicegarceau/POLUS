@@ -24,7 +24,7 @@ enum class State { Sleep, Wait, Parse, Moving };
 // ---------- Constants ----------
 // --- Motors ---
 //const std::vector<uint8_t> MOTOR_IDS = { (const uint8_t)1, (const uint8_t)2 };
-const std::vector<uint8_t> MOTOR_IDS = { (const uint8_t)15, (const uint8_t)3 }; //epaule ID = 15, coude ID = 3, caroussel ID = 2
+const std::vector<uint8_t> MOTOR_IDS = { (const uint8_t)2 };// { (const uint8_t)15, (const uint8_t)3 }; //epaule ID = 15, coude ID = 3, caroussel ID = 2
 const uint8_t LINEAR_PIN = 5;
 //const uint8_t SOLENOID_PIN = 6;
 
@@ -36,8 +36,6 @@ DynamixelWorkbench dyna;
 State current_state = State::Sleep;
 String msg = String();
 float motor_angles[2] = {0, 0};
-float motor_angles1[2] = {0,0};
-float motor_angles2[2] = {115, -115};
 
 // ---------- Main functions ----------
 void setup()
@@ -45,20 +43,22 @@ void setup()
     const int BAUDRATE = 115200;
     Serial.begin(BAUDRATE);
 
-    init_motors(dyna, MOTOR_IDS, motor_angles1, LINEAR_PIN);
+    init_motors(dyna, MOTOR_IDS, motor_angles, LINEAR_PIN);  
     //pinMode(LINEAR_PIN, OUTPUT);
     //pinMode(SOLENOID_PIN, OUTPUT);
 }
 
 void loop()
 {
-  start_motors(dyna, MOTOR_IDS);
+  start_motors(dyna, MOTOR_IDS); 
 
-  /*Serial.println(motor_angles[0]);
+  inverse_kinematics(56, 80, motor_angles);
+
+  Serial.println(motor_angles[0]);
   Serial.println(motor_angles[1]);
-  Serial.println(" ");*/
+  Serial.println(" ");
 
-  inverse_kinematics(120, 150, motor_angles);
+  move_to_pos(dyna, MOTOR_IDS, motor_angles);
 
   /*delay(1500);
   move_to_pos(dyna, MOTOR_IDS, motor_angles1);
