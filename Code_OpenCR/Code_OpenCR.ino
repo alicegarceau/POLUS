@@ -8,10 +8,6 @@ Authors: Alec Gagnon,      gaga2120
 */
 
 // ---------- Libraries ----------
-#include <Arduino.h>
-#include <DynamixelWorkbench.h>
-#include <Servo.h>
-#include <vector>
 #include "actuators.hpp"
 #include "inverseKinematics.hpp"
 /*#include "comm_functions.hpp"
@@ -31,20 +27,23 @@ const std::vector<uint8_t> MOTOR_IDS_CAR = { (const uint8_t)2 };// { (const uint
 const uint8_t nbAvailableColors = 20;
 
 const uint8_t SERVO_PIN = 5;
+const uint8_t SWITCH_PIN = 6;
 
-//const uint8_t SOLENOID_PIN = 6;
+
 
 // ---------- Variables ----------
 // --- Motors ---
 DynamixelWorkbench dynaArm;
 DynamixelWorkbench dynaCar;
 Servo servoGripper; 
+Stepper stepperZ(200, 10, 11, 12, 13);
 
 // --- Data ---
 State current_state = State::Sleep;
 String msg = String();
 float motor_angles_arm[2] = {0, 0};
-float motor_angle_car[1] = {0};
+int stepCurrentPos = 0;
+
 int colorIndex = 0;
 
 // ---------- Main functions ----------
@@ -53,19 +52,26 @@ void setup()
     const int BAUDRATE = 115200;
     Serial.begin(BAUDRATE);
 
-    init_motors(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
-    init_motors(dynaCar, MOTOR_IDS_CAR, motor_angle_car);
+    init_motors(dynaArm, MOTOR_IDS_ARM);
+    init_motors(dynaCar, MOTOR_IDS_CAR);
     servoGripper.attach(SERVO_PIN);
+    stepperZ.setSpeed(60);
 
     pinMode(SERVO_PIN, OUTPUT);
-    //pinMode(SOLENOID_PIN, OUTPUT);
-    colorIndex = 30;
+    pinMode(SWITCH_PIN, INPUT_PULLUP);
+
+    // Nécessite un interrup pour faire le zero? 
+    //attachInterrupt(digitalPinToInterrupt(SWITCH_PIN), ISRzero, FALLING);
+
+    colorIndex = 10;
 }
 
 void loop()
 {
-
+  
   /*
+  index_color(dynaCar, MOTOR_IDS_CAR, nbAvailableColors, colorIndex);
+
   inverse_kinematics(56, 80, motor_angles);
 
   Serial.println(motor_angles[0]);

@@ -40,7 +40,13 @@ bool move_to_pos_wait(DynamixelWorkbench& motor, const std::vector<uint8_t>& mot
     }
 }
 
-void init_motors(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor_IDs, float motor_angles[2])
+void move_Z(Stepper& stepperZ, int stepCurrentPos, int stepNextPos)
+{
+  int nbStep =  stepNextPos - stepCurrentPos;
+  stepperZ.step(nbStep);
+}
+
+void init_motors(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor_IDs)
 {
     for (size_t i = 0; i < motor_IDs.size(); ++i)
     {
@@ -54,7 +60,7 @@ void init_motors(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor_ID
     }
 }
 
-void go_to_home(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor_IDs, float motor_angles[2])
+void go_to_home_arm(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor_IDs, float motor_angles[2])
 {
     for (int i = 0; i < motor_IDs.size(); ++i)
     {
@@ -62,6 +68,16 @@ void go_to_home(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor_IDs
     }
     delay(1000);
     move_to_pos_wait(motor, motor_IDs, motor_angles);
+}
+
+void home_Z(Stepper& stepperZ, int stepCurrentPos, int SWITCH_PIN)
+{
+  int step = 0;
+ while(digitalRead(SWITCH_PIN)==0) //doit faire un interrupt?
+ {
+   step--;
+   stepperZ.step(step);
+ }
 }
 
 void start_motors(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor_IDs)
@@ -104,10 +120,9 @@ void index_color(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor_ID
   {
     carAngle = carAngle - 360;
   }
-  
+
   move_to_pos_wait(motor, motor_IDs, &carAngle);
   }
-  
 
  
 
