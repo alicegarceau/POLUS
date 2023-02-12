@@ -10,6 +10,7 @@ Authors: Alec Gagnon,      gaga2120
 // ---------- Libraries ----------
 #include <Arduino.h>
 #include <DynamixelWorkbench.h>
+#include <Servo.h>
 #include <vector>
 #include "actuators.hpp"
 #include "inverseKinematics.hpp"
@@ -24,18 +25,27 @@ enum class State { Sleep, Wait, Parse, Moving };
 // ---------- Constants ----------
 // --- Motors ---
 //const std::vector<uint8_t> MOTOR_IDS = { (const uint8_t)1, (const uint8_t)2 };
-const std::vector<uint8_t> MOTOR_IDS = { (const uint8_t)2 };// { (const uint8_t)15, (const uint8_t)3 }; //epaule ID = 15, coude ID = 3, caroussel ID = 2
-const uint8_t LINEAR_PIN = 5;
+const std::vector<uint8_t> MOTOR_IDS_ARM = { (const uint8_t)15, (const uint8_t)3 }; //epaule ID = 15, coude ID = 3, caroussel ID = 2
+const std::vector<uint8_t> MOTOR_IDS_CAR = { (const uint8_t)2 };// { (const uint8_t)15, (const uint8_t)3 }; //epaule ID = 15, coude ID = 3, caroussel ID = 2
+
+const uint8_t nbAvailableColors = 20;
+
+const uint8_t SERVO_PIN = 5;
+
 //const uint8_t SOLENOID_PIN = 6;
 
 // ---------- Variables ----------
 // --- Motors ---
-DynamixelWorkbench dyna;
+DynamixelWorkbench dynaArm;
+DynamixelWorkbench dynaCar;
+Servo servoGripper; 
 
 // --- Data ---
 State current_state = State::Sleep;
 String msg = String();
-float motor_angles[2] = {0, 0};
+float motor_angles_arm[2] = {0, 0};
+float motor_angle_car[1] = {0};
+int colorIndex = 0;
 
 // ---------- Main functions ----------
 void setup()
@@ -43,28 +53,26 @@ void setup()
     const int BAUDRATE = 115200;
     Serial.begin(BAUDRATE);
 
-    init_motors(dyna, MOTOR_IDS, motor_angles, LINEAR_PIN);  
-    //pinMode(LINEAR_PIN, OUTPUT);
+    init_motors(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+    init_motors(dynaCar, MOTOR_IDS_CAR, motor_angle_car);
+    servoGripper.attach(SERVO_PIN);
+
+    pinMode(SERVO_PIN, OUTPUT);
     //pinMode(SOLENOID_PIN, OUTPUT);
+    colorIndex = 30;
 }
 
 void loop()
 {
-  start_motors(dyna, MOTOR_IDS); 
 
+  /*
   inverse_kinematics(56, 80, motor_angles);
 
   Serial.println(motor_angles[0]);
   Serial.println(motor_angles[1]);
   Serial.println(" ");
 
-  move_to_pos(dyna, MOTOR_IDS, motor_angles);
-
-  /*delay(1500);
-  move_to_pos(dyna, MOTOR_IDS, motor_angles1);
-  delay(1500);
-  move_to_pos(dyna, MOTOR_IDS, motor_angles2);*/
-  
+  move_to_pos(dyna, MOTOR_IDS, motor_angles);*/
   
     /*switch (current_state)
     {

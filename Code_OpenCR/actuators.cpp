@@ -40,7 +40,7 @@ bool move_to_pos_wait(DynamixelWorkbench& motor, const std::vector<uint8_t>& mot
     }
 }
 
-void init_motors(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor_IDs, float motor_angles[2], const uint8_t LINEAR_PIN)
+void init_motors(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor_IDs, float motor_angles[2])
 {
     for (size_t i = 0; i < motor_IDs.size(); ++i)
     {
@@ -54,16 +54,14 @@ void init_motors(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor_ID
     }
 }
 
-void go_to_home(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor_IDs, float motor_angles[2], const uint8_t LINEAR_PIN)
+void go_to_home(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor_IDs, float motor_angles[2])
 {
-    /*for (int i = 0; i < sizeof(HOMEANGLES)/sizeof(HOMEANGLES[0]); ++i)
+    for (int i = 0; i < motor_IDs.size(); ++i)
     {
-        motor_angles[i] = HOMEANGLES[i];
+        motor_angles[i] = 0;
     }
-    linear_high(LINEAR_PIN);
     delay(1000);
     move_to_pos_wait(motor, motor_IDs, motor_angles);
-    analogWrite(LINEAR_PIN, 0);*/
 }
 
 void start_motors(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor_IDs)
@@ -80,4 +78,37 @@ void stop_motors(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor_ID
     {
         motor.torqueOff(motor_IDs[i]);
     }
+}
+
+void open_gripper(Servo& servoGripper)
+{
+  servoGripper.write(100);
+}
+
+void close_gripper(Servo& servoGripper)
+{
+  servoGripper.write(0);
+}
+
+void index_color(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor_IDs, int nbAvailableColors, int colorIndex)
+{
+  if(colorIndex >= nbAvailableColors)
+  {
+      Serial.println("Erreur: Index hors de la plage permise");
+  }
+  else{
+  float angleDivision = 360.0 / static_cast<float>(nbAvailableColors); 
+  float carAngle = static_cast<float>(colorIndex)*(angleDivision);
+
+  if(carAngle > 180)
+  {
+    carAngle = carAngle - 360;
+  }
+  
+  move_to_pos_wait(motor, motor_IDs, &carAngle);
+  }
+  
+
+ 
+
 }
