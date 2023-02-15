@@ -5,7 +5,7 @@
 #include <DynamixelWorkbench.h>
 #include <vector>
 #include <Servo.h>
-#include <Stepper.h>
+#include <AccelStepper.h>
 
 class DynamixelWorkbench;
 
@@ -15,13 +15,13 @@ void move_to_pos(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor_ID
 
 bool move_to_pos_wait(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor_IDs, float angles[2]);
 
-void move_Z(Stepper& stepperZ, int stepCurrentPos, int stepNextPos);
+int move_Z(AccelStepper& stepperZ, int stepCurrentPos, int stepNextPos);
 
 void init_motors(DynamixelWorkbench&  motor, const std::vector<uint8_t>& motor_IDs);
 
 void go_to_home_arm(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor_IDs, float motor_angles[2]);
 
-void home_Z(Stepper& stepperZ, int stepCurrentPos, int SWITCH_PIN);
+void home_Z(AccelStepper& stepperZ, int stepCurrentPos, int SWITCH_PIN);
 
 void start_motors(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor_IDs);
 
