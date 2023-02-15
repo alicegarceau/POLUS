@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module pixeliser_image</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>pixeliser_image</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:c%3A%5Cusers%5Calice%5Conedrive%20-%20usherbrooke%5Cs4%5Cprojet%5Ccode%5Cpolus-main%5Cpixeliser_image.py">c:\users\alice\onedrive - usherbrooke\s4\projet\code\polus-main\pixeliser_image.py</a></font></td></tr></table>
+    <p><tt>#&nbsp;-*-&nbsp;coding:&nbsp;utf-8&nbsp;-*-</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="PIL.Image.html">PIL.Image</a><br>
+<a href="argparse.html">argparse</a><br>
+</td><td width="25%" valign=top><a href="csv.html">csv</a><br>
+<a href="numpy.html">numpy</a><br>
+</td><td width="25%" valign=top><a href="os.html">os</a><br>
+<a href="pydoc.html">pydoc</a><br>
+</td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="builtins.html#object">builtins.object</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="pixeliser_image.html#traitement_image">traitement_image</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="traitement_image">class <strong>traitement_image</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
+    
+<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="traitement_image-RGB_CSV"><strong>RGB_CSV</strong></a>(self, fichier_csv)</dt><dd><tt>Initialize&nbsp;l'objet&nbsp;de&nbsp;type&nbsp;markov&nbsp;lorsqu'il&nbsp;est&nbsp;créé<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;aucun:&nbsp;Utilise&nbsp;simplement&nbsp;les&nbsp;informations&nbsp;fournies&nbsp;dans&nbsp;l'objet&nbsp;<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;:&nbsp;ne&nbsp;fait&nbsp;qu'initialiser&nbsp;l'objet&nbsp;de&nbsp;type&nbsp;<a href="#traitement_image">traitement_image</a></tt></dd></dl>
+
+<dl><dt><a name="traitement_image-__init__"><strong>__init__</strong></a>(self)</dt><dd><tt>Initialize&nbsp;l'objet&nbsp;de&nbsp;type&nbsp;markov&nbsp;lorsqu'il&nbsp;est&nbsp;créé<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;aucun:&nbsp;Utilise&nbsp;simplement&nbsp;les&nbsp;informations&nbsp;fournies&nbsp;dans&nbsp;l'objet&nbsp;<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;:&nbsp;ne&nbsp;fait&nbsp;qu'initialiser&nbsp;l'objet&nbsp;de&nbsp;type&nbsp;<a href="#traitement_image">traitement_image</a></tt></dd></dl>
+
+<dl><dt><a name="traitement_image-comparaison"><strong>comparaison</strong></a>(self, list_rgb, list_crayons)</dt><dd><tt>Compare&nbsp;le&nbsp;RGB&nbsp;des&nbsp;pixels&nbsp;sélectionnés&nbsp;aux&nbsp;crayons&nbsp;disponibles<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;<br>
+Returns:</tt></dd></dl>
+
+<dl><dt><a name="traitement_image-coord_pixels"><strong>coord_pixels</strong></a>(self, nb_pixels)</dt><dd><tt>Initialize&nbsp;l'objet&nbsp;de&nbsp;type&nbsp;markov&nbsp;lorsqu'il&nbsp;est&nbsp;créé<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;aucun:&nbsp;Utilise&nbsp;simplement&nbsp;les&nbsp;informations&nbsp;fournies&nbsp;dans&nbsp;l'objet&nbsp;<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;:&nbsp;ne&nbsp;fait&nbsp;qu'initialiser&nbsp;l'objet&nbsp;de&nbsp;type&nbsp;<a href="#traitement_image">traitement_image</a></tt></dd></dl>
+
+<dl><dt><a name="traitement_image-creer_tableau_couleurs"><strong>creer_tableau_couleurs</strong></a>(self, image_pix, nb_pixels, dict_rgb)</dt><dd><tt>Reçoit&nbsp;une&nbsp;image&nbsp;pixélisée&nbsp;et&nbsp;crée&nbsp;un&nbsp;tableau&nbsp;contenant&nbsp;le&nbsp;RGB&nbsp;de&nbsp;chaque&nbsp;pixel<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;<br>
+Returns:</tt></dd></dl>
+
+<dl><dt><a name="traitement_image-pixeliser"><strong>pixeliser</strong></a>(self, filename, nb_pixels, image_pix)</dt><dd><tt>Reçoit&nbsp;une&nbsp;image&nbsp;et&nbsp;la&nbsp;sépare&nbsp;en&nbsp;carrés&nbsp;pour&nbsp;faire&nbsp;un&nbsp;effet&nbsp;pixélisé<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;<br>
+Returns:</tt></dd></dl>
+
+<dl><dt><a name="traitement_image-send_positions"><strong>send_positions</strong></a>(self, COLORIDX, liste_rgb, list_crayons, coords)</dt><dd><tt>Initialize&nbsp;l'objet&nbsp;de&nbsp;type&nbsp;markov&nbsp;lorsqu'il&nbsp;est&nbsp;créé<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;aucun:&nbsp;Utilise&nbsp;simplement&nbsp;les&nbsp;informations&nbsp;fournies&nbsp;dans&nbsp;l'objet&nbsp;<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;:&nbsp;ne&nbsp;fait&nbsp;qu'initialiser&nbsp;l'objet&nbsp;de&nbsp;type&nbsp;<a href="#traitement_image">traitement_image</a></tt></dd></dl>
+
+<dl><dt><a name="traitement_image-visualiser_resultat"><strong>visualiser_resultat</strong></a>(self, liste_rgb, nb_pixels, image_result)</dt><dd><tt>Compare&nbsp;le&nbsp;RGB&nbsp;des&nbsp;pixels&nbsp;sélectionnés&nbsp;aux&nbsp;crayons&nbsp;disponibles<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;<br>
+Returns:</tt></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table></td></tr></table>
+</body></html>
