@@ -14,7 +14,7 @@ import csv
 
 class traitement_image():
     def pixeliser(self, filename, nb_pixels, image_pix):
-        """Reçoit une image et la transforme en pixels
+        """Reçoit une image et la sépare en carrés pour faire un effet pixélisé
 
         Args:
             
@@ -40,7 +40,7 @@ class traitement_image():
  
         result = imgSmall.resize(new_size, Image.Resampling.NEAREST)
 
-        # Enregistrer
+        # Enregistrer l'image pixélisée
         file_save = os.path.join(cur_path, image_pix)
         result.save(file_save)
 
@@ -55,7 +55,7 @@ class traitement_image():
         Returns:
              
         """
-
+        # Initialiser la liste des RGB 
         list_rgb = [0]*nb_pixels*nb_pixels
         # Ouvrir image pixélisée
         cur_path = os.path.dirname(__file__)
@@ -235,7 +235,56 @@ class traitement_image():
 
         return new_lst
 
+    def send_positions(self,COLORIDX, liste_rgb, list_crayons,coords):
+        """Initialize l'objet de type markov lorsqu'il est créé
 
+        Args:
+            aucun: Utilise simplement les informations fournies dans l'objet 
+
+        Returns:
+            void : ne fait qu'initialiser l'objet de type traitement_image
+        """
+        rgb_cible = list_crayons[COLORIDX]
+
+        POS_LIST = []
+        i = 0
+        for rgb in range(0,len(liste_rgb)):
+            if liste_rgb[rgb] == rgb_cible:
+                POS_LIST.append(rgb)
+                i += 1
+
+        print(POS_LIST)
+
+        COORD_LIST = []
+        for coord in POS_LIST:
+            COORD_LIST.append(coords[coord])
+
+        print(COORD_LIST)
+        
+        return COORD_LIST
+
+    def coord_pixels(self, nb_pixels):
+        """Initialize l'objet de type markov lorsqu'il est créé
+
+        Args:
+            aucun: Utilise simplement les informations fournies dans l'objet 
+
+        Returns:
+            void : ne fait qu'initialiser l'objet de type traitement_image
+        """
+
+        step = 150 // nb_pixels
+        coords = [0] * (nb_pixels*nb_pixels) 
+        i = 0
+        for y in range(step//2,150,step):
+            for x in range(step//2,150,step):
+                coords[i] = (x,y)
+                i += 1
+
+        return coords
+
+
+ 
     def __init__(self):
         """Initialize l'objet de type markov lorsqu'il est créé
 
@@ -253,12 +302,13 @@ if __name__ == "__main__":
 
     # ARGUMENTS
     image_in = 'image_in.jpg'
-    nb_pixels = 50
+    nb_pixels = 10
     image_pix = 'image_pix.png'
     image_result = 'image_result.png'
     dict_rgb = {}
     array_rgb = {}
     fichier_csv = 'RGB_48.csv'
+    COLORIDX = 13
 
     # Initialiser un traitement d'image
     tm = traitement_image()
@@ -277,6 +327,14 @@ if __name__ == "__main__":
 
     # Tracer l'image avec les RGB disponibles pour visualiser le résultat attendu
     tm.visualiser_resultat(liste_rgb, nb_pixels, image_result)
+
+    # Calculer les coordonnées x,y de chaque pixel à tracer
+    coords = tm.coord_pixels(nb_pixels)
+
+    # Envoyer la positions des points à faire pour le crayon donné en paramètre
+    tm.send_positions(COLORIDX, liste_rgb, list_crayons, coords)
+
+
 
     # ARGUMENTS (A CHANGER)
     parser = argparse.ArgumentParser()
