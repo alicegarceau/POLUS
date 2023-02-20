@@ -10,6 +10,8 @@ Authors: Alec Gagnon,      gaga2120
 // ---------- Libraries ----------
 #include "actuators.hpp"
 #include "inverseKinematics.hpp"
+#include "CommunicationProtocol.hpp"
+
 /*#include "comm_functions.hpp"
 #include "inverse_kinematics.hpp"
 */
