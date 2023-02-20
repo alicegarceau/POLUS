@@ -4,10 +4,10 @@
 void inverse_kinematics(float x, float y, float THETA[2])
 {
     // Makes sure the input coordinates are reachable with the current arm segment lengths
-    if ((y >= 0) && ( sqrt(pow(x,2) + pow(y,2)) <= 264.78 ) && (sqrt(pow(x,2) + pow(y,2)) >= 35.22))
+    if ((y >= 0) && ( sqrt(pow(x,2) + pow(y,2)) <= 270 ) && (sqrt(pow(x,2) + pow(y,2)) >= 30))
     {
         float LA = 150; //mm
-        float LB = 114.78; //mm
+        float LB = 120; //mm
 
         //Basé sur video: https://www.youtube.com/watch?v=6KOEQfsgy8Q&ab_channel=Engineering_life
         //Calcul d'angle en radian
@@ -16,11 +16,11 @@ void inverse_kinematics(float x, float y, float THETA[2])
         
 
         //Transfert de radian à degré
-        THETA[0] = (-THETA[0] * 180 / PI)*1.667;
-        THETA[1] = (THETA[1] * 180 / PI)*1.667;
+        THETA[0] = -THETA[0] * 180 / PI;
+        THETA[1] = THETA[1] * 180 / PI;
 
         // Makes sure there won't be a collision with the calculated angles
-        if (THETA[0] < -90*1.667 || THETA[0] > 90*1.667 || THETA[1] < 0 || THETA[1] > 180 /*140*1.667*/ )
+        if (THETA[0] < -90 || THETA[0] > 90 || THETA[1] < 0 || THETA[1] > 145)
         {
             Serial.println("Erreur: Collision évitée");
             THETA[0] = 0;

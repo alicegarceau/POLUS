@@ -40,12 +40,10 @@ bool move_to_pos_wait(DynamixelWorkbench& motor, const std::vector<uint8_t>& mot
     }
 }
 
-int move_Z(AccelStepper& stepperZ, int stepCurrentPos, int stepNextPos)
+void move_Z(Stepper& stepperZ, int stepCurrentPos, int stepNextPos)
 {
- /* int nbStep =  stepNextPos - stepCurrentPos;
+  int nbStep =  stepNextPos - stepCurrentPos;
   stepperZ.step(nbStep);
-
-  return stepNextPos;*/
 }
 
 void init_motors(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor_IDs)
@@ -72,14 +70,14 @@ void go_to_home_arm(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor
     move_to_pos_wait(motor, motor_IDs, motor_angles);
 }
 
-void home_Z(AccelStepper& stepperZ, int stepCurrentPos, int SWITCH_PIN)
+void home_Z(Stepper& stepperZ, int stepCurrentPos, int SWITCH_PIN)
 {
- /*int step = 0;
+  int step = 0;
  while(digitalRead(SWITCH_PIN)==0) //doit faire un interrupt?
  {
    step--;
    stepperZ.step(step);
- }*/
+ }
 }
 
 void start_motors(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor_IDs)
@@ -100,7 +98,7 @@ void stop_motors(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor_ID
 
 void open_gripper(Servo& servoGripper)
 {
-  servoGripper.write(180);
+  servoGripper.write(100);
 }
 
 void close_gripper(Servo& servoGripper)

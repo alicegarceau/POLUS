@@ -28,11 +28,9 @@ const std::vector<uint8_t> MOTOR_IDS_CAR = { (const uint8_t)2 };// { (const uint
 
 const uint8_t nbAvailableColors = 20;
 
-const uint8_t SERVO_PIN = 6;
-const uint8_t SWITCH_PIN = 7;
-const uint8_t STEPPER_PIN_ENABLE = 5;
-const uint8_t STEPPER_PIN_DIR = 10;
-const uint8_t STEPPER_PIN_STEP = 9;
+const uint8_t SERVO_PIN = 5;
+const uint8_t SWITCH_PIN = 6;
+
 
 
 // ---------- Variables ----------
@@ -40,10 +38,7 @@ const uint8_t STEPPER_PIN_STEP = 9;
 DynamixelWorkbench dynaArm;
 DynamixelWorkbench dynaCar;
 Servo servoGripper; 
-AccelStepper stepper(AccelStepper::DRIVER, 1, 2);
-
-
-
+Stepper stepperZ(200, 10, 11, 12, 13);
 
 // --- Data ---
 State current_state = State::Sleep;
@@ -51,8 +46,7 @@ String msg = String();
 float motor_angles_arm[2] = {0, 0};
 int stepCurrentPos = 0;
 
-int colorIndex = 10;
-int pos = 3600;
+int colorIndex = 0;
 
 // ---------- Main functions ----------
 void setup()
@@ -62,59 +56,32 @@ void setup()
 
     init_motors(dynaArm, MOTOR_IDS_ARM);
     init_motors(dynaCar, MOTOR_IDS_CAR);
+    servoGripper.attach(SERVO_PIN);
+    stepperZ.setSpeed(60);
 
     pinMode(SERVO_PIN, OUTPUT);
     pinMode(SWITCH_PIN, INPUT_PULLUP);
-    pinMode(STEPPER_PIN_ENABLE, OUTPUT);
-    pinMode(STEPPER_PIN_DIR, OUTPUT);
-    pinMode(STEPPER_PIN_STEP, OUTPUT);
 
-    servoGripper.attach(SERVO_PIN);
-    
-  stepper.setMaxSpeed(3000);
-  stepper.setAcceleration(1000);
     // Nécessite un interrup pour faire le zero? 
     //attachInterrupt(digitalPinToInterrupt(SWITCH_PIN), ISRzero, FALLING);
 
+    colorIndex = 10;
 }
 
 void loop()
 {
-
-  inverse_kinematics( 0 , 270, motor_angles_arm);
-  move_to_pos_wait(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
-
-  /* if (stepper.distanceToGo() == 0)
-  {
-    delay(500);
-    pos = -pos;
-    stepper.moveTo(pos);
-  }
-  stepper.run();*/
-
-  /*for(float i = 0; i < 30; i++)
-  {
-    inverse_kinematics( i , 200, motor_angles_arm);
-    move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
-  }
-
-   for(float j = 200; j < 230; j++)
-  {
-    inverse_kinematics( 30 , j, motor_angles_arm);
-    move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
-  }
-
-   inverse_kinematics( 0 , 200, motor_angles_arm);
-  move_to_pos_wait(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);*/
-
+  
   /*
   index_color(dynaCar, MOTOR_IDS_CAR, nbAvailableColors, colorIndex);
-  inverse_kinematics(56, 80, motor_angles);
-  Serial.println(motor_angles_arm[0]);
-  Serial.println(motor_angles_arm[1]);
-  Serial.println(" ");
-  move_to_pos(dyna, MOTOR_IDS, motor_angles);*/
 
+  inverse_kinematics(56, 80, motor_angles);
+
+  Serial.println(motor_angles[0]);
+  Serial.println(motor_angles[1]);
+  Serial.println(" ");
+
+  move_to_pos(dyna, MOTOR_IDS, motor_angles);*/
+  
     /*switch (current_state)
     {
         case State::Sleep:
@@ -179,5 +146,5 @@ void loop()
             break;
         }
     }*/
-    delay(10);
+    delay(1000);
 }
