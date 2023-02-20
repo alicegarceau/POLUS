@@ -56,12 +56,9 @@ def send_data():
         print("Erreur de communication")
 
     # Fermeture de la liaison série
-    ser.close()
+    ser.close()    
 
-def main():
+if __name__ == '__main__':
     while True:
         send_data()
         time.sleep(5)
-
-if __name__ == '__main__':
-    main()
