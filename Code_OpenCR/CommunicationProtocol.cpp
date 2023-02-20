@@ -1,7 +1,7 @@
-#include <SerialStream.h>
-#include <iostream>
-#include <string>
-#include <vector>
+#ifndef COMMUNICATION_PROTOCOL_HPP
+#define COMMUNICATION_PROTOCOL_HPP
+
+#include "CommunicationProtocol.hpp"
 
 // La fonction de configuration du GPIO
 bool Configuration() {
