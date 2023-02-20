@@ -17,10 +17,10 @@ void inverse_kinematics(float x, float y, float THETA[2])
 
         //Transfert de radian à degré
         THETA[0] = (-THETA[0] * 180 / PI)*1.667;
-        THETA[1] = (THETA[1] * 180 / PI)*1.667;
+        THETA[1] = (THETA[1] * 180 / PI);
 
         // Makes sure there won't be a collision with the calculated angles
-        if (THETA[0] < -90*1.667 || THETA[0] > 90*1.667 || THETA[1] < 0 || THETA[1] > 180 /*140*1.667*/ )
+        if (THETA[0] < -90*1.667 || THETA[0] > 90*1.667 || THETA[1] < 0 || THETA[1] > 140 /*140*1.667*/ )
         {
             Serial.println("Erreur: Collision évitée");
             THETA[0] = 0;
