@@ -21,16 +21,16 @@ enum class State { Sleep, Wait, Parse, Moving };
 // ---------- Constants ----------
 // --- Motors ---
 //const std::vector<uint8_t> MOTOR_IDS = { (const uint8_t)1, (const uint8_t)2 };
-const std::vector<uint8_t> MOTOR_IDS_ARM = { (const uint8_t)15, (const uint8_t)2 }; //epaule ID = 15, coude ID = 3, caroussel ID = 2
+const std::vector<uint8_t> MOTOR_IDS_ARM = { (const uint8_t)2, (const uint8_t)15 }; //epaule ID = 15, coude ID = 3, caroussel ID = 2
 const std::vector<uint8_t> MOTOR_IDS_CAR = { (const uint8_t)3 };// { (const uint8_t)15, (const uint8_t)3 }; //epaule ID = 15, coude ID = 3, caroussel ID = 2
 
 const uint8_t nbAvailableColors = 20;
 
-const uint8_t SERVO_PIN = 6;
+const uint8_t SERVO_PIN = 9;
 const uint8_t SWITCH_PIN = 7;
 const uint8_t STEPPER_PIN_ENABLE = 5;
 const uint8_t STEPPER_PIN_DIR = 10;
-const uint8_t STEPPER_PIN_STEP = 9;
+const uint8_t STEPPER_PIN_STEP = 11;
 
 
 // ---------- Variables ----------
@@ -81,13 +81,10 @@ void loop()
   int time = 100;
   int32_t pos0 = 0;
   int32_t pos1 = 0;
-/*
-  motor_angles_arm[0]=0;
-        motor_angles_arm[1]=0;
-        
-        move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
-*/
 
+
+
+/*
 for (float i = 0; i < 90 ; i = i + 5)
     {
         motor_angles_arm[0]=-i*1.667;
@@ -110,11 +107,11 @@ for (float i = 0; i < 90 ; i = i + 5)
     Serial.print(" ");
     Serial.println(AngleCoude);
     }
+*/
 
-/*
-    
-        inverse_kinematics( 0 , 120, motor_angles_arm);
-        motor_angles_arm[1]=motor_angles_arm[1]+1.81;
+        //motor_angles_arm[0]=0;
+        //motor_angles_arm[1]=0;
+   /*     inverse_kinematics( -25 , 150, motor_angles_arm);
         move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
         delay(1000);
         dynaArm.getPresentPositionData(MOTOR_IDS_ARM[0], &pos0);
@@ -126,10 +123,10 @@ for (float i = 0; i < 90 ; i = i + 5)
     Serial.print(" ");
     Serial.print(AngleEpaule);
     Serial.print(" Coude asked vs real : ");
-    Serial.print(motor_angles_arm[1]-1.81);
+    Serial.print(motor_angles_arm[1]);
     Serial.print(" ");
-    Serial.println(AngleCoude);
-*/
+    Serial.println(AngleCoude);*/
+
   
 /*
   ///////////////////////// DEMO ////////////////////////

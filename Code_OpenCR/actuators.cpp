@@ -100,7 +100,7 @@ void stop_motors(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor_ID
 
 void open_gripper(Servo& servoGripper)
 {
-  servoGripper.write(180);
+  servoGripper.write(140);
 }
 
 void close_gripper(Servo& servoGripper)
