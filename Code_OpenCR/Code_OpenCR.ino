@@ -23,24 +23,24 @@ enum class State { Sleep, Wait, Parse, Moving };
 // ---------- Constants ----------
 // --- Motors ---
 //const std::vector<uint8_t> MOTOR_IDS = { (const uint8_t)1, (const uint8_t)2 };
-const std::vector<uint8_t> MOTOR_IDS_ARM = { (const uint8_t)15, (const uint8_t)3 }; //epaule ID = 15, coude ID = 3, caroussel ID = 2
-const std::vector<uint8_t> MOTOR_IDS_CAR = { (const uint8_t)2 };// { (const uint8_t)15, (const uint8_t)3 }; //epaule ID = 15, coude ID = 3, caroussel ID = 2
+// const std::vector<uint8_t> MOTOR_IDS_ARM = { (const uint8_t)15, (const uint8_t)3 }; //epaule ID = 15, coude ID = 3, caroussel ID = 2
+// const std::vector<uint8_t> MOTOR_IDS_CAR = { (const uint8_t)2 };// { (const uint8_t)15, (const uint8_t)3 }; //epaule ID = 15, coude ID = 3, caroussel ID = 2
 
-const uint8_t nbAvailableColors = 20;
+// const uint8_t nbAvailableColors = 20;
 
-const uint8_t SERVO_PIN = 6;
-const uint8_t SWITCH_PIN = 7;
-const uint8_t STEPPER_PIN_ENABLE = 5;
-const uint8_t STEPPER_PIN_DIR = 10;
-const uint8_t STEPPER_PIN_STEP = 9;
+// const uint8_t SERVO_PIN = 6;
+// const uint8_t SWITCH_PIN = 7;
+// const uint8_t STEPPER_PIN_ENABLE = 5;
+// const uint8_t STEPPER_PIN_DIR = 10;
+// const uint8_t STEPPER_PIN_STEP = 9;
 
 
 // ---------- Variables ----------
 // --- Motors ---
-DynamixelWorkbench dynaArm;
-DynamixelWorkbench dynaCar;
-Servo servoGripper; 
-AccelStepper stepper(AccelStepper::DRIVER, 1, 2);
+// DynamixelWorkbench dynaArm;
+// DynamixelWorkbench dynaCar;
+// Servo servoGripper; 
+// AccelStepper stepper(AccelStepper::DRIVER, 1, 2);
 
 
 
@@ -57,22 +57,21 @@ int pos = 3600;
 // ---------- Main functions ----------
 void setup()
 {
-    const int BAUDRATE = 115200;
-    Serial.begin(BAUDRATE);
+    comm_init();
 
-    init_motors(dynaArm, MOTOR_IDS_ARM);
-    init_motors(dynaCar, MOTOR_IDS_CAR);
+    // init_motors(dynaArm, MOTOR_IDS_ARM);
+    // init_motors(dynaCar, MOTOR_IDS_CAR);
 
-    pinMode(SERVO_PIN, OUTPUT);
-    pinMode(SWITCH_PIN, INPUT_PULLUP);
-    pinMode(STEPPER_PIN_ENABLE, OUTPUT);
-    pinMode(STEPPER_PIN_DIR, OUTPUT);
-    pinMode(STEPPER_PIN_STEP, OUTPUT);
+    // pinMode(SERVO_PIN, OUTPUT);
+    // pinMode(SWITCH_PIN, INPUT_PULLUP);
+    // pinMode(STEPPER_PIN_ENABLE, OUTPUT);
+    // pinMode(STEPPER_PIN_DIR, OUTPUT);
+    // pinMode(STEPPER_PIN_STEP, OUTPUT);
 
-    servoGripper.attach(SERVO_PIN);
+  //   servoGripper.attach(SERVO_PIN);
     
-  stepper.setMaxSpeed(3000);
-  stepper.setAcceleration(1000);
+  // stepper.setMaxSpeed(3000);
+  // stepper.setAcceleration(1000);
     // Nécessite un interrup pour faire le zero? 
     //attachInterrupt(digitalPinToInterrupt(SWITCH_PIN), ISRzero, FALLING);
 
@@ -80,8 +79,9 @@ void setup()
 
 void loop()
 {
+  get_msg();
+  delay(5000);
 
-  comm_init(); 
 
   // inverse_kinematics( 0 , 270, motor_angles_arm);
   // move_to_pos_wait(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
