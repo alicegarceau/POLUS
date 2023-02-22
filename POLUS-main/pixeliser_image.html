@@ -46,63 +46,70 @@
     
 <tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
 <td width="100%">Methods defined here:<br>
-<dl><dt><a name="traitement_image-RGB_CSV"><strong>RGB_CSV</strong></a>(self, fichier_csv)</dt><dd><tt>Initialize&nbsp;l'objet&nbsp;de&nbsp;type&nbsp;markov&nbsp;lorsqu'il&nbsp;est&nbsp;créé<br>
+<dl><dt><a name="traitement_image-RGB_CSV"><strong>RGB_CSV</strong></a>(self, fichier_csv)</dt><dd><tt>Lit&nbsp;le&nbsp;fichier&nbsp;CSV&nbsp;contenant&nbsp;le&nbsp;RGB&nbsp;de&nbsp;tous&nbsp;les&nbsp;crayons&nbsp;disponibles<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;fichier_csv:&nbsp;nom&nbsp;du&nbsp;fichier&nbsp;CSV&nbsp;contenant&nbsp;le&nbsp;RGB&nbsp;des&nbsp;crayons&nbsp;disponibles<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;liste_crayons_dispos:&nbsp;liste&nbsp;des&nbsp;RGB&nbsp;des&nbsp;crayons&nbsp;disponibles</tt></dd></dl>
+
+<dl><dt><a name="traitement_image-__init__"><strong>__init__</strong></a>(self)</dt><dd><tt>Initialise&nbsp;l'objet&nbsp;de&nbsp;type&nbsp;<a href="#traitement_image">traitement_image</a>&nbsp;lorsqu'il&nbsp;est&nbsp;créé<br>
 &nbsp;<br>
 Args:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;aucun:&nbsp;Utilise&nbsp;simplement&nbsp;les&nbsp;informations&nbsp;fournies&nbsp;dans&nbsp;l'objet&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;aucun:&nbsp;utilise&nbsp;simplement&nbsp;les&nbsp;informations&nbsp;fournies&nbsp;dans&nbsp;l'objet&nbsp;<br>
 &nbsp;<br>
 Returns:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;:&nbsp;ne&nbsp;fait&nbsp;qu'initialiser&nbsp;l'objet&nbsp;de&nbsp;type&nbsp;<a href="#traitement_image">traitement_image</a></tt></dd></dl>
 
-<dl><dt><a name="traitement_image-__init__"><strong>__init__</strong></a>(self)</dt><dd><tt>Initialize&nbsp;l'objet&nbsp;de&nbsp;type&nbsp;markov&nbsp;lorsqu'il&nbsp;est&nbsp;créé<br>
+<dl><dt><a name="traitement_image-calcul_coordonnées_carrés"><strong>calcul_coordonnées_carrés</strong></a>(self, nb_carrés)</dt><dd><tt>Calcule&nbsp;les&nbsp;coordonnées&nbsp;x,y&nbsp;du&nbsp;centre&nbsp;de&nbsp;chaque&nbsp;carré&nbsp;de&nbsp;l'image&nbsp;pixélisée<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Les&nbsp;coordonnées&nbsp;x,y&nbsp;sont&nbsp;faites&nbsp;à&nbsp;partir&nbsp;du&nbsp;coin&nbsp;supérieur&nbsp;gauche.<br>
 &nbsp;<br>
 Args:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;aucun:&nbsp;Utilise&nbsp;simplement&nbsp;les&nbsp;informations&nbsp;fournies&nbsp;dans&nbsp;l'objet&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;nb_carrés:&nbsp;nombre&nbsp;de&nbsp;carrés&nbsp;(gros&nbsp;pixels)&nbsp;de&nbsp;pour&nbsp;chaque&nbsp;côté&nbsp;de&nbsp;l'image&nbsp;de&nbsp;sortie<br>
 &nbsp;<br>
 Returns:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;:&nbsp;ne&nbsp;fait&nbsp;qu'initialiser&nbsp;l'objet&nbsp;de&nbsp;type&nbsp;<a href="#traitement_image">traitement_image</a></tt></dd></dl>
+&nbsp;&nbsp;&nbsp;&nbsp;coordonnées_carrés:&nbsp;liste&nbsp;des&nbsp;coordonnées&nbsp;de&nbsp;tous&nbsp;les&nbsp;carrés&nbsp;de&nbsp;l'image</tt></dd></dl>
 
-<dl><dt><a name="traitement_image-comparaison"><strong>comparaison</strong></a>(self, list_rgb, list_crayons)</dt><dd><tt>Compare&nbsp;le&nbsp;RGB&nbsp;des&nbsp;pixels&nbsp;sélectionnés&nbsp;aux&nbsp;crayons&nbsp;disponibles<br>
-&nbsp;<br>
+<dl><dt><a name="traitement_image-get_RGB_carrés"><strong>get_RGB_carrés</strong></a>(self, nom_fichier_image_pixélisée, nb_carrés)</dt><dd><tt>Reçoit&nbsp;une&nbsp;image&nbsp;pixélisée&nbsp;et&nbsp;crée&nbsp;un&nbsp;tableau&nbsp;contenant&nbsp;le&nbsp;RGB&nbsp;de&nbsp;chaque&nbsp;pixel<br>
 Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;nb_carrés:&nbsp;nombre&nbsp;de&nbsp;carrés&nbsp;(gros&nbsp;pixels)&nbsp;de&nbsp;pour&nbsp;chaque&nbsp;côté&nbsp;de&nbsp;l'image&nbsp;de&nbsp;sortie<br>
+&nbsp;&nbsp;&nbsp;&nbsp;nom_fichier_image_pixélisée:&nbsp;nom&nbsp;du&nbsp;fichier&nbsp;de&nbsp;l'image&nbsp;pixélisée<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;liste_rgb_carrés_og:&nbsp;liste&nbsp;du&nbsp;RGB&nbsp;de&nbsp;chaque&nbsp;carré&nbsp;de&nbsp;l'image&nbsp;pixélisée</tt></dd></dl>
+
+<dl><dt><a name="traitement_image-get_closest_RGB"><strong>get_closest_RGB</strong></a>(self, liste_rgb_carrés_og, liste_crayons_dispos)</dt><dd><tt>Compare&nbsp;le&nbsp;RGB&nbsp;de&nbsp;chaque&nbsp;carré&nbsp;aux&nbsp;crayons&nbsp;disponibles&nbsp;dans&nbsp;le&nbsp;CSV&nbsp;et&nbsp;garde&nbsp;pour&nbsp;chaque&nbsp;RGB&nbsp;celui&nbsp;qui&nbsp;est&nbsp;le&nbsp;plus&nbsp;proche<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;liste_rgb_carrés_og:&nbsp;liste&nbsp;du&nbsp;RGB&nbsp;de&nbsp;chaque&nbsp;carré&nbsp;de&nbsp;l'image&nbsp;pixélisée<br>
+&nbsp;&nbsp;&nbsp;&nbsp;liste_crayons_dispos:&nbsp;liste&nbsp;des&nbsp;crayons&nbsp;disponibles&nbsp;pour&nbsp;le&nbsp;robot,&nbsp;provient&nbsp;du&nbsp;CSV&nbsp;"RGB_48.csv"<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;liste_rgb_carrés_crayola:&nbsp;liste&nbsp;du&nbsp;RGB&nbsp;de&nbsp;chaque&nbsp;carré&nbsp;de&nbsp;l'image&nbsp;de&nbsp;sortie</tt></dd></dl>
+
+<dl><dt><a name="traitement_image-pixeliser_image"><strong>pixeliser_image</strong></a>(self, nom_fichier_image_og, nb_carrés, nom_fichier_image_pixélisée)</dt><dd><tt>Reçoit&nbsp;une&nbsp;image&nbsp;et&nbsp;la&nbsp;sépare&nbsp;en&nbsp;carrés&nbsp;pour&nbsp;faire&nbsp;un&nbsp;effet&nbsp;pixélisé<br>
+Args:&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;nom_fichier_image_og:&nbsp;nom&nbsp;du&nbsp;fichier&nbsp;de&nbsp;l'image&nbsp;d'origine&nbsp;qui&nbsp;sera&nbsp;traitée&nbsp;pour&nbsp;être&nbsp;pixélisée<br>
+&nbsp;&nbsp;&nbsp;&nbsp;nb_carrés:&nbsp;nombre&nbsp;de&nbsp;carrés&nbsp;(gros&nbsp;pixels)&nbsp;de&nbsp;pour&nbsp;chaque&nbsp;côté&nbsp;de&nbsp;l'image&nbsp;de&nbsp;sortie<br>
+&nbsp;&nbsp;&nbsp;&nbsp;nom_fichier_image_pixélisée:&nbsp;nom&nbsp;du&nbsp;fichier&nbsp;de&nbsp;l'image&nbsp;pixélisée<br>
 &nbsp;<br>
 Returns:</tt></dd></dl>
 
-<dl><dt><a name="traitement_image-coord_pixels"><strong>coord_pixels</strong></a>(self, nb_pixels)</dt><dd><tt>Initialize&nbsp;l'objet&nbsp;de&nbsp;type&nbsp;markov&nbsp;lorsqu'il&nbsp;est&nbsp;créé<br>
+<dl><dt><a name="traitement_image-send_positions"><strong>send_positions</strong></a>(self, index_crayon_carrousel, liste_rgb_carrés_crayola, liste_crayons_dispos, coordonnées_carrés)</dt><dd><tt>Crée&nbsp;une&nbsp;liste&nbsp;des&nbsp;coordonnées&nbsp;des&nbsp;carrés&nbsp;pour&nbsp;le&nbsp;crayon&nbsp;demandé<br>
 &nbsp;<br>
 Args:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;aucun:&nbsp;Utilise&nbsp;simplement&nbsp;les&nbsp;informations&nbsp;fournies&nbsp;dans&nbsp;l'objet&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;index_crayon_carrousel:&nbsp;numéro&nbsp;du&nbsp;crayon&nbsp;dans&nbsp;le&nbsp;carrousel&nbsp;(0&nbsp;à&nbsp;19)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;liste_rgb_carrés_crayola:&nbsp;liste&nbsp;du&nbsp;RGB&nbsp;de&nbsp;chaque&nbsp;carré&nbsp;de&nbsp;l'image&nbsp;de&nbsp;sortie<br>
+&nbsp;&nbsp;&nbsp;&nbsp;liste_crayons_dispos:&nbsp;liste&nbsp;des&nbsp;RGB&nbsp;des&nbsp;crayons&nbsp;disponibles<br>
+&nbsp;&nbsp;&nbsp;&nbsp;coordonnées_carrés:&nbsp;liste&nbsp;des&nbsp;coordonnées&nbsp;de&nbsp;tous&nbsp;les&nbsp;carrés&nbsp;de&nbsp;l'image<br>
 &nbsp;<br>
 Returns:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;:&nbsp;ne&nbsp;fait&nbsp;qu'initialiser&nbsp;l'objet&nbsp;de&nbsp;type&nbsp;<a href="#traitement_image">traitement_image</a></tt></dd></dl>
+&nbsp;&nbsp;&nbsp;&nbsp;liste_coordonnées:&nbsp;liste&nbsp;des&nbsp;coordonnées&nbsp;des&nbsp;carrés&nbsp;pour&nbsp;la&nbsp;couleur&nbsp;demandée</tt></dd></dl>
 
-<dl><dt><a name="traitement_image-creer_tableau_couleurs"><strong>creer_tableau_couleurs</strong></a>(self, image_pix, nb_pixels, dict_rgb)</dt><dd><tt>Reçoit&nbsp;une&nbsp;image&nbsp;pixélisée&nbsp;et&nbsp;crée&nbsp;un&nbsp;tableau&nbsp;contenant&nbsp;le&nbsp;RGB&nbsp;de&nbsp;chaque&nbsp;pixel<br>
-&nbsp;<br>
+<dl><dt><a name="traitement_image-visualiser_resultat"><strong>visualiser_resultat</strong></a>(self, liste_rgb_carrés_crayola, nb_carrés, nom_fichier_image_sortie)</dt><dd><tt>Trace&nbsp;le&nbsp;résultat&nbsp;attendu&nbsp;en&nbsp;changeant&nbsp;chaque&nbsp;pixel&nbsp;de&nbsp;chaque&nbsp;carré&nbsp;de&nbsp;l'image&nbsp;pixélisée&nbsp;pour&nbsp;le&nbsp;RGB&nbsp;disponible&nbsp;le&nbsp;plus&nbsp;proche<br>
 Args:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<br>
-&nbsp;<br>
-Returns:</tt></dd></dl>
-
-<dl><dt><a name="traitement_image-pixeliser"><strong>pixeliser</strong></a>(self, filename, nb_pixels, image_pix)</dt><dd><tt>Reçoit&nbsp;une&nbsp;image&nbsp;et&nbsp;la&nbsp;sépare&nbsp;en&nbsp;carrés&nbsp;pour&nbsp;faire&nbsp;un&nbsp;effet&nbsp;pixélisé<br>
-&nbsp;<br>
-Args:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<br>
-&nbsp;<br>
-Returns:</tt></dd></dl>
-
-<dl><dt><a name="traitement_image-send_positions"><strong>send_positions</strong></a>(self, COLORIDX, liste_rgb, list_crayons, coords)</dt><dd><tt>Initialize&nbsp;l'objet&nbsp;de&nbsp;type&nbsp;markov&nbsp;lorsqu'il&nbsp;est&nbsp;créé<br>
-&nbsp;<br>
-Args:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;aucun:&nbsp;Utilise&nbsp;simplement&nbsp;les&nbsp;informations&nbsp;fournies&nbsp;dans&nbsp;l'objet&nbsp;<br>
-&nbsp;<br>
-Returns:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;:&nbsp;ne&nbsp;fait&nbsp;qu'initialiser&nbsp;l'objet&nbsp;de&nbsp;type&nbsp;<a href="#traitement_image">traitement_image</a></tt></dd></dl>
-
-<dl><dt><a name="traitement_image-visualiser_resultat"><strong>visualiser_resultat</strong></a>(self, liste_rgb, nb_pixels, image_result)</dt><dd><tt>Compare&nbsp;le&nbsp;RGB&nbsp;des&nbsp;pixels&nbsp;sélectionnés&nbsp;aux&nbsp;crayons&nbsp;disponibles<br>
-&nbsp;<br>
-Args:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;liste_rgb_carrés_crayola:&nbsp;liste&nbsp;du&nbsp;RGB&nbsp;de&nbsp;chaque&nbsp;carré&nbsp;de&nbsp;l'image&nbsp;de&nbsp;sortie<br>
+&nbsp;&nbsp;&nbsp;&nbsp;nb_carrés:&nbsp;nombre&nbsp;de&nbsp;carrés&nbsp;(gros&nbsp;pixels)&nbsp;de&nbsp;pour&nbsp;chaque&nbsp;côté&nbsp;de&nbsp;l'image&nbsp;de&nbsp;sortie<br>
+&nbsp;&nbsp;&nbsp;&nbsp;image_sortie:&nbsp;nom&nbsp;du&nbsp;fichier&nbsp;de&nbsp;l'image&nbsp;pixélisée&nbsp;faite&nbsp;avec&nbsp;les&nbsp;couleurs&nbsp;de&nbsp;crayons&nbsp;disponibles&nbsp;(résultat&nbsp;attendu&nbsp;tracé&nbsp;par&nbsp;le&nbsp;robot)<br>
 &nbsp;<br>
 Returns:</tt></dd></dl>
 
