@@ -11,6 +11,10 @@ image_pix.png : image pixélisée
 
 image_result.png : image du résultat attendu
 
+input_UI.py : déclaration des variables globales utilisées dans les différents fichiers
+
+main.py : fonction main
+
 pixeliser_image.html : html de la documentation du traitement d'image avec pydoc
 
 pixeliser_image.py : fonctions utilisées pour le traitement d'image
