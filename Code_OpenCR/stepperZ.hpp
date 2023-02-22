@@ -1,5 +1,7 @@
+#ifndef STEPPERZ_H
+#define STEPPERZ_H
 /*********
-
+// To do : put content of this file in .cpp and make this an actual header file
 *********/
 
 //Declare pins
@@ -106,3 +108,4 @@ void stepperGoToPos(int goalmm ) // goalmm,
   Serial.println(currPosmm);
 
 }
+#endif
