@@ -21,8 +21,8 @@ enum class State { Sleep, Wait, Parse, Moving };
 // ---------- Constants ----------
 // --- Motors ---
 //const std::vector<uint8_t> MOTOR_IDS = { (const uint8_t)1, (const uint8_t)2 };
-const std::vector<uint8_t> MOTOR_IDS_ARM = { (const uint8_t)15, (const uint8_t)3 }; //epaule ID = 15, coude ID = 3, caroussel ID = 2
-const std::vector<uint8_t> MOTOR_IDS_CAR = { (const uint8_t)2 };// { (const uint8_t)15, (const uint8_t)3 }; //epaule ID = 15, coude ID = 3, caroussel ID = 2
+const std::vector<uint8_t> MOTOR_IDS_ARM = { (const uint8_t)15, (const uint8_t)2 }; //epaule ID = 15, coude ID = 3, caroussel ID = 2
+const std::vector<uint8_t> MOTOR_IDS_CAR = { (const uint8_t)3 };// { (const uint8_t)15, (const uint8_t)3 }; //epaule ID = 15, coude ID = 3, caroussel ID = 2
 
 const uint8_t nbAvailableColors = 20;
 
@@ -75,12 +75,143 @@ void setup()
     //attachInterrupt(digitalPinToInterrupt(SWITCH_PIN), ISRzero, FALLING);
 
 }
-
+int flag = 0;
 void loop()
 {
+  int time = 100;
+  int32_t pos0 = 0;
+  int32_t pos1 = 0;
+/*
+  motor_angles_arm[0]=0;
+        motor_angles_arm[1]=0;
+        
+        move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+*/
 
-  inverse_kinematics( 0 , 270, motor_angles_arm);
-  move_to_pos_wait(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+for (float i = 0; i < 90 ; i = i + 5)
+    {
+        motor_angles_arm[0]=-i*1.667;
+        motor_angles_arm[1]=i*1.6;
+        
+        move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+        //dynaArm.goalPosition(MOTOR_IDS_ARM[1],2048)
+        delay(1000); 
+        
+        dynaArm.getPresentPositionData(MOTOR_IDS_ARM[0], &pos0);
+        dynaArm.getPresentPositionData(MOTOR_IDS_ARM[1], &pos1);
+        float AngleEpaule = (0.088*abs(2048-pos0))/1.667;
+        float AngleCoude = 0.088*abs(2048-pos1);
+    Serial.print(" Epaule asked vs real : ");
+    Serial.print(motor_angles_arm[0]/1.667);
+    Serial.print(" ");
+    Serial.print(AngleEpaule);
+    Serial.print(" Coude asked vs real : ");
+    Serial.print(motor_angles_arm[1]);
+    Serial.print(" ");
+    Serial.println(AngleCoude);
+    }
+
+/*
+    
+        inverse_kinematics( 0 , 120, motor_angles_arm);
+        motor_angles_arm[1]=motor_angles_arm[1]+1.81;
+        move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+        delay(1000);
+        dynaArm.getPresentPositionData(MOTOR_IDS_ARM[0], &pos0);
+        dynaArm.getPresentPositionData(MOTOR_IDS_ARM[1], &pos1);
+        float AngleEpaule = (0.088*abs(2048-pos0))/1.667;
+        float AngleCoude = 0.088*abs(2048-pos1);
+    Serial.print(" Epaule asked vs real : ");
+    Serial.print(motor_angles_arm[0]/1.667);
+    Serial.print(" ");
+    Serial.print(AngleEpaule);
+    Serial.print(" Coude asked vs real : ");
+    Serial.print(motor_angles_arm[1]-1.81);
+    Serial.print(" ");
+    Serial.println(AngleCoude);
+*/
+  
+/*
+  ///////////////////////// DEMO ////////////////////////
+
+  
+  if (flag<=3)
+  {
+
+        inverse_kinematics( 100 , 160, motor_angles_arm);
+        move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+        inverse_kinematics( -100 , 120, motor_angles_arm);
+        move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+        delay(1000);
+        inverse_kinematics( 100 , 200, motor_angles_arm);
+        move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+        delay(1000);
+        motor_angles_arm[0]=0;
+        motor_angles_arm[1]=120;
+        move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+        delay(time);
+        motor_angles_arm[0]=-10;
+        motor_angles_arm[1]=90;
+        move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+        delay(time);
+        motor_angles_arm[0]=-20;
+        motor_angles_arm[1]=120;
+        move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+        delay(time);
+        motor_angles_arm[0]=-30;
+        motor_angles_arm[1]=90;
+        move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+        delay(time);
+        motor_angles_arm[0]=-40;
+        motor_angles_arm[1]=120;
+        move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+        delay(time);
+        motor_angles_arm[0]=-50;
+        motor_angles_arm[1]=90;
+        move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+        delay(time);
+        motor_angles_arm[0]=-60;
+        motor_angles_arm[1]=120;
+        move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+        delay(time);
+        motor_angles_arm[0]=-70;
+        motor_angles_arm[1]=90;
+        move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+        delay(time);
+        motor_angles_arm[0]=-80;
+        motor_angles_arm[1]=120;
+        move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+        delay(time);
+        motor_angles_arm[0]=-85;
+        motor_angles_arm[1]=130;
+        move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+        delay(1000);
+        motor_angles_arm[0]=85;
+        motor_angles_arm[1]=-130;
+        move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+        delay(1500);
+        flag++;
+  }
+
+  ///////////////////////// FIN DEMO //////////////
+*/
+  
+  /*Serial.print(motor_angles_arm[0]);
+  Serial.print(" ");
+  Serial.println(motor_angles_arm[1]);*/
+/*
+  delay(time);
+
+  inverse_kinematics( 100 , 200, motor_angles_arm);
+  Serial.print("100, 200 : ");
+  Serial.print(motor_angles_arm[0]);
+  Serial.print(" ");
+  Serial.println(motor_angles_arm[1]);
+  move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+
+  delay(time);
+*/
+        
 
   /* if (stepper.distanceToGo() == 0)
   {
