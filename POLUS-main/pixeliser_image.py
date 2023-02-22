@@ -12,6 +12,12 @@ from colormath.color_diff import delta_e_cie2000
 import numpy as np
 import csv
 
+# Import les autre .py
+#import input_UI
+#import main
+#import UI
+
+
 class traitement_image():
     def pixeliser_image(self, nom_fichier_image_og, nb_carrés, nom_fichier_image_pixélisée):
         """Reçoit une image et la sépare en carrés pour faire un effet pixélisé
@@ -130,7 +136,7 @@ class traitement_image():
         return liste_rgb_carrés_crayola
 
 
-    def visualiser_resultat(self, liste_rgb_carrés_crayola, nb_carrés, image_sortie):
+    def visualiser_resultat(self, liste_rgb_carrés_crayola, nb_carrés, nom_fichier_image_sortie):
         """Trace le résultat attendu en changeant chaque pixel de chaque carré de l'image pixélisée pour le RGB disponible le plus proche
         Args:
             liste_rgb_carrés_crayola: liste du RGB de chaque carré de l'image de sortie
@@ -169,7 +175,7 @@ class traitement_image():
                 rgb += 1 
 
         # Enregistrer l'image pixlisée avec les couleurs disponibles
-        file_save = os.path.join(cur_path, image_sortie)
+        file_save = os.path.join(cur_path, nom_fichier_image_sortie)
         im_out.save(file_save)
 
         return
@@ -277,7 +283,7 @@ if __name__ == "__main__":
     nom_fichier_image_og = 'image_in.jpg' #UI
     nb_carrés = 50 #UI
     nom_fichier_image_pixélisée = 'image_pix.png' #UI
-    image_sortie = 'image_result.png' #UI
+    nom_fichier_image_sortie = 'image_result.png' #UI
     fichier_csv = 'RGB_48.csv' #hardcodé ou UI?
     index_crayon_carrousel = 13 #va être modifié en boucle éventuellement
 
@@ -285,26 +291,29 @@ if __name__ == "__main__":
     tm = traitement_image()
 
     # Pixéliser l'image au bon nombre de pixels
+    #tm.pixeliser_image(nom_fichier_image_og, input_UI.nb_carrés, nom_fichier_image_pixélisée)
     tm.pixeliser_image(nom_fichier_image_og, nb_carrés, nom_fichier_image_pixélisée)
 
     # Aller chercher les RGB dans le CSV
     liste_crayons_dispos = tm.RGB_CSV(fichier_csv)
 
     # Créer un tableau contenant le RGB de tous les pixels de l'image pixélisée
+    #liste_rgb_carrés_og = tm.get_RGB_carrés(nom_fichier_image_pixélisée, input_UI.nb_carrés)
     liste_rgb_carrés_og = tm.get_RGB_carrés(nom_fichier_image_pixélisée, nb_carrés)
 
     # Comparer chaque RGB pour l'associer au crayon correspondant
     liste_rgb_carrés_crayola = tm.get_closest_RGB(liste_rgb_carrés_og, liste_crayons_dispos)
 
     # Tracer l'image avec les RGB disponibles pour visualiser le résultat attendu
-    tm.visualiser_resultat(liste_rgb_carrés_crayola, nb_carrés, image_sortie)
+    #tm.visualiser_resultat(liste_rgb_carrés_crayola, input_UI.nb_carrés, nom_fichier_image_sortie)
+    tm.visualiser_resultat(liste_rgb_carrés_crayola, nb_carrés, nom_fichier_image_sortie)
 
     # Calculer les coordonnées x,y de chaque pixel à tracer
+    #coordonnées_carrés = tm.calcul_coordonnées_carrés(input_UI.nb_carrés)
     coordonnées_carrés = tm.calcul_coordonnées_carrés(nb_carrés)
 
     # Envoyer la positions des points à faire pour le crayon donné en paramètre
     tm.send_positions(index_crayon_carrousel, liste_rgb_carrés_crayola, liste_crayons_dispos, coordonnées_carrés)
-
 
 
     # ARGUMENTS (A CHANGER)
@@ -313,5 +322,3 @@ if __name__ == "__main__":
     parser.add_argument('-d', action='store_true', help='Run demo program.')
     args = parser.parse_args()
     port = args.p
-
-    
