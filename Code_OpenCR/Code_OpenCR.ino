@@ -8,9 +8,9 @@ Authors: Alec Gagnon,      gaga2120
 */
 
 // ---------- Libraries ----------
-#include "actuators.hpp"
-#include "inverseKinematics.hpp"
-#include "CommunicationProtocol.hpp"
+//#include "actuators.hpp"
+//#include "inverseKinematics.hpp"
+#include "serialcomm_functions.hpp"
 
 /*#include "comm_functions.hpp"
 #include "inverse_kinematics.hpp"
@@ -81,8 +81,10 @@ void setup()
 void loop()
 {
 
-  inverse_kinematics( 0 , 270, motor_angles_arm);
-  move_to_pos_wait(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+  comm_init(); 
+
+  // inverse_kinematics( 0 , 270, motor_angles_arm);
+  // move_to_pos_wait(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
 
   /* if (stepper.distanceToGo() == 0)
   {
