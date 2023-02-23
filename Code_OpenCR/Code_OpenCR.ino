@@ -10,6 +10,7 @@ Authors: Alec Gagnon,      gaga2120
 // ---------- Libraries ----------
 #include "actuators.hpp"
 #include "inverseKinematics.hpp"
+#include "stepperZ.hpp"
 /*#include "comm_functions.hpp"
 #include "inverse_kinematics.hpp"
 */
@@ -57,6 +58,7 @@ void setup()
 {
     const int BAUDRATE = 115200;
     Serial.begin(BAUDRATE);
+    setupStepper();
 
     init_motors(dynaArm, MOTOR_IDS_ARM);
     init_motors(dynaCar, MOTOR_IDS_CAR);
@@ -71,21 +73,102 @@ void setup()
     
   stepper.setMaxSpeed(3000);
   stepper.setAcceleration(1000);
+  homeZ();
     // Nécessite un interrup pour faire le zero? 
     //attachInterrupt(digitalPinToInterrupt(SWITCH_PIN), ISRzero, FALLING);
 
 }
-int flag = 0;
-void loop()
+
+void pick()
 {
-  int time = 100;
+  
+  int crayonPick = 3;
+  int crayonRetreat = 74;
+  int crayonApproach = 60;
+  stepperGoToPos(crayonApproach);
+  delay(1000);
+  motor_angles_arm[0]=29.67*1.667;
+  motor_angles_arm[1]=100.8;
+  move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+  delay(1000);
+  open_gripper(servoGripper);
+  stepperGoToPos(crayonPick);
+  close_gripper(servoGripper);
+  delay(500);
+  stepperGoToPos(crayonRetreat);
+
+}
+
+void place()
+{
+  
+  int crayonPick = 3;
+  int crayonRetreat = 74;
+  int crayonApproach = 60;
+  stepperGoToPos(crayonRetreat);
+  delay(1000);
+  motor_angles_arm[0]=29.67*1.667;
+  motor_angles_arm[1]=100.8;
+  move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+  delay(1000);
+  open_gripper(servoGripper);
+  
+
+}
+
+void square()
+{
+  int time = 500;
+  int paperContactH = 18;
+  int paperRetreatH = 25;
+  inverse_kinematics( 50 , 110, motor_angles_arm);
+  move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+  delay(time);
+  stepperGoToPos(paperContactH);
+  delay(time);
+
+for (float i = 0; i <= 100 ; i=i+0.8)
+    {
+        inverse_kinematics( 50-i , 110, motor_angles_arm);
+        move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+        delay(10);
+    }
+
+delay(time/5);
+
+for (float i = 0; i <= 100 ; i=i+0.8)
+    {
+        inverse_kinematics( -50 , 110+i, motor_angles_arm);
+        move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+        delay(10);
+    }
+
+delay(time/5);
+ 
+for (float i = 0; i <= 100 ; i=i+0.8)
+    {
+        inverse_kinematics( -50+i , 210, motor_angles_arm);
+        move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+        delay(10);
+    }
+delay(time/5);
+
+for (float i = 0; i <= 100 ; i=i+0.8)
+    {
+        inverse_kinematics( 50 , 210-i, motor_angles_arm);
+        move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+        delay(10);
+    }
+}
+
+
+void incAngle()
+{
+
   int32_t pos0 = 0;
   int32_t pos1 = 0;
 
-
-
-/*
-for (float i = 0; i < 90 ; i = i + 5)
+  for (float i = 0; i < 90 ; i = i + 5)
     {
         motor_angles_arm[0]=-i*1.667;
         motor_angles_arm[1]=i*1.6;
@@ -107,12 +190,22 @@ for (float i = 0; i < 90 ; i = i + 5)
     Serial.print(" ");
     Serial.println(AngleCoude);
     }
-*/
+}
+
+
+void loop()
+{
+
+  int32_t pos0 = 0;
+  int32_t pos1 = 0;
+  pick();
+  square();
+  place();
 
         //motor_angles_arm[0]=0;
         //motor_angles_arm[1]=0;
-   /*     inverse_kinematics( -25 , 150, motor_angles_arm);
-        move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+        //inverse_kinematics( -25 , 150, motor_angles_arm);
+        //move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
         delay(1000);
         dynaArm.getPresentPositionData(MOTOR_IDS_ARM[0], &pos0);
         dynaArm.getPresentPositionData(MOTOR_IDS_ARM[1], &pos1);
@@ -125,73 +218,8 @@ for (float i = 0; i < 90 ; i = i + 5)
     Serial.print(" Coude asked vs real : ");
     Serial.print(motor_angles_arm[1]);
     Serial.print(" ");
-    Serial.println(AngleCoude);*/
+    Serial.println(AngleCoude);
 
-  
-/*
-  ///////////////////////// DEMO ////////////////////////
-
-  
-  if (flag<=3)
-  {
-
-        inverse_kinematics( 100 , 160, motor_angles_arm);
-        move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
-        inverse_kinematics( -100 , 120, motor_angles_arm);
-        move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
-        delay(1000);
-        inverse_kinematics( 100 , 200, motor_angles_arm);
-        move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
-        delay(1000);
-        motor_angles_arm[0]=0;
-        motor_angles_arm[1]=120;
-        move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
-        delay(time);
-        motor_angles_arm[0]=-10;
-        motor_angles_arm[1]=90;
-        move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
-        delay(time);
-        motor_angles_arm[0]=-20;
-        motor_angles_arm[1]=120;
-        move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
-        delay(time);
-        motor_angles_arm[0]=-30;
-        motor_angles_arm[1]=90;
-        move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
-        delay(time);
-        motor_angles_arm[0]=-40;
-        motor_angles_arm[1]=120;
-        move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
-        delay(time);
-        motor_angles_arm[0]=-50;
-        motor_angles_arm[1]=90;
-        move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
-        delay(time);
-        motor_angles_arm[0]=-60;
-        motor_angles_arm[1]=120;
-        move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
-        delay(time);
-        motor_angles_arm[0]=-70;
-        motor_angles_arm[1]=90;
-        move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
-        delay(time);
-        motor_angles_arm[0]=-80;
-        motor_angles_arm[1]=120;
-        move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
-        delay(time);
-        motor_angles_arm[0]=-85;
-        motor_angles_arm[1]=130;
-        move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
-        delay(1000);
-        motor_angles_arm[0]=85;
-        motor_angles_arm[1]=-130;
-        move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
-        delay(1500);
-        flag++;
-  }
-
-  ///////////////////////// FIN DEMO //////////////
-*/
   
   /*Serial.print(motor_angles_arm[0]);
   Serial.print(" ");

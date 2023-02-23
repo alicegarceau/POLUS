@@ -82,7 +82,7 @@ void homeZ()
 void stepperGoToPos(int goalmm ) // goalmm, 
 {
   // Todo : add software limits
-  int displacementmm = goalmm - currPosmm; 
+  float displacementmm = goalmm - currPosmm; 
   currPosmm += displacementmm;
   int nMicroSteps = abs((displacementmm / MM_PER_TURN) * STEPS_PER_TURN * MICRO_STEPS); // Take absolue value
   int direction;
