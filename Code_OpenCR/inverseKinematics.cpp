@@ -1,4 +1,5 @@
 #include "inverseKinematics.hpp"
+const float epauleRatio = 1.667;
 
 
 void inverse_kinematics(float x, float y, float THETA[2])
@@ -8,6 +9,8 @@ void inverse_kinematics(float x, float y, float THETA[2])
     {
         float LA = 150; //mm
         float LB = 114.78; //mm
+        float epauleZeroOffset = -2.61;
+        float coudeZeroOffset = 2.85;
 
         //Basé sur video: https://www.youtube.com/watch?v=6KOEQfsgy8Q&ab_channel=Engineering_life
         //Calcul d'angle en radian
@@ -16,11 +19,11 @@ void inverse_kinematics(float x, float y, float THETA[2])
         
 
         //Transfert de radian à degré
-        THETA[0] = ((-THETA[0] * 180 / PI)*1.667)-(2.57*1.667);
-        THETA[1] = ((THETA[1] * 180 / PI))-1.81;
+        THETA[0] = ((-THETA[0] * 180 / PI)*1.667)+(epauleZeroOffset*epauleRatio);
+        THETA[1] = ((THETA[1] * 180 / PI))+coudeZeroOffset;
 
         // Makes sure there won't be a collision with the calculated angles
-        if (THETA[0] < -90*1.667 || THETA[0] > 90*1.667 || THETA[1] < 0 || THETA[1] > 150 /*140*1.667*/ )
+        if (THETA[0] < -90*1.667 || THETA[0] > 90*1.667 || THETA[1] < 0 || THETA[1] > 155 /*140*1.667*/ )
         {
             Serial.print("Erreur: Collision évitée : ");
             Serial.print(THETA[0]);

@@ -32,6 +32,8 @@ const uint8_t SWITCH_PIN = 7;
 const uint8_t STEPPER_PIN_ENABLE = 5;
 const uint8_t STEPPER_PIN_DIR = 10;
 const uint8_t STEPPER_PIN_STEP = 11;
+const float epauleRatio = 1.667;
+const float degPulse = 0.088;
 
 
 // ---------- Variables ----------
@@ -87,7 +89,7 @@ void pick()
   int crayonApproach = 60;
   stepperGoToPos(crayonApproach);
   delay(1000);
-  motor_angles_arm[0]=29.67*1.667;
+  motor_angles_arm[0]=29.67*epauleRatio;
   motor_angles_arm[1]=100.8;
   move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
   delay(1000);
@@ -107,7 +109,7 @@ void place()
   int crayonApproach = 60;
   stepperGoToPos(crayonRetreat);
   delay(1000);
-  motor_angles_arm[0]=29.67*1.667;
+  motor_angles_arm[0]=29.67*epauleRatio;
   motor_angles_arm[1]=100.8;
   move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
   delay(1000);
@@ -118,9 +120,12 @@ void place()
 
 void square()
 {
+  
   int time = 500;
   int paperContactH = 18;
   int paperRetreatH = 25;
+  stepperGoToPos(paperContactH+20);
+  delay(5000);
   inverse_kinematics( 50 , 110, motor_angles_arm);
   move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
   delay(time);
@@ -193,32 +198,75 @@ void incAngle()
 }
 
 
+void grid()
+{
+  
+  int time = 500;
+  int paperContactH = 16;
+  int paperRetreatH = paperContactH + 2;
+  stepperGoToPos(paperContactH+30);
+  delay(5000);
+
+  
+  for (int y = 100; y <= 250 ; y=y+3)
+    {
+      inverse_kinematics( -75 , y, motor_angles_arm);
+      move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+      delay(600);
+      for (int x = -75; x <= 75 ; x=x+3)
+      {
+        inverse_kinematics( x , y, motor_angles_arm);
+        move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+        delay(10);
+        stepperGoToPos(paperContactH);
+        delay(100);
+        stepperGoToPos(paperRetreatH);
+      }
+    }
+}
+
+
+void moveXY(float X, float Y)
+{
+  inverse_kinematics( X , Y, motor_angles_arm);
+  move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+}
+
+void moveAngle(float t1, float t2)
+{
+  motor_angles_arm[0] = t1;
+  motor_angles_arm[1] = t2;
+  move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+}
+
+
 void loop()
 {
 
-  int32_t pos0 = 0;
-  int32_t pos1 = 0;
-  pick();
-  square();
-  place();
+  
+  //moveXY(0,100);
+  //pick();
+  //square();
+  //place();
+  grid();
+  
 
-        //motor_angles_arm[0]=0;
-        //motor_angles_arm[1]=0;
-        //inverse_kinematics( -25 , 150, motor_angles_arm);
-        //move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
-        delay(1000);
-        dynaArm.getPresentPositionData(MOTOR_IDS_ARM[0], &pos0);
-        dynaArm.getPresentPositionData(MOTOR_IDS_ARM[1], &pos1);
-        float AngleEpaule = (0.088*abs(2048-pos0))/1.667;
-        float AngleCoude = 0.088*abs(2048-pos1);
-    Serial.print(" Epaule asked vs real : ");
-    Serial.print(motor_angles_arm[0]/1.667);
-    Serial.print(" ");
-    Serial.print(AngleEpaule);
-    Serial.print(" Coude asked vs real : ");
-    Serial.print(motor_angles_arm[1]);
-    Serial.print(" ");
-    Serial.println(AngleCoude);
+  int32_t pos0 = 0;
+  int32_t pos1 = 0;    
+  delay(1000);
+  dynaArm.getPresentPositionData(MOTOR_IDS_ARM[0], &pos0);
+  dynaArm.getPresentPositionData(MOTOR_IDS_ARM[1], &pos1);
+  float AngleEpaule = (degPulse*(pos0-2048))/epauleRatio;
+  float AngleCoude = degPulse*(pos1-2048);
+  Serial.print(" Epaule asked vs real : ");
+  Serial.print(motor_angles_arm[0]/epauleRatio);
+  Serial.print(" ");
+  Serial.print(AngleEpaule);
+  Serial.print(" Coude asked vs real : ");
+  Serial.print(motor_angles_arm[1]);
+  Serial.print(" ");
+  Serial.println(AngleCoude);
+
 
   
   /*Serial.print(motor_angles_arm[0]);
