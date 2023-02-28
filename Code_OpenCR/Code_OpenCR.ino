@@ -80,6 +80,13 @@ void setup()
 void loop()
 {
   get_msg();
+  Serial.print(Data.color.c_str());
+  Serial.print(" ");
+  Serial.print(Data.rows);
+  Serial.print(" ");
+  Serial.println(Data.cols);
+
+  
   delay(5000);
 
 

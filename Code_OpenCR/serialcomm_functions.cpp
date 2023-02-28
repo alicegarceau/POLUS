@@ -9,11 +9,8 @@
 */
 
 #include "serialcomm_functions.hpp"
-#include <Arduino.h>
-#include <iostream>
-#include <string>
-#include <vector>
-#include <sstream>
+
+MatrixData Data;
 
 // ========= Functions ========
 
@@ -39,39 +36,49 @@ bool get_msg()
  * @return { bool }
  */
 
-// Read the data from the serial port
-String inputString = Serial.readStringUntil('\n');
+  // Read the data from the serial port
+  String inputString = Serial.readStringUntil('\n');
 
-// Split the input string into separate parts
-std::string inputStr = inputString.c_str(); // Convert to std::string
-std::vector<std::string> parts;
-size_t pos = 0, lastPos = 0;
-while ((pos = inputStr.find(",", lastPos)) != std::string::npos) {
-    parts.push_back(inputStr.substr(lastPos, pos - lastPos));
-    lastPos = pos + 1;
-}
-parts.push_back(inputStr.substr(lastPos));
+  // Split the input string into separate parts
+  std::string inputStr = inputString.c_str(); // Convert to std::string
+  std::vector<std::string> parts;
+  size_t pos = 0, lastPos = 0;
+  while ((pos = inputStr.find(",", lastPos)) != std::string::npos) {
+      parts.push_back(inputStr.substr(lastPos, pos - lastPos));
+      lastPos = pos + 1;
+  }
+  parts.push_back(inputStr.substr(lastPos));
 
-// Extract the individual values
-if (parts.size() == 4 && parts[0] == "sync") {
-  Serial.println("Synchronisation réussi");
-  color = parts[1];
-  std::stringstream(parts[2]) >> rows;
-  std::stringstream(parts[3]) >> cols;
-  std::vector<std::vector<int>> matrix(rows, std::vector<int>(cols));
-  int value;
-  for (int i = 0; i < rows; i++) {
-      for (int j = 0; j < cols; j++) {
-          serie >> value;
-          matrix[i][j] = value;
-      }
-  }  
-  // Process the rest of the data as needed
-} 
-else {
-  Serial.println("Erreur de synchronisation");
-  return false;
-}
+  // Extract the individual values
+  if (parts.size() == 4 && parts[0] == "sync") {
+    string color;
+    int rows;
+    int cols;
+    
+    Serial.println("Synchronisation réussi");
+    std::stringstream(parts[1]) >> color;
+    std::stringstream(parts[2]) >> rows;
+    std::stringstream(parts[3]) >> cols;
+    int value;
+    int index = 4;  
+    Data.color = color;
+    Data.cols = cols;
+    Data.rows = rows;
+    init_matrix(Data);
+    
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            int value;
+            std::stringstream(parts[index++]) >> value;
+            Data.matrix[i][j] = value;
+        }
+    }
+  } 
+
+  else {
+    Serial.println("Erreur de synchronisation");
+    return false;
+  }
 
   // Définir le message de d'acquittement
    std::string acquittement = "ack\n";
@@ -82,9 +89,12 @@ else {
    return true;
 }
 
-void read_msg();
-{
-
+// allocate memory for the matrix based on the values of rows and cols
+void init_matrix(MatrixData& data) {
+    data.matrix = new int*[data.rows];
+    for (int i = 0; i < data.rows; i++) {
+        data.matrix[i] = new int[data.cols];
+    }
 }
 
 String should_wash(String& state)
