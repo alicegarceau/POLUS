@@ -25,7 +25,6 @@ void comm_init()
   while (!Serial) {
     ; // wait for serial port to connect. Needed for native USB
   }
-  Serial.println("Communication détecté");
 }
 
 bool get_msg()
@@ -39,23 +38,17 @@ bool get_msg()
   // Read the data from the serial port
   String inputString = Serial.readStringUntil('\n');
 
-  // Split the input string into separate parts
-  std::string inputStr = inputString.c_str(); // Convert to std::string
-  std::vector<std::string> parts;
-  size_t pos = 0, lastPos = 0;
-  while ((pos = inputStr.find(",", lastPos)) != std::string::npos) {
-      parts.push_back(inputStr.substr(lastPos, pos - lastPos));
-      lastPos = pos + 1;
-  }
-  parts.push_back(inputStr.substr(lastPos));
+  Serial.print("Received message: ");
+  Serial.println(inputString);  // Print the message to the serial monitor
+
+  std::vector<std::string> parts = Split_msg(inputString);
 
   // Extract the individual values
-  if (parts.size() == 4 && parts[0] == "sync") {
+  if (parts.size() >= 4 && parts[0] == "sync") {
     string color;
     int rows;
     int cols;
     
-    Serial.println("Synchronisation réussi");
     std::stringstream(parts[1]) >> color;
     std::stringstream(parts[2]) >> rows;
     std::stringstream(parts[3]) >> cols;
@@ -67,16 +60,24 @@ bool get_msg()
     init_matrix(Data);
     
     for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < cols; j++) {
-            int value;
-            std::stringstream(parts[index++]) >> value;
-            Data.matrix[i][j] = value;
-        }
+      for (int j = 0; j < cols; j++) {
+        int value;
+          if (index < parts.size()){
+            Serial.println("1");
+            //std::stringstream(parts[index]) >> value;
+            index++;
+    //      Data.matrix[i][j] = value;
+          }
+          else{
+            i = rows;
+            j = cols;
+            break;            
+          }
+      }
     }
   } 
 
   else {
-    Serial.println("Erreur de synchronisation");
     return false;
   }
 
@@ -92,129 +93,23 @@ bool get_msg()
 // allocate memory for the matrix based on the values of rows and cols
 void init_matrix(MatrixData& data) {
     data.matrix = new int*[data.rows];
-    for (int i = 0; i < data.rows; i++) {
-        data.matrix[i] = new int[data.cols];
+    for (int i = 0; i < data.rows; i++) {      
+        data.matrix[i] = new int[data.cols];        
     }
 }
 
-String should_wash(String& state)
+// Split the input string into separate parts
+std::vector<std::string> Split_msg(String inputString)
 {
- /**
- * Fonction de lecture de message et détermine si on nettoie la cage
- * @param { String& } state     // state = message à analyser 3 mots, exemple: {"WASH 80 60"}
- * @return { String }           // retourne deux integer en chaine de caractere, exemple: {"80 60"}
- */
-
- // séparation du message en vecteur de 3 string
-  String words[3];
-  String out;
-  int StringCount = 0;
-
-  while (state.length() > 0)
-  {
-    int index = state.indexOf(' ');
-    if (index == -1) // No space found
-    {
-      words[StringCount++] = state;
-      break;
-    }
-    else
-    {
-      words[StringCount++] = state.substring(0, index);
-      state = state.substring(index+1);
-    }
+  std::string inputStr = inputString.c_str(); // Convert to std::string
+  std::vector<std::string> parts;
+  size_t pos = 0, lastPos = 0;
+  while ((pos = inputStr.find(",", lastPos)) != std::string::npos) {
+      parts.push_back(inputStr.substr(lastPos, pos - lastPos));
+      lastPos = pos + 1;
   }
-
-  // lecture du premier mot et vérification de s'il est égal a WASH
-  if (words[0] == "WASH")
-  { 
-    out = words[1] + " " + words[2];
-    return out;
-  }
-  else
-  {
-    return out;
-  }
-  
+  parts.push_back(inputStr.substr(lastPos));
+  return parts;  
 }
 
-bool should_trash(String& state)
-{
- /**
- * Fonction de lecture de message et détermine si on nettoie la poubelle
- * @param { String& } state     // state = message à analyser 1 mots, exemple: {"TRASH"}
- * @return { bool }     
- */
-  if (state == "TRASH")
-  {
-    return true;
-  }
-  else
-  {
-    return false;
-  }
-   
-}
 
-String send_msg(const String& msg)
-{
- /**
- * Fonction de lecture de message et détermine si on nettoie la cage
- * @param { String& } state     // state = message à analyser 3 mots, exemple: {"WASH 80 60"}
- * @return { String }           // retourne deux integer en chaine de caractere, exemple: {"80 60"}
- */
-  String msg_envoye = msg;
-  Serial.println(msg_envoye);
-  return msg_envoye;
-}
-
-bool should_init(const String& state)
-{
- /**
- * Fonction de lecture de message et détermine si on active la cage
- * @param { String& } state     // state = message à analyser 1 mots, exemple: {"INIT"}
- * @return { bool }     
- */
-  if (state == "INIT")
-  {
-    return true;
-  }
-  else
-  {
-    return false;
-  }
-}
-
-bool should_start(const String& state)
-{
- /**
- * Fonction de lecture de message et détermine si on active la cage
- * @param { String& } state     // state = message à analyser 1 mots, exemple: {"START"}
- * @return { bool }     
- */
-  if (state == "START")
-  {
-    return true;
-  }
-  else
-  {
-    return false;
-  }
-}
-
-bool should_end(const String& state)
-{
- /**
- * Fonction de lecture de message et détermine si on désactive la cage
- * @param { String& } state     // state = message à analyser 1 mots, exemple: {"END"}
- * @return { bool }     
- */
-  if (state == "END")
-  {
-    return true;
-  }
-  else
-  {
-    return false;
-  }
-}

@@ -21,7 +21,7 @@ using namespace std;
 
 // ========= Constant =========
 
-const int BAUDRATE = 115200;
+const int BAUDRATE = 9600;
 
 // ========= Variables =========
 
@@ -39,23 +39,13 @@ extern MatrixData Data;
 
 void comm_init();
 
-bool should_init(const String& state);
-
-bool should_start(const String& state);
-
-bool should_end(const String& state);
-
-String should_wash(String& state);
-
-bool should_trash(String& state);
-
 bool get_msg();
 
 void read_msg();
 
-String send_msg(const String& msg);
-
 void init_matrix(MatrixData& data);
+
+std::vector<std::string> Split_msg(String inputString);
 
 
 #endif

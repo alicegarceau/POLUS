@@ -87,7 +87,7 @@ void loop()
   Serial.println(Data.cols);
 
   
-  delay(5000);
+   delay(1000);
 
 
   // inverse_kinematics( 0 , 270, motor_angles_arm);
@@ -188,5 +188,5 @@ void loop()
             break;
         }
     }*/
-    delay(10);
+    //delay(10);
 }
