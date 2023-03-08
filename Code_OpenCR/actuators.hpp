@@ -7,6 +7,9 @@
 #include <Servo.h>
 #include <AccelStepper.h>
 
+
+
+
 class DynamixelWorkbench;
 
 int32_t degrees_to_int(const float angle);
@@ -32,5 +35,11 @@ void open_gripper(Servo& servoGripper);
 void close_gripper(Servo& servoGripper);
 
 void index_color(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor_IDs, int nbAvailableColors, int colorIndex);
+
+void pick(Servo& servoGripper);
+
+void place(Servo& servoGripper);
+
+
 
 #endif;

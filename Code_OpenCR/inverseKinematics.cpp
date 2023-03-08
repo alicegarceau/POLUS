@@ -1,5 +1,9 @@
 #include "inverseKinematics.hpp"
 const float epauleRatio = 1.667;
+const float LA = 150; //mm
+const float LB = 114.78; //mm
+const float epauleZeroOffset = -2.61;
+const float coudeZeroOffset = 2.85;
 
 
 void inverse_kinematics(float x, float y, float THETA[2])
@@ -7,10 +11,7 @@ void inverse_kinematics(float x, float y, float THETA[2])
     // Makes sure the input coordinates are reachable with the current arm segment lengths
     if ((y >= 0) && ( sqrt(pow(x,2) + pow(y,2)) <= 264.78 ) && (sqrt(pow(x,2) + pow(y,2)) >= 35.22))
     {
-        float LA = 150; //mm
-        float LB = 114.78; //mm
-        float epauleZeroOffset = -2.61;
-        float coudeZeroOffset = 2.85;
+      
 
         //Basé sur video: https://www.youtube.com/watch?v=6KOEQfsgy8Q&ab_channel=Engineering_life
         //Calcul d'angle en radian

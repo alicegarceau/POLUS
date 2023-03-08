@@ -7,6 +7,7 @@
 #include <DynamixelWorkbench.h>
 #include <math.h>
 
+
 class DynamixelWorkbench;
 
 void inverse_kinematics(float x, float y, float THETA[2]);

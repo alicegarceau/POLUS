@@ -1,5 +1,8 @@
 #include "actuators.hpp"
-//#include "inverse_kinematics.hpp"
+#include "stepperZ.hpp"
+const int crayonPick = 3;
+const int crayonRetreat = 74;
+const int crayonApproach = 60;
 
 
 
@@ -17,6 +20,7 @@ void move_to_pos(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor_ID
     {
         motor.goalPosition(motor_IDs[i], degrees_to_int(angles[i]));
     }
+
 }
 
 /// Calls move_to_pos and waits until the movements are complete.
@@ -71,17 +75,17 @@ void go_to_home_arm(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor
     delay(1000);
     move_to_pos_wait(motor, motor_IDs, motor_angles);
 }
-
+/*
 void home_Z(AccelStepper& stepperZ, int stepCurrentPos, int SWITCH_PIN)
 {
- /*int step = 0;
+ int step = 0;
  while(digitalRead(SWITCH_PIN)==0) //doit faire un interrupt?
  {
    step--;
    stepperZ.step(step);
- }*/
+ }
 }
-
+*/
 void start_motors(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor_IDs)
 {
     for (size_t i = 0; i < motor_IDs.size(); ++i)
@@ -99,13 +103,20 @@ void stop_motors(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor_ID
 }
 
 void open_gripper(Servo& servoGripper)
-{
-  servoGripper.write(140);
+{while(servoGripper.read()!=140)
+  {
+    servoGripper.write(140);
+  }
+  
 }
 
 void close_gripper(Servo& servoGripper)
 {
-  servoGripper.write(0);
+  while(servoGripper.read()!=0)
+  {
+    servoGripper.write(0);
+  }
+    
 }
 
 void index_color(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor_IDs, int nbAvailableColors, int colorIndex)
@@ -129,3 +140,24 @@ void index_color(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor_ID
  
 
 }
+
+void pick(Servo& servoGripper)
+{
+  
+  stepperGoToPos(crayonApproach);
+  open_gripper(servoGripper);
+  stepperGoToPos(crayonPick);
+  close_gripper(servoGripper);
+  delay(500);
+  stepperGoToPos(crayonRetreat);
+
+}
+
+void place(Servo& servoGripper)
+{
+  stepperGoToPos(crayonRetreat);
+  open_gripper(servoGripper);
+}
+
+
+
