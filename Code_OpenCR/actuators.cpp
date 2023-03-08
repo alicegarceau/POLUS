@@ -1,10 +1,10 @@
 #include "actuators.hpp"
 #include "stepperZ.hpp"
+#include "inverseKinematics.hpp"
+
 const int crayonPick = 3;
 const int crayonRetreat = 74;
 const int crayonApproach = 60;
-
-
 
 /// Custom function to convert an angle to a value that can be sent
 /// to the Dynamixel motors.
@@ -20,7 +20,6 @@ void move_to_pos(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor_ID
     {
         motor.goalPosition(motor_IDs[i], degrees_to_int(angles[i]));
     }
-
 }
 
 /// Calls move_to_pos and waits until the movements are complete.
@@ -137,8 +136,6 @@ void index_color(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor_ID
   move_to_pos_wait(motor, motor_IDs, &carAngle);
   }
 
- 
-
 }
 
 void pick(Servo& servoGripper)
@@ -157,6 +154,15 @@ void place(Servo& servoGripper)
 {
   stepperGoToPos(crayonRetreat);
   open_gripper(servoGripper);
+}
+
+void pixel_to_pos(int pixel, float pixelPos[2])
+{
+  int row = pixel / 50;
+  int column = pixel - (row*50);
+
+  pixelPos[0] = -75 + (column * 3);
+  pixelPos[1] = 250 - (row * 3);
 }
 
 

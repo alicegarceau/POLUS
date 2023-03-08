@@ -6,6 +6,7 @@
 #include <vector>
 #include <Servo.h>
 #include <AccelStepper.h>
+#include <math.h>
 
 
 
@@ -39,6 +40,8 @@ void index_color(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor_ID
 void pick(Servo& servoGripper);
 
 void place(Servo& servoGripper);
+
+void pixel_to_pos(int pixel, float pixelPos[2]);
 
 
 

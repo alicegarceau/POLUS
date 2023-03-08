@@ -87,13 +87,9 @@ void setup()
 void loop()
 {
 
-  
-  //moveXY(0,100);
-  //pick();
-  //square();
-  //place();
+
  
-  int32_t pos0 = 0;
+  /*int32_t pos0 = 0;
   int32_t pos1 = 0;    
   delay(1000);
   dynaArm.getPresentPositionData(MOTOR_IDS_ARM[0], &pos0);
@@ -107,57 +103,11 @@ void loop()
   Serial.print(" Coude asked vs real : ");
   Serial.print(motor_angles_arm[1]);
   Serial.print(" ");
-  Serial.println(AngleCoude);
+  Serial.println(AngleCoude);*/
 
 
-  
-  /*Serial.print(motor_angles_arm[0]);
-  Serial.print(" ");
-  Serial.println(motor_angles_arm[1]);*/
-/*
-  delay(time);
 
-  inverse_kinematics( 100 , 200, motor_angles_arm);
-  Serial.print("100, 200 : ");
-  Serial.print(motor_angles_arm[0]);
-  Serial.print(" ");
-  Serial.println(motor_angles_arm[1]);
-  move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
-
-  delay(time);
-*/
-        
-
-  /* if (stepper.distanceToGo() == 0)
-  {
-    delay(500);
-    pos = -pos;
-    stepper.moveTo(pos);
-  }
-  stepper.run();*/
-
-  /*for(float i = 0; i < 30; i++)
-  {
-    inverse_kinematics( i , 200, motor_angles_arm);
-    move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
-  }
-
-   for(float j = 200; j < 230; j++)
-  {
-    inverse_kinematics( 30 , j, motor_angles_arm);
-    move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
-  }
-
-   inverse_kinematics( 0 , 200, motor_angles_arm);
-  move_to_pos_wait(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);*/
-
-  /*
-  index_color(dynaCar, MOTOR_IDS_CAR, nbAvailableColors, colorIndex);
-  inverse_kinematics(56, 80, motor_angles);
-  Serial.println(motor_angles_arm[0]);
-  Serial.println(motor_angles_arm[1]);
-  Serial.println(" ");
-  move_to_pos(dyna, MOTOR_IDS, motor_angles);*/
+  // prior code 
 
     /*switch (current_state)
     {
