@@ -5,6 +5,7 @@
 const int crayonPick = 3;
 const int crayonRetreat = 74;
 const int crayonApproach = 60;
+const int nbAvailableColors = 20;
 
 /// Custom function to convert an angle to a value that can be sent
 /// to the Dynamixel motors.
@@ -30,26 +31,27 @@ bool move_to_pos_wait(DynamixelWorkbench& motor, const std::vector<uint8_t>& mot
   
     for (int i = 0; i < 100 && !move_complete; ++i)
     {
-        
-         
         int32_t pos0 = 0;
         int32_t pos1 = 0;
 
         motor.getPresentPositionData(motor_IDs[0], &pos0);
         motor.getPresentPositionData(motor_IDs[1], &pos1);
+      
+        move_complete = abs(degrees_to_int(angles[0]) - pos0) < 13 && abs(degrees_to_int(angles[1]) - pos1) < 5;
 
-        move_complete = abs(degrees_to_int(angles[0]) - pos0) < 10 && abs(degrees_to_int(angles[1]) - pos1) < 10;
+        /*
+        //Debug
+        Serial.print(" Epaule asked vs real : ");
+        Serial.print(degrees_to_int(angles[0]));
+        Serial.print(" ");
+        Serial.print(pos0);
+        Serial.print(" Coude asked vs real : ");
+        Serial.print(degrees_to_int(angles[1]));
+        Serial.print(" ");
+        Serial.print(pos1);*/
         
         delay(10);
     }
-}
-
-int move_Z(AccelStepper& stepperZ, int stepCurrentPos, int stepNextPos)
-{
- /* int nbStep =  stepNextPos - stepCurrentPos;
-  stepperZ.step(nbStep);
-
-  return stepNextPos;*/
 }
 
 void init_motors(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor_IDs)
@@ -75,17 +77,7 @@ void go_to_home_arm(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor
     delay(1000);
     move_to_pos_wait(motor, motor_IDs, motor_angles);
 }
-/*
-void home_Z(AccelStepper& stepperZ, int stepCurrentPos, int SWITCH_PIN)
-{
- int step = 0;
- while(digitalRead(SWITCH_PIN)==0) //doit faire un interrupt?
- {
-   step--;
-   stepperZ.step(step);
- }
-}
-*/
+
 void start_motors(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor_IDs)
 {
     for (size_t i = 0; i < motor_IDs.size(); ++i)
@@ -103,11 +95,11 @@ void stop_motors(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor_ID
 }
 
 void open_gripper(Servo& servoGripper)
-{while(servoGripper.read()!=140)
+{
+  while(servoGripper.read()!=140)
   {
     servoGripper.write(140);
   }
-  
 }
 
 void close_gripper(Servo& servoGripper)
@@ -119,7 +111,7 @@ void close_gripper(Servo& servoGripper)
     
 }
 
-void index_color(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor_IDs, int nbAvailableColors, int colorIndex)
+void index_color(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor_IDs, int colorIndex)
 {
   if(colorIndex >= nbAvailableColors)
   {
@@ -127,33 +119,30 @@ void index_color(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor_ID
   }
   else{
   float angleDivision = 360.0 / static_cast<float>(nbAvailableColors); 
-  float carAngle = static_cast<float>(colorIndex)*(angleDivision);
+  float carAngle = (static_cast<float>(colorIndex)*(angleDivision))-180;
 
-  if(carAngle > 180)
-  {
-    carAngle = carAngle - 360;
-  }
 
   move_to_pos_wait(motor, motor_IDs, &carAngle);
   }
 
 }
 
-void pick(Servo& servoGripper)
+void pick(Servo& servoGripper, DynamixelWorkbench& motor, const std::vector<uint8_t> motor_IDs, float angles[2])
 {
-  
-  stepperGoToPos(crayonApproach);
+  stepperGoToPos(crayonApproach, 0);
+  move_to_pos_wait(motor, motor_IDs, angles);
   open_gripper(servoGripper);
-  stepperGoToPos(crayonPick);
+  stepperGoToPos(crayonPick, 0);
   close_gripper(servoGripper);
   delay(500);
-  stepperGoToPos(crayonRetreat);
+  stepperGoToPos(crayonRetreat, 0);
 
 }
 
-void place(Servo& servoGripper)
+void place(Servo& servoGripper, DynamixelWorkbench& motor, const std::vector<uint8_t> motor_IDs, float angles[2])
 {
-  stepperGoToPos(crayonRetreat);
+  stepperGoToPos(crayonRetreat, 0);
+  move_to_pos_wait(motor, motor_IDs, angles);
   open_gripper(servoGripper);
 }
 

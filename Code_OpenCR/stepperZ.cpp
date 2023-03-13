@@ -4,6 +4,7 @@
 const int MAX_MM = 100; // Soft limit, max height allowed relative to home pos (lim switch)
 const int MIN_MM =   5; // Soft limit, min height allowed relative to home pos (lim switch)
 static int currPosmm; // Current position in mm
+const float OffsetCoeff = 0.0025;
 
 int oneTime = 1;
 
@@ -62,9 +63,20 @@ void homeZ()
   Serial.println(currPosmm);
 }
 
-// 1/8th microstep foward mode function
-void stepperGoToPos(int goalmm ) // goalmm, 
+float updateZOffset(float yPos)
 {
+  float ZOffset;
+  ZOffset = yPos * OffsetCoeff;
+  return ZOffset;
+}
+
+// 1/8th microstep foward mode function
+void stepperGoToPos(int goalmm, float yPos) // goalmm, 
+{
+  float ZOffset;
+  ZOffset = updateZOffset(yPos);
+  goalmm += ZOffset; 
+
   // Todo : add software limits
   float displacementmm = goalmm - currPosmm; 
   currPosmm += displacementmm;

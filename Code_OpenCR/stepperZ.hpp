@@ -24,6 +24,8 @@ void resetEDPins();
 
 void homeZ();
 
+float updateZOffset(float yPos);
+
 // 1/8th microstep foward mode function
-void stepperGoToPos(int goalmm);
+void stepperGoToPos(int goalmm, float yPos);
 #endif
