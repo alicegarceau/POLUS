@@ -26,10 +26,11 @@ void move_to_pos(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor_ID
 bool move_to_pos_wait(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor_IDs, float angles[2])
 {
     bool move_complete = false;
+    move_to_pos(motor, motor_IDs, angles);
   
     for (int i = 0; i < 100 && !move_complete; ++i)
     {
-        move_to_pos(motor, motor_IDs, angles);
+        
          
         int32_t pos0 = 0;
         int32_t pos1 = 0;
@@ -160,7 +161,6 @@ void pixel_to_pos(int pixel, float pixelPos[2])
 {
   int row = pixel / 50;
   int column = pixel - (row*50);
-
   pixelPos[0] = -75 + (column * 3);
   pixelPos[1] = 250 - (row * 3);
 }
