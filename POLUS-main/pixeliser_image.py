@@ -109,29 +109,34 @@ class traitement_image():
         list_diff = [1000] * len(liste_rgb_carrés_og)
         liste_rgb_carrés_crayola = [255] * len(liste_rgb_carrés_og)
 
-        # Boucle pour comparer le RGB de chaque carré avec celui des crayons
+        # Boucle pour filtrer le blanc / presque blanc
         for rgb_pixel in range(0,len(liste_rgb_carrés_og)):
-            # Avoir le RGB du carré actuel et convertir en lab (pour comparaison de la couleur)
-            color1_rgb = sRGBColor(liste_rgb_carrés_og[rgb_pixel][0], liste_rgb_carrés_og[rgb_pixel][1], liste_rgb_carrés_og[rgb_pixel][2])
-            color1_lab = convert_color(color1_rgb, LabColor)
+            if liste_rgb_carrés_og[rgb_pixel][0] < 280 and liste_rgb_carrés_og[rgb_pixel][0] > 230 and liste_rgb_carrés_og[rgb_pixel][1] < 280 and liste_rgb_carrés_og[rgb_pixel][1] > 230 and  liste_rgb_carrés_og[rgb_pixel][2] < 280 and liste_rgb_carrés_og[rgb_pixel][2] > 230:
+                liste_rgb_carrés_crayola[rgb_pixel] = [255,255,255]
+        # Boucle pour comparer le RGB de chaque carré avec celui des crayons
+        #for rgb_pixel in range(0,len(liste_rgb_carrés_og)):
+            else:
+                # Avoir le RGB du carré actuel et convertir en lab (pour comparaison de la couleur)
+                color1_rgb = sRGBColor(liste_rgb_carrés_og[rgb_pixel][0], liste_rgb_carrés_og[rgb_pixel][1], liste_rgb_carrés_og[rgb_pixel][2])
+                color1_lab = convert_color(color1_rgb, LabColor)
 
-            # Avoir le RGB de chaque crayon disponible
-            for rgb_crayons in range(len(liste_crayons_dispos)):
-                # Filtre pour assigner directement blanc si couleur semblable
-                #if list_rgb[rgb_pixel][0] == 255 and list_rgb[rgb_pixel][1] == 255 and list_rgb[rgb_pixel][2] == 255:
-                #    next
-                #else:
-                    # Avoir le RGB du crayon et convertir en lab (pour comparaison de la couleur)
-                    color2_rgb = sRGBColor(liste_crayons_dispos[rgb_crayons][0], liste_crayons_dispos[rgb_crayons][1], liste_crayons_dispos[rgb_crayons][2])
-                    color2_lab = convert_color(color2_rgb, LabColor)
+                # Avoir le RGB de chaque crayon disponible
+                for rgb_crayons in range(len(liste_crayons_dispos)):
+                    # Filtre pour assigner directement blanc si couleur semblable
+                    #if list_rgb[rgb_pixel][0] == 255 and list_rgb[rgb_pixel][1] == 255 and list_rgb[rgb_pixel][2] == 255:
+                    #    next
+                    #else:
+                        # Avoir le RGB du crayon et convertir en lab (pour comparaison de la couleur)
+                        color2_rgb = sRGBColor(liste_crayons_dispos[rgb_crayons][0], liste_crayons_dispos[rgb_crayons][1], liste_crayons_dispos[rgb_crayons][2])
+                        color2_lab = convert_color(color2_rgb, LabColor)
 
-                    # Comparaison de la couleur
-                    delta_e = delta_e_cie2000(color1_lab, color2_lab)
+                        # Comparaison de la couleur
+                        delta_e = delta_e_cie2000(color1_lab, color2_lab)
 
-                    # Delta_e est la différence entre 2 couleurs, alors on veut le minimiser et garder seulement le plus petit
-                    if delta_e < list_diff[rgb_pixel]:
-                        list_diff[rgb_pixel] = delta_e #pas besoin d'être une liste lol
-                        liste_rgb_carrés_crayola[rgb_pixel] = liste_crayons_dispos[rgb_crayons]
+                        # Delta_e est la différence entre 2 couleurs, alors on veut le minimiser et garder seulement le plus petit
+                        if delta_e < list_diff[rgb_pixel]:
+                            list_diff[rgb_pixel] = delta_e #pas besoin d'être une liste lol
+                            liste_rgb_carrés_crayola[rgb_pixel] = liste_crayons_dispos[rgb_crayons]
 
         return liste_rgb_carrés_crayola
 
@@ -223,12 +228,13 @@ class traitement_image():
                 i += 1
 
         # Créer une liste qui associe l'index du carré à ses coordonnées x,y
-        liste_coordonnées = []
-        for coord in index_carrés:
-            liste_coordonnées.append(coordonnées_carrés[coord])
-        
-        return liste_coordonnées
+        #liste_coordonnées = []
+        #for coord in index_carrés:
+        #    liste_coordonnées.append(coordonnées_carrés[coord])
+        print(index_carrés)
+        return index_carrés
 
+    # N'EST PAS UTILISÉE FINALEMENT
     def calcul_coordonnées_carrés(self, nb_carrés):
         """Calcule les coordonnées x,y du centre de chaque carré de l'image pixélisée
             Les coordonnées x,y sont faites à partir du coin supérieur gauche.
@@ -281,11 +287,11 @@ if __name__ == "__main__":
 
     # ARGUMENTS
     nom_fichier_image_og = 'image_in.jpg' #UI
-    nb_carrés = 50 #UI
+    nb_carrés = 20 #UI
     nom_fichier_image_pixélisée = 'image_pix.png' #UI
     nom_fichier_image_sortie = 'image_result.png' #UI
     fichier_csv = 'RGB_48.csv' #hardcodé ou UI?
-    index_crayon_carrousel = 13 #va être modifié en boucle éventuellement
+    index_crayon_carrousel = 4 #va être modifié en boucle éventuellement
 
     # Initialiser un traitement d'image
     tm = traitement_image()
