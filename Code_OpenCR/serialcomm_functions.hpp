@@ -27,14 +27,14 @@ const int BAUDRATE = 9600;
 
 class String;
 
-struct MatrixData {
+struct PixelData {
     string color = "noir";
     int rows = 0;
     int cols = 0;
-    int* matrix;
+    std::vector<int> positions;
 };
 
-extern MatrixData Data;
+extern PixelData Data;
 // ========= Functions prototype ========
 
 void comm_init();
@@ -45,11 +45,17 @@ bool get_msg();
 
 void read_msg();
 
-void init_matrix(MatrixData& data);
+void init_matrix(int size);
 
 std::vector<std::string> Split_msg(String inputString);
 
 void print_data();
+
+bool decode_pixel(std::vector<std::string> parts);
+
+bool decode_lignes(std::vector<std::string> parts);
+
+bool decode_jog(std::vector<std::string> parts);
 
 
 #endif

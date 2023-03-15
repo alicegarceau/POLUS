@@ -81,6 +81,7 @@ void loop()
 {
   next_msg();
   print_data();
+  delay(1000);
 
 
   // inverse_kinematics( 0 , 270, motor_angles_arm);

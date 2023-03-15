@@ -4,27 +4,13 @@ import time
 import serial.tools.list_ports
 ser = "uninitialised"
 
-color = "noir,"  # "red,"
-rows = 1
-cols = 1
-pixels = [0, 0, 0, 0] #pixels = [2, 4, 17, 24, 140]
+sync_msg = "sync,"
 msg_type = "pixels"
 
-def send_data(msg_type):
+def send_data(msg):
     # Ouvertrue du Serial
     if not ser.isOpen():
         ser.open()
-
-    # Envoi du message de synchronisation
-    sync_msg = "sync,"
-    msg = sync_msg
-
-    if msg_type == "pixels":
-        msg = send_pixels(msg)
-    elif msg_type == "lignes":
-        msg = send_lignes(msg)
-    else:
-        print("mauvais type de message")
 
     ser.write(msg.encode())
     print(msg)
@@ -69,51 +55,51 @@ def check_port(port):
             return True
     return False
 
-def pixel_data(color_, rows_, cols_, pixels_):
-    global color   #"red,"
-    global rows
-    global cols
-    global pixels
-    color = color_  # "red,"
-    rows = rows_
-    cols = cols_
-    pixels = pixels_ #pixels = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
-
-def send_pixels(msg_):
+def msg_pixels(color, rows, cols, pixels):
+    msg = sync_msg
+    
     # Envoi du nom de la couleur
-    msg_ += "pixels"
-    msg_ += color
+    msg += "pixels"
+    msg += color
 
     # Envoi des dimensions de la matrice
     dim_msg = f"{rows},{cols},"
-    msg_ += dim_msg
+    msg += dim_msg
 
     # Envoi des données de la matrice
-    #for row in pixels:
-        #for value in row:
-            #data_msg = f"{value},"
-            #msg_ += data_msg
-    #msg_ += "\n"
     for pixel in pixels:
-        msg_ += pixels(pixel)
+        msg += pixels(pixel)
 
-    return msg_
+    send_data(msg)
 
-def send_lignes(msg_):
-    msg_ += "pixels"
+def msg_lignes(msg):
+    msg = sync_msg
+
+    msg += "lignes"
+
+    send_data(msg)
     # à coder
-    return msg_
 
-def msg_type(type):
-    global msg_type
-    msg_type = type
-    pixel_data("noir", 1, 1, [0, 0, 0, 0])
+def msg_jog(posX, posY):
+    msg = sync_msg
 
+    # Envoi du nom de la couleur
+    msg += "jog"
+    msg += posX
+    msg += posY
+
+    send_data(msg)
+
+def ready():
+    msg = ser.readline()
+    if msg.decode() == "done\n":
+        return True
+    return False
 
 if __name__ == '__main__':
     if port_init() is True:
         while True:
-            msg = ser.readline()
-            if msg.decode() == "done\n":
-                send_data(msg_type)
+            if ready() is True:
+                data = [5, 5, 5, 5]
+                msg_pixels("noir", 2, 2, data)
             time.sleep(5)
