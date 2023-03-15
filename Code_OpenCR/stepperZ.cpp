@@ -60,7 +60,7 @@ void homeZ()
     delayMicroseconds(500);
   }
   currPosmm = 0;
-  Serial.println(currPosmm);
+  //Serial.println(currPosmm);
 }
 
 float updateZOffset(float yPos)
@@ -91,7 +91,7 @@ void stepperGoToPos(int goalmm, float yPos) // goalmm,
   digitalWrite(PIN_MS1, HIGH); //Pull PIN_MS1, and PIN_MS2 high to set logic to 1/8th microstep resolution
   digitalWrite(PIN_MS2, HIGH);
   digitalWrite(PIN_EN, LOW); // Pull Enable pin low (logic high) to allow
-  Serial.println(nMicroSteps);
+  //Serial.println(nMicroSteps);
 
   for(int x= 1; x<nMicroSteps; x++)  //Loop the forward stepping enough times for motion to be visible
   {

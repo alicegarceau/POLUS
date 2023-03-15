@@ -2,9 +2,8 @@
 const float epauleRatio = 1.667;
 const float LA = 150; //mm
 const float LB = 114.78; //mm
-const float epauleZeroOffset = -2.61;
-const float coudeZeroOffset = 2.85;
-
+const float epauleZeroOffset = -8.01;
+const float coudeZeroOffset = 1.45;
 
 void inverse_kinematics(float x, float y, float THETA[2])
 {
@@ -30,14 +29,14 @@ void inverse_kinematics(float x, float y, float THETA[2])
             Serial.print(THETA[0]);
             Serial.print(" : ");
             Serial.println(THETA[1]);
-            THETA[0] = 0;
-            THETA[1] = 0;
+            THETA[0] = 0+(epauleZeroOffset*epauleRatio);
+            THETA[1] = 0+coudeZeroOffset;
         }
     }
     else
     {
         Serial.println("Erreur: Angles inatteignable");
-        THETA[0] = 0;
-        THETA[1] = 0;
+        THETA[0] = 0+(epauleZeroOffset*epauleRatio);
+        THETA[1] = 0+coudeZeroOffset;
     }
 }

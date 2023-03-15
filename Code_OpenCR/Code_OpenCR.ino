@@ -24,15 +24,13 @@ const std::vector<uint8_t> MOTOR_IDS_ARM = { (const uint8_t)20, (const uint8_t)1
 const std::vector<uint8_t> MOTOR_IDS_CAR = { (const uint8_t)3 };
 
 const uint8_t nbAvailableColors = 20;
+const uint8_t nbColumn = 50;
 
 const uint8_t SERVO_PIN = 9;
 const uint8_t SWITCH_PIN = 7;
 const uint8_t STEPPER_PIN_ENABLE = 5;
 const uint8_t STEPPER_PIN_DIR = 10;
 const uint8_t STEPPER_PIN_STEP = 11;
-const float epauleRatio = 1.667;
-const float degPulse = 0.088;
-
 
 // ---------- Variables ----------
 // --- Motors ---
@@ -73,7 +71,11 @@ void setup()
     
   stepper.setMaxSpeed(3000);
   stepper.setAcceleration(1000);
-  //homeZ();
+
+  inverse_kinematics(0, 150, motor_angles_arm);
+  move_to_pos_wait(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+  index_color(dynaCar, MOTOR_IDS_CAR, 1);
+  homeZ();
 }
 
 
@@ -82,9 +84,18 @@ void setup()
 void loop()
 {
   //Position prise crayon
+
+ 
   
-  inverse_kinematics( -1200 , 20, motor_angles_arm);
-  move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+  /*inverse_kinematics(0, 140, motor_angles_arm);
+  move_to_pos_wait(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);*/
+
+
+  int pixelArray[] = {2025, 410, 240, 936, 240, 410, 2025};
+  int sizeArray = sizeof(pixelArray) / sizeof(pixelArray[0]);
+
+  pixelisation(pixelArray, sizeArray, nbColumn, dynaArm, MOTOR_IDS_ARM, motor_angles_arm, 
+  servoGripper, dynaCar, MOTOR_IDS_CAR, 2);
 
   /*pick(servoGripper, dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
   
@@ -92,14 +103,16 @@ void loop()
 
   place(servoGripper, dynaArm, MOTOR_IDS_ARM, motor_angles_arm);*/
 
-  /*float pixelPos[2];
-  stepperGoToPos(45, 0);
-    delay(5000);
+  /*index_color(dynaCar, MOTOR_IDS_CAR, 2);
+
+  pick(servoGripper, dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+
+  float pixelPos[2];
 
   for (int pix = 0 ; pix != 49 ; pix++)
   {
     
-    pixel_to_pos(pix, pixelPos );
+    pixel_to_pos(pix, pixelPos, nbColumn );
     inverse_kinematics( pixelPos[0] , pixelPos[1], motor_angles_arm);
     move_to_pos_wait(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
     stepperGoToPos(16, pixelPos[1]);
@@ -108,7 +121,7 @@ void loop()
   }
   for (int pix = 45 ; pix != 2495 ; pix=pix+50)
   {
-    pixel_to_pos(pix, pixelPos );
+    pixel_to_pos(pix, pixelPos, nbColumn );
     inverse_kinematics( pixelPos[0] , pixelPos[1], motor_angles_arm);
     move_to_pos_wait(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
     stepperGoToPos(16, pixelPos[1]);
@@ -117,7 +130,7 @@ void loop()
   }
   for (int pix = 2499 ; pix != 2450 ; pix--)
   {
-    pixel_to_pos(pix, pixelPos );
+    pixel_to_pos(pix, pixelPos, nbColumn );
     inverse_kinematics( pixelPos[0] , pixelPos[1], motor_angles_arm);
     move_to_pos_wait(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
     stepperGoToPos(16,pixelPos[1]);
@@ -126,32 +139,15 @@ void loop()
   }
   for (int pix = 2450 ; pix != 0 ; pix=pix-50)
   {
-    pixel_to_pos(pix, pixelPos );
+    pixel_to_pos(pix, pixelPos, nbColumn );
     inverse_kinematics( pixelPos[0] , pixelPos[1], motor_angles_arm);
     move_to_pos_wait(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
     stepperGoToPos(16, pixelPos[1]);
     delay(50);
     stepperGoToPos(22, pixelPos[1]); 
-  }*/
+  }
 
-
-  /*int32_t pos0 = 0;
-  int32_t pos1 = 0;    
-  delay(1000);
-  dynaArm.getPresentPositionData(MOTOR_IDS_ARM[0], &pos0);
-  dynaArm.getPresentPositionData(MOTOR_IDS_ARM[1], &pos1);
-  float AngleEpaule = (degPulse*(pos0-2048))/epauleRatio;
-  float AngleCoude = degPulse*(pos1-2048);
-  Serial.print(" Epaule asked vs real : ");
-  Serial.print(motor_angles_arm[0]/epauleRatio);
-  Serial.print(" ");
-  Serial.print(AngleEpaule);
-  Serial.print(" Coude asked vs real : ");
-  Serial.print(motor_angles_arm[1]);
-  Serial.print(" ");
-  Serial.println(AngleCoude);*/
-
-
+  place(servoGripper, dynaArm, MOTOR_IDS_ARM, motor_angles_arm);*/
 
   // prior code 
 
