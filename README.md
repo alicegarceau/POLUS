@@ -37,7 +37,7 @@ Sur une imprimante 3D avec une capacité d'au moins 250 x 250 x 200mm, imprimer 
 
 ## Assemblage
 ### Assemblage électrique
-!!! Insérer schéma électrique
+![image](SchemaElectrique.png "Image")
 
 ### Assemblage mécanique
 !!! Insérer vues explosées des sections du robot
