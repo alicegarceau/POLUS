@@ -26,7 +26,6 @@ Sur une imprimante 3D avec une capacité d'au moins 250 x 250 x 200mm, imprimer 
 - [ ] 12 x Vis SHCS M2.5 x 6mm
 - [ ] 1 x Feuille de contre-plaqué 480 x 480mm
 - [ ] 6 x Attaches de plastique (Tyrap) 3 x 100mm min
-- [ ] 
 
 ### Composants électriques
 - [ ] 1 x Raspberry Pi 4 Model B, 4GB avec carte micro SD et bloc d'alimentation
