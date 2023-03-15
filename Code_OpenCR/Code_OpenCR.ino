@@ -9,8 +9,6 @@ Authors: Alec Gagnon,      gaga2120
 
 // ---------- Libraries ----------
 #include "actuators.hpp"
-#include "inverseKinematics.hpp"
-#include "stepperZ.hpp"
 /*#include "comm_functions.hpp"
 #include "inverse_kinematics.hpp"
 */
@@ -21,9 +19,9 @@ enum class State { Sleep, Wait, Parse, Moving };
 
 // ---------- Constants ----------
 // --- Motors ---
-//const std::vector<uint8_t> MOTOR_IDS = { (const uint8_t)1, (const uint8_t)2 };
-const std::vector<uint8_t> MOTOR_IDS_ARM = { (const uint8_t)2, (const uint8_t)15 }; //epaule ID = 15, coude ID = 3, caroussel ID = 2
-const std::vector<uint8_t> MOTOR_IDS_CAR = { (const uint8_t)3 };// { (const uint8_t)15, (const uint8_t)3 }; //epaule ID = 15, coude ID = 3, caroussel ID = 2
+//epaule ID = 20, coude ID = 15, caroussel ID = 3 from: Example/Dynamixel2Arduino/Basic/ScanDynamixel
+const std::vector<uint8_t> MOTOR_IDS_ARM = { (const uint8_t)20, (const uint8_t)15 }; 
+const std::vector<uint8_t> MOTOR_IDS_CAR = { (const uint8_t)3 };
 
 const uint8_t nbAvailableColors = 20;
 
@@ -75,9 +73,7 @@ void setup()
     
   stepper.setMaxSpeed(3000);
   stepper.setAcceleration(1000);
-  homeZ();
-
-
+  //homeZ();
 }
 
 
@@ -86,12 +82,15 @@ void setup()
 void loop()
 {
   //Position prise crayon
-  inverse_kinematics( -120 , 20, motor_angles_arm);
-  pick(servoGripper, dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+  
+  inverse_kinematics( -1200 , 20, motor_angles_arm);
+  move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+
+  /*pick(servoGripper, dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
   
   delay(3000);
 
-  place(servoGripper, dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+  place(servoGripper, dynaArm, MOTOR_IDS_ARM, motor_angles_arm);*/
 
   /*float pixelPos[2];
   stepperGoToPos(45, 0);

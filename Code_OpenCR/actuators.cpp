@@ -6,6 +6,8 @@ const int crayonPick = 3;
 const int crayonRetreat = 74;
 const int crayonApproach = 60;
 const int nbAvailableColors = 20;
+const int pixelApproach = 22;
+const int pixelDraw = 16;
 
 /// Custom function to convert an angle to a value that can be sent
 /// to the Dynamixel motors.
@@ -146,13 +148,37 @@ void place(Servo& servoGripper, DynamixelWorkbench& motor, const std::vector<uin
   open_gripper(servoGripper);
 }
 
-void pixel_to_pos(int pixel, float pixelPos[2])
+void pixel_to_pos(int pixel, float pixelPos[2], int nbColumn)
 {
-  int row = pixel / 50;
-  int column = pixel - (row*50);
-  pixelPos[0] = -75 + (column * 3);
-  pixelPos[1] = 250 - (row * 3);
+  int goalRow = pixel / nbColumn;
+  int goalColumn = pixel - (goalRow*nbColumn);
+  pixelPos[0] = -75 + (goalColumn * 3);
+  pixelPos[1] = 250 - (goalRow * 3);
 }
 
+void drawPoint(DynamixelWorkbench& motor, const std::vector<uint8_t> motor_IDs, float angles[2], int pixel, int nbColumn)
+{
+  float pixelPos[2];
+  pixel_to_pos(pixel, pixelPos, nbColumn);
+  inverse_kinematics( pixelPos[0] , pixelPos[1], angles);
+  move_to_pos_wait(motor, motor_IDs, angles);
+  stepperGoToPos(pixelDraw, pixelPos[1]);
+  delay(50);
+  stepperGoToPos(pixelApproach, pixelPos[1]);
+}
+
+void pixelisation(int pixelArray[], int nbColumn, DynamixelWorkbench& armMotors, const std::vector<uint8_t> arm_motor_IDs, float arm_angles[2], 
+Servo& servoGripper, DynamixelWorkbench& carMotors, const std::vector<uint8_t>& car_motor_IDs, int carColorIndex)
+{
+  index_color(carMotors, car_motor_IDs, carColorIndex);
+  pick(servoGripper, armMotors, arm_motor_IDs, arm_angles);
+
+  for(int i = 0; i < sizeof(pixelArray); i++)
+  {
+    drawPoint(armMotors, arm_motor_IDs, arm_angles, pixelArray[i], nbColumn);
+  }
+
+  place(servoGripper, armMotors, arm_motor_IDs, arm_angles);
+}
 
 
