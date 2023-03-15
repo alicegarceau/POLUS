@@ -1,13 +1,24 @@
 # POLUS
 
 ## Table des matières
-1. [Requis matériels](#requis-matériels)
-2. [Requis logiciels](#requis-logiciels)
-3. [Installation](#installation)
-4. [Exécuter le programme](#exécuter-le-programme)
-5. [License](#license)
+* [Requis matériels](#requis-matériels)
+* [Assemblage](#assemblage)
+* [Requis logiciels](#requis-logiciels)
+* [Installation](#installation)
+* [Exécuter le programme](#exécuter-le-programme)
+* [License](#license)
 
 ## Requis matériels
+### Impression 3D
+
+### Autres composantes mécaniques
+
+### Composantes électriques
+
+## Assemblage
+### Assemblage électrique
+
+### Assemblage mécanique
 
 ## Requis logiciels
 
