@@ -31,13 +31,15 @@ struct MatrixData {
     string color = "noir";
     int rows = 0;
     int cols = 0;
-    int** matrix;
+    int* matrix;
 };
 
 extern MatrixData Data;
 // ========= Functions prototype ========
 
 void comm_init();
+
+void next_msg();
 
 bool get_msg();
 
@@ -46,6 +48,8 @@ void read_msg();
 void init_matrix(MatrixData& data);
 
 std::vector<std::string> Split_msg(String inputString);
+
+void print_data();
 
 
 #endif

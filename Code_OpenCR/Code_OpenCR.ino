@@ -79,15 +79,8 @@ void setup()
 
 void loop()
 {
-  get_msg();
-  Serial.print(Data.color.c_str());
-  Serial.print(" ");
-  Serial.print(Data.rows);
-  Serial.print(" ");
-  Serial.println(Data.cols);
-
-  
-   delay(1000);
+  next_msg();
+  print_data();
 
 
   // inverse_kinematics( 0 , 270, motor_angles_arm);
