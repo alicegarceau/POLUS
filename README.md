@@ -16,3 +16,6 @@
 ## Exécuter le programme
 
 ## License
+Apache Version 2.0
+
+Voir [LICENSE](LICENSE)
