@@ -43,7 +43,16 @@ Sur une imprimante 3D avec une capacité d'au moins 250 x 250 x 200mm, imprimer 
 ![image](SchemaElectrique.png "Image")
 
 ### Assemblage mécanique
+Installer les inserts filetés avec un fer à souder à environ 300 deg C dans toutes les pièces qui doivent en recevoir.
 [!!! Enrick : Insérer vues explosées des sections du robot]
+
+#### Avant-bras et pince
+
+#### Bras et épaule (plateforme mobile en Z)
+
+#### Base
+
+#### Carousel
 
 ## Requis logiciels
 * Arduino IDE version 2 ([arduino](https://www.arduino.cc/en/software))
@@ -60,7 +69,7 @@ Sur un PC Windows :
 * Brancher la carte OpenCR au Raspberry Pi avec un fil micro-USB
 
 ## Exécuter le programme
-[!!! Alice : Insérer captures d'écran du UI avec un example d'image]
+[!!! Alice : Insérer captures d'écran du UI avec un example pour l'image de Stitch]
 
 ## License
 Apache Version 2.0
