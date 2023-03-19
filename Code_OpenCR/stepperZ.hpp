@@ -27,5 +27,5 @@ void homeZ();
 float updateZOffset(float yPos);
 
 // 1/8th microstep foward mode function
-void stepperGoToPos(int goalmm, float yPos);
+void stepperGoToPos(float goalmm);
 #endif

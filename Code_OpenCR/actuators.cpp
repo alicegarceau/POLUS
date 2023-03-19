@@ -3,20 +3,20 @@
 #include "inverseKinematics.hpp"
 
 const int crayonPick = 27;
-const int crayonRetreat = 82;
+const int crayonRetreat = 80;
 const int crayonApproach = 80;  //60
 const int nbAvailableColors = 20;
 
 const int pixelApproach = 22;
-const int pixelDraw = 10;
+const int pixelDraw = 17;
 
 const float epauleRatio = 1.667;
 const float degPulse = 0.088;
 
-const float XCarIn = -163.64; //-162.52;
-const float YCarIn = 33.15; //33.95;
-const float XCarOut = -151.72;
-const float YCarOut = 47.48;
+const float XCarIn = -154.58; 
+const float YCarIn = 89.79; 
+const float XCarOut = -138.44;
+const float YCarOut = 98.18;
 
 
 /// Custom function to convert an angle to a value that can be sent
@@ -138,14 +138,14 @@ void index_color(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor_ID
 
 void pick(Servo& servoGripper, DynamixelWorkbench& motor, const std::vector<uint8_t> motor_IDs, float angles[2])
 {
-  stepperGoToPos(crayonApproach, 0);
+  stepperGoToPos(crayonApproach);
   inverse_kinematics( XCarIn , YCarIn, angles);
   move_to_pos_wait(motor, motor_IDs, angles);
   open_gripper(servoGripper);
-  stepperGoToPos(crayonPick, 0);
+  stepperGoToPos(crayonPick);
   close_gripper(servoGripper);
   delay(2000);
-  stepperGoToPos(crayonRetreat, 0);
+  stepperGoToPos(crayonRetreat);
 
   for (float i = 0; i<=1; i += 0.1)
   {
@@ -159,7 +159,7 @@ void pick(Servo& servoGripper, DynamixelWorkbench& motor, const std::vector<uint
 
 void place(Servo& servoGripper, DynamixelWorkbench& motor, const std::vector<uint8_t> motor_IDs, float angles[2])
 {
-  stepperGoToPos(crayonRetreat, 0);
+  stepperGoToPos(crayonRetreat);
 
   for (float i = 0; i<=1; i += 0.1)
   {
@@ -170,6 +170,7 @@ void place(Servo& servoGripper, DynamixelWorkbench& motor, const std::vector<uin
   }
 
   open_gripper(servoGripper);
+  delay(1000);
 }
 
 void pixel_to_pos(int pixel, float pixelPos[2], int nbColumn)
@@ -186,9 +187,9 @@ void drawPoint(DynamixelWorkbench& motor, const std::vector<uint8_t> motor_IDs, 
   pixel_to_pos(pixel, pixelPos, nbColumn);
   inverse_kinematics( pixelPos[0] , pixelPos[1], angles);
   move_to_pos_wait(motor, motor_IDs, angles);
-  stepperGoToPos(pixelDraw, pixelPos[1]);
+  stepperGoToPos(pixelDraw);
   delay(50);
-  stepperGoToPos(pixelApproach, pixelPos[1]);
+  stepperGoToPos(pixelApproach);
 }
 
 void pixelisation(int* pixelArray, int sizeArray, int nbColumn, DynamixelWorkbench& armMotors, const std::vector<uint8_t> arm_motor_IDs, float arm_angles[2], 

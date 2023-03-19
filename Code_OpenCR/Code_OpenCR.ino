@@ -10,6 +10,7 @@ Authors: Alec Gagnon,      gaga2120
 // ---------- Libraries ----------
 #include "actuators.hpp"
 #include "data.h"
+//#include "coordinates.h"
 /*#include "comm_functions.hpp"
 #include "inverse_kinematics.hpp"
 */
@@ -87,51 +88,77 @@ void loop()
 {
   //Position prise crayon
 
- 
-  
-  /*inverse_kinematics(0, 140, motor_angles_arm);
-  move_to_pos_wait(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);*/
-
-  stepperGoToPos(40, 80);
+ /*
+  stepperGoToPos(80);
   delay(5000); 
+  inverse_kinematics(-154.38, 89.29, motor_angles_arm);
+  move_to_pos_wait(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+
+  
+
+index_color(dynaCar, MOTOR_IDS_CAR, 2);
+  while(1){
+    getArmMotorAngles(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+    delay(1000);
+     
+  }*/
 
   int pixelArray[] = {2025, 410, 240, 936, 240, 410, 2025};
   int sizeArray = sizeof(pixelArray) / sizeof(pixelArray[0]);
+  index_color(dynaCar, MOTOR_IDS_CAR, 1);
 
+  for (int i = 2 ; i = 4 ; i++)
+    {
+      
+      pixelisation(pixelArray, sizeArray, nbColumn, dynaArm, MOTOR_IDS_ARM, motor_angles_arm, 
+      servoGripper, dynaCar, MOTOR_IDS_CAR, i);
+    }
 
   
-  /*pixelisation(pixelArray, sizeArray, nbColumn, dynaArm, MOTOR_IDS_ARM, motor_angles_arm, 
-  servoGripper, dynaCar, MOTOR_IDS_CAR, 2);*/
+  
+
 
 
   ////////////////////////Emile Test////////////////////////////////////////////////////////
-  
+  /*
   inverse_kinematics( data[0][0] , data[0][1], motor_angles_arm);
   move_to_pos_wait(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
 
-  stepperGoToPos(17, 80);
+  stepperGoToPos(22);
 
+
+  for (float i = 100 ; i < 250 ; i++)
+    {
+      
+      //stepperGoToPos(20);
+      inverse_kinematics( 0 , i, motor_angles_arm);
+      move_to_pos_wait(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+    }
+
+/*
   for (int i = 0 ; i < (sizeof(data)/sizeof(data[1]))-1 ; i++)
   {
     
-    
+    stepperGoToPos(17);
     inverse_kinematics( data[i][0] , data[i][1], motor_angles_arm);
     move_to_pos_wait(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
 
     if ((abs(data[i][0]-data[i+1][0]) > 2) || (abs(data[i][1]-data[i+1][1]) > 2))
     { 
       Serial.println("MOVE");
-      stepperGoToPos(20, data[i+1][1]);
+      stepperGoToPos(20);
       delay(200);
       inverse_kinematics( data[i+1][0] , data[i+1][1], motor_angles_arm);
       move_to_pos_wait(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
-      stepperGoToPos(17, data[i][1]);
+      stepperGoToPos(17);
       delay(200);
 
     }
-    //stepperGoToPos(16, 80+i);
+    //stepperGoToPos(16);
     //delay(100); 
   }
+*/
+
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -153,36 +180,36 @@ void loop()
     pixel_to_pos(pix, pixelPos, nbColumn );
     inverse_kinematics( pixelPos[0] , pixelPos[1], motor_angles_arm);
     move_to_pos_wait(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
-    stepperGoToPos(16, pixelPos[1]);
+    stepperGoToPos(16);
     delay(50);
-    stepperGoToPos(22, pixelPos[1]);
+    stepperGoToPos(22);
   }
   for (int pix = 45 ; pix != 2495 ; pix=pix+50)
   {
     pixel_to_pos(pix, pixelPos, nbColumn );
     inverse_kinematics( pixelPos[0] , pixelPos[1], motor_angles_arm);
     move_to_pos_wait(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
-    stepperGoToPos(16, pixelPos[1]);
+    stepperGoToPos(16);
     delay(50);
-    stepperGoToPos(22, pixelPos[1]); 
+    stepperGoToPos(22); 
   }
   for (int pix = 2499 ; pix != 2450 ; pix--)
   {
     pixel_to_pos(pix, pixelPos, nbColumn );
     inverse_kinematics( pixelPos[0] , pixelPos[1], motor_angles_arm);
     move_to_pos_wait(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
-    stepperGoToPos(16,pixelPos[1]);
+    stepperGoToPos(16);
     delay(50);
-    stepperGoToPos(22, pixelPos[1]); 
+    stepperGoToPos(22); 
   }
   for (int pix = 2450 ; pix != 0 ; pix=pix-50)
   {
     pixel_to_pos(pix, pixelPos, nbColumn );
     inverse_kinematics( pixelPos[0] , pixelPos[1], motor_angles_arm);
     move_to_pos_wait(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
-    stepperGoToPos(16, pixelPos[1]);
+    stepperGoToPos(16);
     delay(50);
-    stepperGoToPos(22, pixelPos[1]); 
+    stepperGoToPos(22); 
   }
 
   place(servoGripper, dynaArm, MOTOR_IDS_ARM, motor_angles_arm);*/

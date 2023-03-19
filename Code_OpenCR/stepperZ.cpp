@@ -71,11 +71,13 @@ float updateZOffset(float yPos)
 }
 
 // 1/8th microstep foward mode function
-void stepperGoToPos(int goalmm, float yPos) // goalmm, 
+void stepperGoToPos(float goalmm) // goalmm, 
 {
+  /*
   float ZOffset;
   ZOffset = updateZOffset(yPos);
   goalmm += ZOffset; 
+  */
 
   // Todo : add software limits
   float displacementmm = goalmm - currPosmm; 
