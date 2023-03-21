@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import colormath
-import PIL
+
 import pydoc
 from PIL import Image
 import os
@@ -12,11 +11,6 @@ from colormath.color_conversions import convert_color
 from colormath.color_diff import delta_e_cie2000
 import numpy as np
 import csv
-
-#Import les autre .py
-#import input_UI
-#import main
-#import UI
 
 
 class traitement_image():
@@ -109,6 +103,7 @@ class traitement_image():
         # Initialiser la liste des RGB pour chaque carré (RGB corrigé à celui le plus proche)
         list_diff = [1000] * len(liste_rgb_carrés_og)
         liste_rgb_carrés_crayola = [255] * len(liste_rgb_carrés_og)
+        liste_crayons_utilises = []
 
         # Boucle pour filtrer le blanc / presque blanc
         for rgb_pixel in range(0,len(liste_rgb_carrés_og)):
@@ -138,6 +133,15 @@ class traitement_image():
                         if delta_e < list_diff[rgb_pixel]:
                             list_diff[rgb_pixel] = delta_e #pas besoin d'être une liste lol
                             liste_rgb_carrés_crayola[rgb_pixel] = liste_crayons_dispos[rgb_crayons]
+                            
+                            # Vérifier si le crayon
+                            flag = 0
+
+                            for crayon in range(0,len(liste_crayons_utilises)):
+                                if liste_crayons_dispos[rgb_crayons] == liste_crayons_utilises[crayon]:
+                                    flag = 1
+                            if flag == 0:
+                                liste_crayons_utilises.append(liste_crayons_dispos[rgb_crayons])
 
         return liste_rgb_carrés_crayola
 
@@ -228,11 +232,12 @@ class traitement_image():
                 index_carrés.append(rgb)
                 i += 1
 
+        # ENLVER LES COMMENTAIRES SEULEMENT SI ON VEUT LE OUTPUT EN XY AU LIEU DE L'INDEX
         # Créer une liste qui associe l'index du carré à ses coordonnées x,y
         #liste_coordonnées = []
         #for coord in index_carrés:
         #    liste_coordonnées.append(coordonnées_carrés[coord])
-        print(index_carrés)
+
         return index_carrés
 
     # N'EST PAS UTILISÉE FINALEMENT
@@ -282,50 +287,52 @@ class traitement_image():
         """
 
         return
+        
+
+"""
+if __name__ == "__main__":
+
+    # ARGUMENTS
+    nom_fichier_image_og = 'image_in.jpg' #UI
+    nb_carrés = 50 #UI
+    nom_fichier_image_pixélisée = 'image_pix.png' #UI
+    nom_fichier_image_sortie = 'image_result.png' #UI
+    fichier_csv = 'RGB_20.csv' #hardcodé ou UI?
+    index_crayon_carrousel = 4 #va être modifié en boucle éventuellement
+
+    # Initialiser un traitement d'image
+    tm = traitement_image()
+
+    # Pixéliser l'image au bon nombre de pixels
+    #tm.pixeliser_image(nom_fichier_image_og, input_UI.nb_carrés, nom_fichier_image_pixélisée)
+    tm.pixeliser_image(nom_fichier_image_og, nb_carrés, nom_fichier_image_pixélisée)
+
+    # Aller chercher les RGB dans le CSV
+    liste_crayons_dispos = tm.RGB_CSV(fichier_csv)
+
+    # Créer un tableau contenant le RGB de tous les pixels de l'image pixélisée
+    #liste_rgb_carrés_og = tm.get_RGB_carrés(nom_fichier_image_pixélisée, input_UI.nb_carrés)
+    liste_rgb_carrés_og = tm.get_RGB_carrés(nom_fichier_image_pixélisée, nb_carrés)
+
+    # Comparer chaque RGB pour l'associer au crayon correspondant
+    liste_rgb_carrés_crayola = tm.get_closest_RGB(liste_rgb_carrés_og, liste_crayons_dispos)
+
+    # Tracer l'image avec les RGB disponibles pour visualiser le résultat attendu
+    #tm.visualiser_resultat(liste_rgb_carrés_crayola, input_UI.nb_carrés, nom_fichier_image_sortie)
+    tm.visualiser_resultat(liste_rgb_carrés_crayola, nb_carrés, nom_fichier_image_sortie)
+
+    # Calculer les coordonnées x,y de chaque pixel à tracer
+    #coordonnées_carrés = tm.calcul_coordonnées_carrés(input_UI.nb_carrés)
+    coordonnées_carrés = tm.calcul_coordonnées_carrés(nb_carrés)
+
+    # Envoyer la positions des points à faire pour le crayon donné en paramètre
+    tm.send_positions(index_crayon_carrousel, liste_rgb_carrés_crayola, liste_crayons_dispos, coordonnées_carrés)
 
 
-# if __name__ == "__main__":
-#
-#     # ARGUMENTS
-#     nom_fichier_image_og = 'image_in.jpg' #UI
-#     nb_carrés = 20 #UI
-#     nom_fichier_image_pixélisée = 'image_pix.png' #UI
-#     nom_fichier_image_sortie = 'image_result.png' #UI
-#     fichier_csv = 'RGB_48.csv' #hardcodé ou UI?
-#     index_crayon_carrousel = 4 #va être modifié en boucle éventuellement
-#
-#     # Initialiser un traitement d'image
-#     tm = traitement_image()
-#
-#     # Pixéliser l'image au bon nombre de pixels
-#     #tm.pixeliser_image(nom_fichier_image_og, input_UI.nb_carrés, nom_fichier_image_pixélisée)
-#     tm.pixeliser_image(nom_fichier_image_og, nb_carrés, nom_fichier_image_pixélisée)
-#
-#     # Aller chercher les RGB dans le CSV
-#     liste_crayons_dispos = tm.RGB_CSV(fichier_csv)
-#
-#     # Créer un tableau contenant le RGB de tous les pixels de l'image pixélisée
-#     #liste_rgb_carrés_og = tm.get_RGB_carrés(nom_fichier_image_pixélisée, input_UI.nb_carrés)
-#     liste_rgb_carrés_og = tm.get_RGB_carrés(nom_fichier_image_pixélisée, nb_carrés)
-#
-#     # Comparer chaque RGB pour l'associer au crayon correspondant
-#     liste_rgb_carrés_crayola = tm.get_closest_RGB(liste_rgb_carrés_og, liste_crayons_dispos)
-#
-#     # Tracer l'image avec les RGB disponibles pour visualiser le résultat attendu
-#     #tm.visualiser_resultat(liste_rgb_carrés_crayola, input_UI.nb_carrés, nom_fichier_image_sortie)
-#     tm.visualiser_resultat(liste_rgb_carrés_crayola, nb_carrés, nom_fichier_image_sortie)
-#
-#     # Calculer les coordonnées x,y de chaque pixel à tracer
-#     #coordonnées_carrés = tm.calcul_coordonnées_carrés(input_UI.nb_carrés)
-#     coordonnées_carrés = tm.calcul_coordonnées_carrés(nb_carrés)
-#
-#     # Envoyer la positions des points à faire pour le crayon donné en paramètre
-#     tm.send_positions(index_crayon_carrousel, liste_rgb_carrés_crayola, liste_crayons_dispos, coordonnées_carrés)
-#
-#
-#     # ARGUMENTS (A CHANGER)
-#     parser = argparse.ArgumentParser()
-#     parser.add_argument('-p', required=False, help='Port used for serial communication.')
-#     parser.add_argument('-d', action='store_true', help='Run demo program.')
-#     args = parser.parse_args()
-#     port = args.p
+    # ARGUMENTS (A CHANGER)
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-p', required=False, help='Port used for serial communication.')
+    parser.add_argument('-d', action='store_true', help='Run demo program.')
+    args = parser.parse_args()
+    port = args.p
+    """
