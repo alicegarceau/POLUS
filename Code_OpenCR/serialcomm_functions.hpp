@@ -28,7 +28,7 @@ const int BAUDRATE = 9600;
 class String;
 
 struct PixelData {
-    string color = "noir";
+    int color = 1;
     int rows = 0;
     int cols = 0;
     std::vector<int> positions;

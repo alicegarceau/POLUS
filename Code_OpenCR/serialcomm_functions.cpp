@@ -27,6 +27,13 @@ void comm_init()
   }
 }
 
+// Alloue la mémoire de la liste des positions.
+void init_positions(int size) 
+{
+    std::vector<int> temp(size);
+    Data.positions = temp;
+}
+
 void next_msg()
 {
   std::string done = "done/n";
@@ -36,29 +43,24 @@ void next_msg()
   while(!msg_ok)
   {
     msg_ok = get_msg();
-    //Serial.println(msg_ok);
-    delay(100);
+    delay(50);
   }
 }
 
+// Lit les données du port série et appelle la bonne fonction selon le type de message envoyé.
 bool get_msg()
 {
- /**
- * Fonction de lecture de message et filtre le device ID du RaspberryPi
- * @param { } 
- * @return { bool }
- */
-
-  // Read the data from the serial port
   String inputString = Serial.readStringUntil('\n');
   if (inputString.startsWith("sync")) {
-    //Serial.print("Received message: ");
-    //Serial.println(inputString);  // Print the message to the serial monitor
+    //Serial.print("Message reçu: ");
+    //Serial.println(inputString);
     std::vector<std::string> parts = Split_msg(inputString);
+    
     // déterminer le type de message
     if (parts[1] == "pixels") return decode_pixel(parts);
     else if (parts[1] == "lignes") return decode_lignes(parts);
     else if (parts[1] == "jog") return decode_jog(parts);
+    else return false;
   }
   else {
     // En attente de la synchronisation
@@ -66,18 +68,7 @@ bool get_msg()
   }
 }
 
-// allocate memory for the matrix based on the values of rows and cols
-void init_positions(int size) 
-{
-    //data.matrix = new int*[data.rows];
-    //for (int i = 0; i < data.rows; i++) {      
-        //data.matrix[i] = new int[data.cols];        
-    //}
-    std::vector<int> temp(size);
-    Data.positions = temp;
-}
-
-// Split the input string into separate parts
+// Divise la chaîne d'entrée en parties distinctes.
 std::vector<std::string> Split_msg(String inputString)
 {
   std::string inputStr = inputString.c_str(); // Convert to std::string
@@ -91,40 +82,18 @@ std::vector<std::string> Split_msg(String inputString)
   return parts;  
 }
 
-void print_data()
-{
-  Serial.println("");
-  Serial.println("___Data___");
-  Serial.println(Data.color.c_str());
-  
-  Serial.print(Data.rows);
-  Serial.print(" par ");
-  Serial.println(Data.cols);
-  Serial.print("{"); 
-  for (int i = 0; i < Data.positions.size(); i++) {  
-    Serial.print(Data.positions[i]);
-    Serial.print(" ");
-  }
-  Serial.println("}");
-}
-
 bool decode_pixel(std::vector<std::string> parts){
   //définir le message d'aquittement pour une erreur inconnue;
   std::string acquittement = "err0\n";
 
   // Extract the individual values
   if (parts.size() >= 4) {
-    string color;
-    int rows;
-    int cols;
-
     std::stringstream(parts[2]) >> Data.color;
     std::stringstream(parts[3]) >> Data.cols;
     std::stringstream(parts[4]) >> Data.rows;
     
     int value; 
     init_positions(parts.size()-5);
-;
     for (int i = 5; i < parts.size(); i++) {
         std::stringstream(parts[i]) >> value;         
         Data.positions[i-5] = value;
@@ -158,5 +127,22 @@ bool decode_jog(std::vector<std::string> parts){
   
   return true;
 }
+
+void print_data(){
+  Serial.println("");
+  Serial.println("___Data___");
+  Serial.println(Data.color);
+  
+  Serial.print(Data.rows);
+  Serial.print(" par ");
+  Serial.println(Data.cols);
+  Serial.print("{"); 
+  for (int i = 0; i < Data.positions.size(); i++) {  
+    Serial.print(Data.positions[i]);
+    Serial.print(" ");
+  }
+  Serial.println("}");
+}
+
 
 
