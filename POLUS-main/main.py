@@ -7,12 +7,7 @@ import UI
 from UI import *
 import Communication
 
-if __name__ == "__main__":
-
-    # INTERFACE
-    # Initialiser le UI
-    interface = UI.Application()
-
+def data():
     # Attendre l'input du UI pour commencer le traitement d'image
 
     # TRAITEMENT D'IMAGE
@@ -37,10 +32,29 @@ if __name__ == "__main__":
     # Calculer les coordonnées x,y de chaque pixel à tracer
     coordonnées_carrés = tm.calcul_coordonnées_carrés(nb_carrés)
 
+    return [tm, liste_rgb_carrés_crayola, coordonnées_carrés, liste_crayons_dispos]
+
+if __name__ == "__main__":
+
+    # INTERFACE
+    # Initialiser le UI
+    interface = UI.Application()
+    # Initialiser la communication
+    Communication.port_init()
+
+    data = data()
+    
+    tm = data[0]
+    liste_rgb_carrés_crayola = data[1]
+    coordonnées_carrés = data[2]
+    liste_crayons_dispos = data[3]
+    
     # ENVOYER LES COORDONNÉES SELON LE CRAYON
     # Envoyer la positions des points à faire pour le crayon donné en paramètre
     #FAIRE UNE BOUCLE POUR TOUS LES CRAYONS
-    for index_crayon_carrousel in range(1,20):
-        #BUFFER ATTENDRE LE OK
+    for index_crayon_carrousel in range(1,len(liste_crayons_dispos)):
         msg_coords = tm.send_positions(index_crayon_carrousel, liste_rgb_carrés_crayola, liste_crayons_dispos, coordonnées_carrés)
-        Communication.msg_pixels(index_crayon_carrousel,nb_carrés,nb_carrés,msg_coords)
+        if msg_coords:
+            Communication.msg_pixels(index_crayon_carrousel, nb_carrés, nb_carrés, msg_coords)
+            
+            

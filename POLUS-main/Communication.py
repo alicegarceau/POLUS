@@ -46,10 +46,9 @@ def ready():
 def msg_pixels(color, rows, cols, pixels):
     msg = sync_msg
     
+    msg += "pixels,"
     # Envoi du nom de la couleur
-    msg += "pixels"
-    msg += f"{color}"
-
+    msg += f"{color},"
     # Envoi des dimensions de la matrice
     dim_msg = f"{rows},{cols},"
     msg += dim_msg
@@ -57,6 +56,7 @@ def msg_pixels(color, rows, cols, pixels):
     # Envoi des données de la matrice
     for pixel in pixels:
         msg += str(pixel)
+        msg += ","
 
     send_data(msg)
 
@@ -85,14 +85,14 @@ def send_data(msg):
     # Ouverture du Serial
     if not ser.isOpen():
         ser.open()
-    
-    # Attend que le OpenCR ait fini sa tâche
-    while ready is not True:
-        time.sleep(1)
         
+    #Attend que le OpenCR ait fini sa tâche
+    while ready() is not True:
+        time.sleep(0.250)
+
     # Envoi des données
     ser.write(msg.encode())
-    print(msg)
+    #print(msg)
 
     # Lecture de l'acquittement
     start_time = time.time()

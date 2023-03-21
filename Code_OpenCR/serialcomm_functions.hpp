@@ -16,6 +16,8 @@
 #include <string>
 #include <vector>
 #include <sstream>
+#include <chrono>
+#include <thread>
 
 using namespace std;
 
@@ -56,6 +58,8 @@ bool decode_pixel(std::vector<std::string> parts);
 bool decode_lignes(std::vector<std::string> parts);
 
 bool decode_jog(std::vector<std::string> parts);
+
+void ChangeAction();
 
 
 #endif

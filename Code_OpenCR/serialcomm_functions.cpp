@@ -11,6 +11,7 @@
 #include "serialcomm_functions.hpp"
 
 PixelData Data;
+bool bIsWorking = false;
 
 // ========= Functions ========
 
@@ -36,14 +37,15 @@ void init_positions(int size)
 
 void next_msg()
 {
-  std::string done = "done/n";
-  Serial.write(done.c_str(), done.size());
+  bIsWorking = false;
+  std::string done = "done\n";
 
   bool msg_ok = false;
   while(!msg_ok)
   {
-    msg_ok = get_msg();
+    Serial.write(done.c_str(), done.size());
     delay(50);
+    msg_ok = get_msg();
   }
 }
 
@@ -105,6 +107,7 @@ bool decode_pixel(std::vector<std::string> parts){
     // Envoyer le message d'acquittement
     Serial.write(acquittement.c_str(), acquittement.size());
 
+    bIsWorking = true;  
     return true;
   } 
   else {
@@ -127,6 +130,13 @@ bool decode_jog(std::vector<std::string> parts){
   
   return true;
 }
+
+void ChangeAction(){
+//   String inputString = Serial.readStringUntil('\n');
+//   if(bIsWorking == true && inputString.startsWith("sync,stop")) Serial.println("Arrêt demandé");
+//   std::this_thread::sleep_for(std::chrono::seconds(1)); // Pause d'une seconde  
+}
+
 
 void print_data(){
   Serial.println("");

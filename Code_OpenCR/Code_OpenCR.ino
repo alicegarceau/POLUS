@@ -11,7 +11,7 @@ Authors: Alec Gagnon,      gaga2120
 //#include "actuators.hpp"
 //#include "inverseKinematics.hpp"
 #include "serialcomm_functions.hpp"
-
+#include <pthread.h>
 /*#include "comm_functions.hpp"
 #include "inverse_kinematics.hpp"
 */
@@ -57,7 +57,7 @@ int pos = 3600;
 // ---------- Main functions ----------
 void setup()
 {
-    comm_init();
+  comm_init();
 
     // init_motors(dynaArm, MOTOR_IDS_ARM);
     // init_motors(dynaCar, MOTOR_IDS_CAR);
@@ -78,7 +78,7 @@ void setup()
 }
 
 void loop()
-{
+{  
   next_msg();
   print_data();
   delay(1000);

@@ -3,14 +3,17 @@
 
 
 import pydoc
+
 from PIL import Image
 import os
 import argparse
 from colormath.color_objects import sRGBColor, LabColor
 from colormath.color_conversions import convert_color
-from colormath.color_diff import delta_e_cie2000
+#from colormath.color_diff import delta_e_cie2000
+import colormath.color_diff as color_diff
 import numpy as np
 import csv
+import UI
 
 
 class traitement_image():
@@ -127,7 +130,8 @@ class traitement_image():
                         color2_lab = convert_color(color2_rgb, LabColor)
 
                         # Comparaison de la couleur
-                        delta_e = delta_e_cie2000(color1_lab, color2_lab)
+                        #delta_e = color_diff.delta_e_cie2000(color1_lab, color2_lab)
+                        delta_e = get_delta_e(color1_lab, color2_lab)
 
                         # Delta_e est la différence entre 2 couleurs, alors on veut le minimiser et garder seulement le plus petit
                         if delta_e < list_diff[rgb_pixel]:
@@ -159,7 +163,7 @@ class traitement_image():
 
         # Ouvrir l'image pixelisée avec les couleurs d'origine
         cur_path = os.path.dirname(__file__)
-        file = os.path.join(cur_path,nom_fichier_image_pixélisée)
+        file = os.path.join(cur_path, UI.nom_fichier_image_pixélisée)
         im_out = Image.open(file)
 
         # Avoir les dimensions de l'image et d'un carré
@@ -206,7 +210,7 @@ class traitement_image():
 
         return liste_crayons_dispos
 
-    def send_positions(self,index_crayon_carrousel, liste_rgb_carrés_crayola, liste_crayons_dispos,coordonnées_carrés):
+    def send_positions(self,index_crayon_carrousel, liste_rgb_carrés_crayola, liste_crayons_dispos, coordonnées_carrés):
         """Crée une liste des coordonnées des carrés pour le crayon demandé
 
         Args:
@@ -220,7 +224,7 @@ class traitement_image():
         """
 
         # Éventuellement modifié, assigne un rgb
-        rgb_cible = liste_crayons_dispos[index_crayon_carrousel]
+        rgb_cible = liste_crayons_dispos[index_crayon_carrousel-1]
 
         # Initialiser la liste de l'index des carrés associés au crayon demandé
         index_carrés = []
@@ -273,12 +277,10 @@ class traitement_image():
         #        i += 1
 
         return coordonnées_carrés
-
-
  
     def __init__(self):
         """Initialise l'objet de type traitement_image lorsqu'il est créé
-
+        
         Args:
             aucun: utilise simplement les informations fournies dans l'objet 
 
@@ -336,3 +338,13 @@ if __name__ == "__main__":
     args = parser.parse_args()
     port = args.p
     """
+    
+def get_delta_e(color1, color2, Kl=1, Kc=1, Kh=1):
+    """
+    Calcule le Delta E (CIE2000) de deux couleurs.
+    """
+    color1_vector = color_diff._get_lab_color1_vector(color1)
+    color2_matrix = color_diff._get_lab_color2_matrix(color2)
+    delta_e = color_diff.color_diff_matrix.delta_e_cie2000(
+    color1_vector, color2_matrix, Kl=Kl, Kc=Kc, Kh=Kh)[0]
+    return delta_e
