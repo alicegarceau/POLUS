@@ -195,6 +195,7 @@ void pixel_to_pos(int pixel, float pixelPos[2], int nbColumn)
 
 void drawPoint(DynamixelWorkbench& motor, const std::vector<uint8_t> motor_IDs, float angles[2], int pixel, int nbColumn)
 {
+  stepperGoToPos(pixelApproach);
   float pixelPos[2];
   pixel_to_pos(pixel, pixelPos, nbColumn);
   inverse_kinematics( pixelPos[0] , pixelPos[1], angles);
@@ -202,6 +203,15 @@ void drawPoint(DynamixelWorkbench& motor, const std::vector<uint8_t> motor_IDs, 
   stepperGoToPos(pixelDraw);
   delay(50);
   stepperGoToPos(pixelApproach);
+}
+
+void drawLine(DynamixelWorkbench& motor, const std::vector<uint8_t> motor_IDs, float angles[2], int pixel, int nbColumn)
+{
+  stepperGoToPos(pixelDraw);
+  float pixelPos[2];
+  pixel_to_pos(pixel, pixelPos, nbColumn);
+  inverse_kinematics( pixelPos[0] , pixelPos[1], angles);
+  move_to_pos_wait(motor, motor_IDs, angles);
 }
 
 void pixelisation(int* pixelArray, int sizeArray, int nbColumn, DynamixelWorkbench& armMotors, const std::vector<uint8_t> arm_motor_IDs, float arm_angles[2], 
@@ -214,6 +224,21 @@ Servo& servoGripper, DynamixelWorkbench& carMotors, const std::vector<uint8_t>& 
   for(int i = 0; i < sizeArray; i++)
   {
     drawPoint(armMotors, arm_motor_IDs, arm_angles, pixelArray[i], nbColumn);
+  }
+
+  place(servoGripper, armMotors, arm_motor_IDs, arm_angles);
+}
+
+void pixelignation(int* pixelArray, int sizeArray, int nbColumn, DynamixelWorkbench& armMotors, const std::vector<uint8_t> arm_motor_IDs, float arm_angles[2], 
+Servo& servoGripper, DynamixelWorkbench& carMotors, const std::vector<uint8_t>& car_motor_IDs, Servo& servoCarrousel, int carColorIndex)
+{
+  index_color(carMotors, car_motor_IDs, servoCarrousel, carColorIndex);
+  
+  pick(servoGripper, armMotors, arm_motor_IDs, arm_angles);
+
+  for(int i = 0; i < sizeArray-1; i++)
+  {
+    drawLine(armMotors, arm_motor_IDs, arm_angles, pixelArray[i], nbColumn);
   }
 
   place(servoGripper, armMotors, arm_motor_IDs, arm_angles);
