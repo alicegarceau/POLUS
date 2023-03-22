@@ -40,21 +40,20 @@ if __name__ == "__main__":
     # Initialiser le UI
     interface = UI.Application()
     # Initialiser la communication
-    Communication.port_init()
-
-    data = data()
-    
-    tm = data[0]
-    liste_rgb_carrés_crayola = data[1]
-    coordonnées_carrés = data[2]
-    liste_crayons_dispos = data[3]
-    
-    # ENVOYER LES COORDONNÉES SELON LE CRAYON
-    # Envoyer la positions des points à faire pour le crayon donné en paramètre
-    #FAIRE UNE BOUCLE POUR TOUS LES CRAYONS
-    for index_crayon_carrousel in range(1,len(liste_crayons_dispos)):
-        msg_coords = tm.send_positions(index_crayon_carrousel, liste_rgb_carrés_crayola, liste_crayons_dispos, coordonnées_carrés)
-        if msg_coords:
-            Communication.msg_pixels(index_crayon_carrousel, nb_carrés, nb_carrés, msg_coords)
-            
-            
+    if Communication.port_init() is True:
+        data = data()
+        
+        tm = data[0]
+        liste_rgb_carrés_crayola = data[1]
+        coordonnées_carrés = data[2]
+        liste_crayons_dispos = data[3]
+        
+        # ENVOYER LES COORDONNÉES SELON LE CRAYON
+        # Envoyer la positions des points à faire pour le crayon donné en paramètre
+        #FAIRE UNE BOUCLE POUR TOUS LES CRAYONS
+        for index_crayon_carrousel in range(1,len(liste_crayons_dispos)):
+            msg_coords = tm.send_positions(index_crayon_carrousel, liste_rgb_carrés_crayola, liste_crayons_dispos, coordonnées_carrés)
+            if msg_coords:
+                Communication.msg_pixels(index_crayon_carrousel, nb_carrés, nb_carrés, msg_coords)
+                
+                

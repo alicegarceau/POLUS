@@ -14,6 +14,8 @@ def port_init():
     port = "COM5"
     baudrate = 57600
 
+    # ser = choose_port(baudrate)
+
     if check_port(port):
         print(f"{port} exists")
     else:
@@ -34,6 +36,21 @@ def check_port(port):
         if port in str(p):
             return True
     return False
+
+# Choisi l'un des ports disponibles (Ne fonctionne pas)
+def choose_port(baudrate):
+    ports = serial.tools.list_ports.comports()
+    for p in ports:
+        port = p[0]
+        print(port)
+        if port != "COM7":
+            ser = serial.Serial(port, baudrate)
+            if ser.isOpen():
+                print(f"{port} connecté")
+                return ser
+    return ser
+    
+        
 
 # Vérifie si le OpenCR est prêt pour recevoir un autre message
 def ready():
@@ -80,6 +97,11 @@ def msg_jog(pos_x, pos_y):
 
     send_data(msg)
 
+def stop_msg():
+    msg = sync_msg
+    msg += "stop"
+    send_data(msg)
+
 # Envoi du message construit
 def send_data(msg):
     # Ouverture du Serial
@@ -107,4 +129,4 @@ def send_data(msg):
         print("\033[33mErreur d'acquittement.\033[0m")
 
     # Fermeture de la liaison série
-    ser.close()   
+    ser.close()  
