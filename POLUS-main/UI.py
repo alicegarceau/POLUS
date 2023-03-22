@@ -4,6 +4,7 @@ import pydoc
 import pixeliser_image
 from PIL import ImageTk, Image
 import threading
+import os
 
 # Fichiers
 nom_fichier_image_og = 'image_in.jpg'
@@ -19,19 +20,29 @@ dim_feuille = 150
 flag_fichiers_ok = 0
 
 class Application(threading.Thread):
+
+    isrunning = True
+
     def __init__(self):
+        self.isrunning = True
         threading.Thread.__init__(self)
         self.start()
         self.creer_interface()
+
+    # fonction pour changer l'état
 
     def creer_interface(self):
         # CRÉER L'INTERFACE
         # Créer la fenêtre
         self.window_test = Tk()
         self.window_test.title("POLUS - TESTS")
-        self.window_test.geometry('1000x600')
+        # Avoir la grandeur de l'écran pour définir comme la grandeur de la window
+        width_screen = self.window_test.winfo_screenwidth()
+        height_screen = self.window_test.winfo_screenheight()
+        self.window_test.geometry("%dx%d" % (width_screen, height_screen))
         self.Font_title = ("Cambria", 20, "bold")
         self.Font_title2 = ("Cambria", 15, "bold")
+        #self.window_test.protocol("WM_DELETE_WINDOW", self.exxit)   # Le bouton X de la fenêtre appelle la fonction exxit()
 
         # Créer les tabs
         self.tabControl = ttk.Notebook(self.window_test)
@@ -96,25 +107,27 @@ class Application(threading.Thread):
         button_ok_fichiers.place(x=10, y=220)
 
         # IMAGES
-        # Créer les labels des images
-        label_img_og = Label(self.tab1, text= "Image d'origine")
-        label_img_og.place(x=695, y=10)
-        label_img_result = Label(self.tab1, text= "Image du résultat attendu")
-        label_img_result.place(x=660, y=310)
-
         # Ouvrir et placer l'image originale
-        image1 = Image.open("image_in.jpg")
-        im_og = ImageTk.PhotoImage(image1)
+        cur_path = os.path.dirname(__file__)
+        image1 = os.path.join(cur_path,nom_fichier_image_og)
+        image1 = Image.open(image1)
+        width_window = self.window_test.winfo_width()
+        height_window = self.window_test.winfo_height()
+        image1_resized = image1.resize((int(width_window*500),int(height_window*500)))
+        im_og = ImageTk.PhotoImage(image1_resized)
         label_im_og = Label(self.tab1,image=im_og)
         label_im_og.image = im_og
-        label_im_og.place(x=600, y=32)
+        label_im_og.place(x=750, y=15)
 
         # Ouvrir et placer l'image du résultat attendu
-        image2 = Image.open("image_result.png")
-        im_result = ImageTk.PhotoImage(image2)
+        cur_path = os.path.dirname(__file__)
+        image2 = os.path.join(cur_path,nom_fichier_image_sortie)
+        image2 = Image.open(image2)
+        image2_resized = image2.resize((width_window+500,height_window+500))
+        im_result = ImageTk.PhotoImage(image2_resized)
         label_im_result = Label(self.tab1,image=im_result)
         label_im_result.image = im_result
-        label_im_result.place(x=600, y=330)
+        label_im_result.place(x=750, y=20+height_window+500)
 
         # NB PIXELS
         # Créer le label pour le nombre de pixels
@@ -141,6 +154,11 @@ class Application(threading.Thread):
         default_entry_dim.set("150")
         self.entry_dim = Entry(self.tab1,fg="black", bg="white", width=25, textvariable = default_entry_dim)
         self.entry_dim.place(x=350, y=350)
+
+        # BOUTON D'ARRÊT
+        # Créer le bouton pour dire d'arrêter
+        button_stop = Button(self.tab1,text="Arrêt", width=69, height=4, bg="white", fg="black", command=self.arreter)
+        button_stop.place(x=10, y=450)
 
         # TAB 2 (TESTS)
         # ENTRER LES COORDONNÉES
@@ -225,6 +243,25 @@ class Application(threading.Thread):
         #dim_feuille = self.entry_dim.get()
 
         return
+    
+    def arreter(self):
+        return
+
+    # kill le main.py lorsqu'on clique sur le X
+    # rajouter une fenêtre pour demander si on veut vrm arrêter
+    #def exxit(self):
+    #    self.isrunning = False
+    #    exit()
+
+    # refresh l'avancement
+    #def Refresher(self):
+    #    self.window_test.after(1000,Refresher)
+
+    #self.window_test.after(1000,Refresher)
+        
+
+
+        
 """
         #def bouton_ok_coords_clicked():
         #   label_coords_sent.configure(text="Les coordonnées ont été envoyées")
