@@ -8,15 +8,15 @@ const int crayonApproach = 80;  //60
 const int nbAvailableColors = 20;
 
 const int pixelApproach = 22;
-const int pixelDraw = 17;
+const int pixelDraw = 14;
 
 const float epauleRatio = 1.667;
 const float degPulse = 0.088;
 
-const float XCarIn = -154.58; 
-const float YCarIn = 89.79; 
-const float XCarOut = -138.44;
-const float YCarOut = 98.18;
+const float XCarIn = -154.84; 
+const float YCarIn = 90.22; 
+const float XCarOut = -135.87;
+const float YCarOut = 101.27;
 
 
 /// Custom function to convert an angle to a value that can be sent
@@ -123,17 +123,29 @@ void close_gripper(Servo& servoGripper)
     
 }
 
-void index_color(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor_IDs, int colorIndex)
+
+void index_color(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor_IDs, Servo& servoCarrousel, int colorIndex)
 {
     if(colorIndex >= nbAvailableColors)
     {
         Serial.println("Erreur: Index hors de la plage permise");
     }
     else{
+      while(servoCarrousel.read()!=70)
+      {
+        servoCarrousel.write(70);
+      }
+    delay(500);
     float angleDivision = 360.0 / static_cast<float>(nbAvailableColors); 
     float carAngle = (static_cast<float>(colorIndex)*(angleDivision))-180;
     move_to_pos_wait(motor, motor_IDs, &carAngle);
+    while(servoCarrousel.read()!=150)
+      {
+        servoCarrousel.write(150);
+      }
+      delay(500);
     }
+
 }
 
 void pick(Servo& servoGripper, DynamixelWorkbench& motor, const std::vector<uint8_t> motor_IDs, float angles[2])
@@ -193,10 +205,10 @@ void drawPoint(DynamixelWorkbench& motor, const std::vector<uint8_t> motor_IDs, 
 }
 
 void pixelisation(int* pixelArray, int sizeArray, int nbColumn, DynamixelWorkbench& armMotors, const std::vector<uint8_t> arm_motor_IDs, float arm_angles[2], 
-Servo& servoGripper, DynamixelWorkbench& carMotors, const std::vector<uint8_t>& car_motor_IDs, int carColorIndex)
+Servo& servoGripper, DynamixelWorkbench& carMotors, const std::vector<uint8_t>& car_motor_IDs, Servo& servoCarrousel, int carColorIndex)
 {
-  index_color(carMotors, car_motor_IDs, carColorIndex);
-
+  index_color(carMotors, car_motor_IDs, servoCarrousel, carColorIndex);
+  
   pick(servoGripper, armMotors, arm_motor_IDs, arm_angles);
 
   for(int i = 0; i < sizeArray; i++)

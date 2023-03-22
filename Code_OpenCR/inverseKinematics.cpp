@@ -2,8 +2,8 @@
 const float epauleRatio = 1.667;
 const float LA = 150; //mm
 const float LB = 114.78; //mm
-const float epauleZeroOffset = -8.01;
-const float coudeZeroOffset = 1.45;
+const float epauleZeroOffset = -2.73;
+const float coudeZeroOffset = 1.97;
 
 void inverse_kinematics(float x, float y, float THETA[2])
 {

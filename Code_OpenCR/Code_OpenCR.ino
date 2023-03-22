@@ -23,7 +23,7 @@ enum class State { Sleep, Wait, Parse, Moving };
 // --- Motors ---
 //epaule ID = 20, coude ID = 15, caroussel ID = 3 from: Example/Dynamixel2Arduino/Basic/ScanDynamixel
 const std::vector<uint8_t> MOTOR_IDS_ARM = { (const uint8_t)20, (const uint8_t)15 }; 
-const std::vector<uint8_t> MOTOR_IDS_CAR = { (const uint8_t)3 };
+const std::vector<uint8_t> MOTOR_IDS_CAR = { (const uint8_t)2 };
 
 const uint8_t nbAvailableColors = 20;
 const uint8_t nbColumn = 50;
@@ -39,6 +39,7 @@ const uint8_t STEPPER_PIN_STEP = 11;
 DynamixelWorkbench dynaArm;
 DynamixelWorkbench dynaCar;
 Servo servoGripper; 
+Servo servoCarrousel; 
 AccelStepper stepper(AccelStepper::DRIVER, 1, 2);
 
 float ZOffset = 0;
@@ -65,20 +66,24 @@ void setup()
   init_motors(dynaCar, MOTOR_IDS_CAR);
 
   pinMode(SERVO_PIN, OUTPUT);
+  pinMode(10, OUTPUT);
+  /*
   pinMode(SWITCH_PIN, INPUT_PULLUP);
   pinMode(STEPPER_PIN_ENABLE, OUTPUT);
   pinMode(STEPPER_PIN_DIR, OUTPUT);
   pinMode(STEPPER_PIN_STEP, OUTPUT);
+  */
 
   servoGripper.attach(SERVO_PIN);
+  servoCarrousel.attach(10);
     
   stepper.setMaxSpeed(3000);
   stepper.setAcceleration(1000);
 
   inverse_kinematics(0, 150, motor_angles_arm);
   move_to_pos_wait(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
-  index_color(dynaCar, MOTOR_IDS_CAR, 1);
-  homeZ();
+  index_color(dynaCar, MOTOR_IDS_CAR, servoCarrousel,  1);
+  //homeZ();
 }
 
 
@@ -88,40 +93,46 @@ void loop()
 {
   //Position prise crayon
 
- /*
-  stepperGoToPos(80);
-  delay(5000); 
-  inverse_kinematics(-154.38, 89.29, motor_angles_arm);
+ 
+  //stepperGoToPos(80);
+  //delay(5000); 
+  inverse_kinematics(-154.84, 90.22, motor_angles_arm);
   move_to_pos_wait(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
 
-  
-
-index_color(dynaCar, MOTOR_IDS_CAR, 2);
+  //index_color(dynaCar, MOTOR_IDS_CAR, servoCarrousel, 2);
   while(1){
     getArmMotorAngles(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
     delay(1000);
-     
-  }*/
+  }
 
-  int pixelArray[] = {2025, 410, 240, 936, 240, 410, 2025};
-  int sizeArray = sizeof(pixelArray) / sizeof(pixelArray[0]);
-  index_color(dynaCar, MOTOR_IDS_CAR, 1);
 
-  for (int i = 2 ; i = 4 ; i++)
-    {
-      
-      pixelisation(pixelArray, sizeArray, nbColumn, dynaArm, MOTOR_IDS_ARM, motor_angles_arm, 
-      servoGripper, dynaCar, MOTOR_IDS_CAR, i);
-    }
+index_color(dynaCar, MOTOR_IDS_CAR, servoCarrousel,  1);
+index_color(dynaCar, MOTOR_IDS_CAR, servoCarrousel,  12);
+index_color(dynaCar, MOTOR_IDS_CAR, servoCarrousel,  8);
+index_color(dynaCar, MOTOR_IDS_CAR, servoCarrousel,  18);
 
   
+  int pixelArray[] = {2025, 410};
+  int sizeArray = sizeof(pixelArray) / sizeof(pixelArray[0]);
+  //index_color(dynaCar, MOTOR_IDS_CAR, servoCarrousel, 2);
+  delay(1000);
+
+
+      pixelisation(pixelArray, sizeArray, nbColumn, dynaArm, MOTOR_IDS_ARM, motor_angles_arm, 
+      servoGripper, dynaCar, MOTOR_IDS_CAR, servoCarrousel, 5);
+      
+    
+ 
   
 
 
 
   ////////////////////////Emile Test////////////////////////////////////////////////////////
-  /*
-  inverse_kinematics( data[0][0] , data[0][1], motor_angles_arm);
+  
+  //inverse_kinematics( data[0][0] , data[0][1], motor_angles_arm);
+  //move_to_pos_wait(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+
+  inverse_kinematics( 0 , 100, motor_angles_arm);
   move_to_pos_wait(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
 
   stepperGoToPos(22);
