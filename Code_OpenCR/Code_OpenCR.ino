@@ -10,7 +10,8 @@ Authors: Alec Gagnon,      gaga2120
 // ---------- Libraries ----------
 #include "actuators.hpp"
 #include "inverseKinematics.hpp"
-
+#include "serialcomm_functions.hpp"
+#include <pthread.h>
 /*#include "comm_functions.hpp"
 #include "inverse_kinematics.hpp"
 */
@@ -22,10 +23,10 @@ enum class State { Sleep, Wait, Parse, Moving };
 // ---------- Constants ----------
 // --- Motors ---
 //const std::vector<uint8_t> MOTOR_IDS = { (const uint8_t)1, (const uint8_t)2 };
-const std::vector<uint8_t> MOTOR_IDS_ARM = { (const uint8_t)15, (const uint8_t)3 }; //epaule ID = 15, coude ID = 3, caroussel ID = 2
-const std::vector<uint8_t> MOTOR_IDS_CAR = { (const uint8_t)2 };// { (const uint8_t)15, (const uint8_t)3 }; //epaule ID = 15, coude ID = 3, caroussel ID = 2
+// const std::vector<uint8_t> MOTOR_IDS_ARM = { (const uint8_t)15, (const uint8_t)3 }; //epaule ID = 15, coude ID = 3, caroussel ID = 2
+// const std::vector<uint8_t> MOTOR_IDS_CAR = { (const uint8_t)2 };// { (const uint8_t)15, (const uint8_t)3 }; //epaule ID = 15, coude ID = 3, caroussel ID = 2
 
-const uint8_t nbAvailableColors = 20;
+// const uint8_t nbAvailableColors = 20;
 
 const uint8_t SERVO_PIN = 5;
 const uint8_t SWITCH_PIN = 6;
@@ -50,8 +51,7 @@ int colorIndex = 0;
 // ---------- Main functions ----------
 void setup()
 {
-    const int BAUDRATE = 115200;
-    Serial.begin(BAUDRATE);
+  comm_init();
 
     init_motors(dynaArm, MOTOR_IDS_ARM);
     init_motors(dynaCar, MOTOR_IDS_CAR);
@@ -68,8 +68,38 @@ void setup()
 }
 
 void loop()
-{
-  
+{  
+  next_msg();
+  print_data();
+  delay(1000);
+
+
+  // inverse_kinematics( 0 , 270, motor_angles_arm);
+  // move_to_pos_wait(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+
+  /* if (stepper.distanceToGo() == 0)
+  {
+    delay(500);
+    pos = -pos;
+    stepper.moveTo(pos);
+  }
+  stepper.run();*/
+
+  /*for(float i = 0; i < 30; i++)
+  {
+    inverse_kinematics( i , 200, motor_angles_arm);
+    move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+  }
+
+   for(float j = 200; j < 230; j++)
+  {
+    inverse_kinematics( 30 , j, motor_angles_arm);
+    move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+  }
+
+   inverse_kinematics( 0 , 200, motor_angles_arm);
+  move_to_pos_wait(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);*/
+
   /*
   index_color(dynaCar, MOTOR_IDS_CAR, nbAvailableColors, colorIndex);
 
