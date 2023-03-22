@@ -42,7 +42,7 @@ class Application(threading.Thread):
         self.window_test.geometry("%dx%d" % (width_screen, height_screen))
         self.Font_title = ("Cambria", 20, "bold")
         self.Font_title2 = ("Cambria", 15, "bold")
-        self.window_test.protocol("WM_DELETE_WINDOW", self.exxit)   # Le bouton X de la fenêtre appelle la fonction exxit()
+        #self.window_test.protocol("WM_DELETE_WINDOW", self.exxit)   # Le bouton X de la fenêtre appelle la fonction exxit()
 
         # Créer les tabs
         self.tabControl = ttk.Notebook(self.window_test)
@@ -249,15 +249,16 @@ class Application(threading.Thread):
 
     # kill le main.py lorsqu'on clique sur le X
     # rajouter une fenêtre pour demander si on veut vrm arrêter
-    def exxit(self):
-        self.isrunning = False
-        exit()
+    #def exxit(self):
+    #    self.isrunning = False
+    #    exit()
 
     # refresh l'avancement
-    def Refresher(self):
-        self.window_test.after(250,Refresher)
-        
+    #def Refresher(self):
+    #    self.window_test.after(1000,Refresher)
 
+    #self.window_test.after(1000,Refresher)
+        
 
 
         
