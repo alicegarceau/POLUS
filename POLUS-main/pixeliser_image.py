@@ -202,8 +202,9 @@ class traitement_image():
         Returns:
             liste_crayons_dispos: liste des RGB des crayons disponibles
         """
-
-        with open(fichier_csv, newline='') as f:
+        cur_path = os.path.dirname(__file__)
+        file = os.path.join(cur_path,fichier_csv)
+        with open(file, newline='') as f:
             reader = csv.reader(f)
             lst = [tuple(row) for row in reader]
             liste_crayons_dispos = [tuple(int(x) for x in inner) for inner in lst]
