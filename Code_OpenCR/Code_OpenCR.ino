@@ -96,7 +96,7 @@ void loop()
 
 
   
-  /*int pixelArray[] = {2025, 410};
+  int pixelArray[] = {2025, 410};
   int sizeArray = sizeof(pixelArray) / sizeof(pixelArray[0]);
   //index_color(dynaCar, MOTOR_IDS_CAR, servoCarrousel, 2);
   delay(1000);
@@ -112,7 +112,7 @@ void loop()
     servoGripper, dynaCar, MOTOR_IDS_CAR, servoCarrousel, 15);
     
     pixelisation(pixelArray, sizeArray, nbColumn, dynaArm, MOTOR_IDS_ARM, motor_angles_arm, 
-    servoGripper, dynaCar, MOTOR_IDS_CAR, servoCarrousel, 4);*/
+    servoGripper, dynaCar, MOTOR_IDS_CAR, servoCarrousel, 4);
  
   
 
@@ -138,7 +138,7 @@ void loop()
     }*/
 
 
-  for (int i = 0 ; i < (sizeof(data)/sizeof(data[1]))-1 ; i++)
+  /*for (int i = 0 ; i < (sizeof(data)/sizeof(data[1]))-1 ; i++)
   {
     
     stepperGoToPos(17);
@@ -157,7 +157,7 @@ void loop()
     }
     //stepperGoToPos(16);
     //delay(100); 
-  }
+  }*/
 
 
 

@@ -195,7 +195,6 @@ void pixel_to_pos(int pixel, float pixelPos[2], int nbColumn)
 
 void drawPoint(DynamixelWorkbench& motor, const std::vector<uint8_t> motor_IDs, float angles[2], int pixel, int nbColumn)
 {
-  stepperGoToPos(pixelApproach);
   float pixelPos[2];
   pixel_to_pos(pixel, pixelPos, nbColumn);
   inverse_kinematics( pixelPos[0] , pixelPos[1], angles);
@@ -205,13 +204,21 @@ void drawPoint(DynamixelWorkbench& motor, const std::vector<uint8_t> motor_IDs, 
   stepperGoToPos(pixelApproach);
 }
 
-void drawLine(DynamixelWorkbench& motor, const std::vector<uint8_t> motor_IDs, float angles[2], int pixel, int nbColumn)
+void drawLine(DynamixelWorkbench& motor, const std::vector<uint8_t> motor_IDs, float angles[2], int startingPix, int endingPix, int nbColumn)
 {
-  stepperGoToPos(pixelDraw);
-  float pixelPos[2];
-  pixel_to_pos(pixel, pixelPos, nbColumn);
-  inverse_kinematics( pixelPos[0] , pixelPos[1], angles);
+  float pixelStartPos[2];
+  float pixelEndPos[2];
+  pixel_to_pos(startingPix, pixelStartPos, nbColumn);
+  pixel_to_pos(endingPix, pixelEndPos, nbColumn);
+  inverse_kinematics( pixelStartPos[0] , pixelStartPos[1], angles);
   move_to_pos_wait(motor, motor_IDs, angles);
+  stepperGoToPos(pixelDraw);
+
+  for(float moveX = pixelStartPos[0]; pixelStartPos[0]+moveX < pixelEndPos[0]; moveX = moveX + 0.5)
+  {
+    inverse_kinematics( pixelStartPos[0] + moveX, pixelStartPos[1], angles);
+    move_to_pos_wait(motor, motor_IDs, angles);
+  }
 }
 
 void pixelisation(int* pixelArray, int sizeArray, int nbColumn, DynamixelWorkbench& armMotors, const std::vector<uint8_t> arm_motor_IDs, float arm_angles[2], 
@@ -232,15 +239,39 @@ Servo& servoGripper, DynamixelWorkbench& carMotors, const std::vector<uint8_t>& 
 void pixelignation(int* pixelArray, int sizeArray, int nbColumn, DynamixelWorkbench& armMotors, const std::vector<uint8_t> arm_motor_IDs, float arm_angles[2], 
 Servo& servoGripper, DynamixelWorkbench& carMotors, const std::vector<uint8_t>& car_motor_IDs, Servo& servoCarrousel, int carColorIndex)
 {
+  bool done = false;
+  int i = 0;
+  int startingPix = 0;
+  int endingPix = 0;
+  int endLine = 0;
+
   index_color(carMotors, car_motor_IDs, servoCarrousel, carColorIndex);
   
   pick(servoGripper, armMotors, arm_motor_IDs, arm_angles);
 
-  for(int i = 0; i < sizeArray-1; i++)
+  while(done != true)
   {
-    drawLine(armMotors, arm_motor_IDs, arm_angles, pixelArray[i], nbColumn);
-  }
 
+    if(pixelArray[i+1]-pixelArray[i] > 1)
+    {
+      drawPoint(armMotors, arm_motor_IDs, arm_angles, pixelArray[i], nbColumn);
+      i++;
+    }
+    else{
+
+    startingPix = pixelArray[i];
+    endLine = (startingPix/nbColumn)*nbColumn + nbColumn-1;
+  
+    while(pixelArray[i+1]-pixelArray[i] == 1 || pixelArray[i] < endLine)
+    {
+      i++;
+    }
+    endingPix = pixelArray[i];
+
+    drawLine(armMotors, arm_motor_IDs, arm_angles, startingPix, endingPix, nbColumn);
+    }
+  }
+  
   place(servoGripper, armMotors, arm_motor_IDs, arm_angles);
 }
 
