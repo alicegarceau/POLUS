@@ -102,13 +102,17 @@ void loop()
   delay(1000);
 
 
-      pixelisation(pixelArray, sizeArray, nbColumn, dynaArm, MOTOR_IDS_ARM, motor_angles_arm, 
-      servoGripper, dynaCar, MOTOR_IDS_CAR, servoCarrousel, 5);
+    pixelisation(pixelArray, sizeArray, nbColumn, dynaArm, MOTOR_IDS_ARM, motor_angles_arm, 
+    servoGripper, dynaCar, MOTOR_IDS_CAR, servoCarrousel, 5);
 
-      pixelisation(pixelArray, sizeArray, nbColumn, dynaArm, MOTOR_IDS_ARM, motor_angles_arm, 
-      servoGripper, dynaCar, MOTOR_IDS_CAR, servoCarrousel, 2);
-      
+    pixelisation(pixelArray, sizeArray, nbColumn, dynaArm, MOTOR_IDS_ARM, motor_angles_arm, 
+    servoGripper, dynaCar, MOTOR_IDS_CAR, servoCarrousel, 2);
+
+    pixelisation(pixelArray, sizeArray, nbColumn, dynaArm, MOTOR_IDS_ARM, motor_angles_arm, 
+    servoGripper, dynaCar, MOTOR_IDS_CAR, servoCarrousel, 15);
     
+    pixelisation(pixelArray, sizeArray, nbColumn, dynaArm, MOTOR_IDS_ARM, motor_angles_arm, 
+    servoGripper, dynaCar, MOTOR_IDS_CAR, servoCarrousel, 4);
  
   
 
@@ -119,7 +123,7 @@ void loop()
   //inverse_kinematics( data[0][0] , data[0][1], motor_angles_arm);
   //move_to_pos_wait(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
 
-  inverse_kinematics( 0 , 100, motor_angles_arm);
+  /*inverse_kinematics( 0 , 100, motor_angles_arm);
   move_to_pos_wait(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
 
   stepperGoToPos(22);
@@ -131,7 +135,7 @@ void loop()
       //stepperGoToPos(20);
       inverse_kinematics( 0 , i, motor_angles_arm);
       move_to_pos_wait(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
-    }
+    }*/
 
 /*
   for (int i = 0 ; i < (sizeof(data)/sizeof(data[1]))-1 ; i++)
