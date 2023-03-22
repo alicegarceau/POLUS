@@ -28,11 +28,8 @@ const std::vector<uint8_t> MOTOR_IDS_CAR = { (const uint8_t)2 };
 const uint8_t nbAvailableColors = 20;
 const uint8_t nbColumn = 50;
 
-const uint8_t SERVO_PIN = 9;
-const uint8_t SWITCH_PIN = 7;
-const uint8_t STEPPER_PIN_ENABLE = 5;
-const uint8_t STEPPER_PIN_DIR = 10;
-const uint8_t STEPPER_PIN_STEP = 11;
+const uint8_t SERVO_PIN = 11;
+const uint8_t SERVO_CAR = 9;
 
 // ---------- Variables ----------
 // --- Motors ---
@@ -66,24 +63,16 @@ void setup()
   init_motors(dynaCar, MOTOR_IDS_CAR);
 
   pinMode(SERVO_PIN, OUTPUT);
-  pinMode(10, OUTPUT);
-  /*
-  pinMode(SWITCH_PIN, INPUT_PULLUP);
-  pinMode(STEPPER_PIN_ENABLE, OUTPUT);
-  pinMode(STEPPER_PIN_DIR, OUTPUT);
-  pinMode(STEPPER_PIN_STEP, OUTPUT);
-  */
+  pinMode(SERVO_CAR, OUTPUT);
+
 
   servoGripper.attach(SERVO_PIN);
-  servoCarrousel.attach(10);
-    
-  stepper.setMaxSpeed(3000);
-  stepper.setAcceleration(1000);
+  servoCarrousel.attach(SERVO_CAR);
 
   inverse_kinematics(0, 150, motor_angles_arm);
   move_to_pos_wait(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
   index_color(dynaCar, MOTOR_IDS_CAR, servoCarrousel,  1);
-  //homeZ();
+  homeZ();
 }
 
 
@@ -96,20 +85,15 @@ void loop()
  
   //stepperGoToPos(80);
   //delay(5000); 
-  inverse_kinematics(-154.84, 90.22, motor_angles_arm);
+  /*inverse_kinematics(-157.74, 92.81, motor_angles_arm);
   move_to_pos_wait(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
 
-  //index_color(dynaCar, MOTOR_IDS_CAR, servoCarrousel, 2);
+  index_color(dynaCar, MOTOR_IDS_CAR, servoCarrousel, 2);
   while(1){
     getArmMotorAngles(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
     delay(1000);
-  }
+  }*/
 
-
-index_color(dynaCar, MOTOR_IDS_CAR, servoCarrousel,  1);
-index_color(dynaCar, MOTOR_IDS_CAR, servoCarrousel,  12);
-index_color(dynaCar, MOTOR_IDS_CAR, servoCarrousel,  8);
-index_color(dynaCar, MOTOR_IDS_CAR, servoCarrousel,  18);
 
   
   int pixelArray[] = {2025, 410};
@@ -120,6 +104,9 @@ index_color(dynaCar, MOTOR_IDS_CAR, servoCarrousel,  18);
 
       pixelisation(pixelArray, sizeArray, nbColumn, dynaArm, MOTOR_IDS_ARM, motor_angles_arm, 
       servoGripper, dynaCar, MOTOR_IDS_CAR, servoCarrousel, 5);
+
+      pixelisation(pixelArray, sizeArray, nbColumn, dynaArm, MOTOR_IDS_ARM, motor_angles_arm, 
+      servoGripper, dynaCar, MOTOR_IDS_CAR, servoCarrousel, 2);
       
     
  

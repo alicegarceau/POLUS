@@ -13,10 +13,10 @@ const int pixelDraw = 14;
 const float epauleRatio = 1.667;
 const float degPulse = 0.088;
 
-const float XCarIn = -154.84; 
-const float YCarIn = 90.22; 
-const float XCarOut = -135.87;
-const float YCarOut = 101.27;
+const float XCarIn = -157.74; 
+const float YCarIn = 92.81; 
+const float XCarOut = -135.68;
+const float YCarOut = 101.14;
 
 
 /// Custom function to convert an angle to a value that can be sent

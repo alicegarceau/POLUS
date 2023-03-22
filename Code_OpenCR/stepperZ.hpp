@@ -5,11 +5,11 @@
 
 
 //Declare pins
-#define PIN_STP 2
+#define PIN_STP 0
 #define PIN_DIR 1
-#define PIN_MS1 5
-#define PIN_MS2 6
-#define PIN_EN  7
+#define PIN_MS1 2
+#define PIN_MS2 3
+#define PIN_EN  4
 #define PIN_SW  8 // Limit switch bottom of Z
 
 #define MICRO_STEPS 8 // Default mode of Easydriver
