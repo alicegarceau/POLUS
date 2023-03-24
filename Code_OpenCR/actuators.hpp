@@ -9,6 +9,7 @@
 #include <math.h>
 #include "inverseKinematics.hpp"
 #include "stepperZ.hpp"
+#include "serialcomm_functions.hpp"
 
 class DynamixelWorkbench;
 

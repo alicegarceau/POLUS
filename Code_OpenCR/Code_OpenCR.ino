@@ -117,7 +117,6 @@ void loop()
   }  
   pixelisation(Coord, Data.positions.size(), Data.cols, dynaArm, MOTOR_IDS_ARM, motor_angles_arm, 
     servoGripper, dynaCar, MOTOR_IDS_CAR, servoCarrousel, Data.color);    
-  delay(1000);
   
 
   /*int pixelArray[] = {2025, 410};

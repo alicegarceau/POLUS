@@ -101,6 +101,21 @@ def stop_msg():
     msg += "stop"
     send_data(msg)
 
+def pause_msg():
+    msg = sync_msg
+    msg += "pause"
+    send_data(msg)
+
+def play_msg():
+    msg = sync_msg
+    msg += "play"
+    send_data(msg)
+
+def reprendre_msg():
+    msg = sync_msg
+    msg += "reprendre"
+    send_data(msg)
+
 # Envoi du message construit
 def send_data(msg):
     # Ouverture du Serial
