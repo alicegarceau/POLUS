@@ -58,9 +58,8 @@ bool get_msg()
     std::vector<std::string> parts = Split_msg(inputString);
     
     // déterminer le type de message
-    if (parts[1] == "pixels") return decode_pixel(parts);
-    else if (parts[1] == "lignes") return decode_lignes(parts);
-    else if (parts[1] == "jog") return decode_jog(parts);
+    if (parts[1] == "jog") return decode_jog(parts);
+    else decode_pixel(parts);
     else return false;
   }
   else {
@@ -87,6 +86,10 @@ bool decode_pixel(std::vector<std::string> parts){
   //définir le message d'aquittement pour une erreur inconnue;
   std::string acquittement = "err0\n";
 
+  if (parts[1] == "pixels") Data.style = 0;
+  else if (parts[1] == "lignes") Data.style = 1;
+  else if (parts[1] == "pixellignes") Data.style = 2;
+
   // Extract the individual values
   if (parts.size() >= 4) {
     std::stringstream(parts[2]) >> Data.color;
@@ -100,7 +103,6 @@ bool decode_pixel(std::vector<std::string> parts){
         Data.positions[i-5] = value;
     }
 
-    Data.style = 0;
     // Définir le message de d'acquittement
     acquittement = "ok\n";
 
@@ -111,7 +113,7 @@ bool decode_pixel(std::vector<std::string> parts){
   } 
   else {
     // Définir le message d'erreur
-    // Le message doit contenir la synchronisation, la couleur et les dimenssions de la matrice
+    // Le message doit contenir la synchronisation, la couleur et les dimensions de la matrice
     if(parts.size() < 4) acquittement = "err1\n";
 
     // Envoyer le message d'acquittement    
@@ -120,22 +122,30 @@ bool decode_pixel(std::vector<std::string> parts){
   }
 }
 
-bool decode_lignes(std::vector<std::string> parts){
-
-  Data.style = 1;
-  return true;
-}
-
 bool decode_jog(std::vector<std::string> parts){
-  
-  int pos_x;
-  int pos_y;
+  //définir le message d'aquittement pour une erreur inconnue;
+  std::string acquittement = "err0\n";
 
-  std::stringstream(parts[2]) >> pos_x;
-  std::stringstream(parts[3]) >> pos_y;
-  
-  //return {pos_x, pos_y};
-  return false;
+  if (parts.size() >= 2) {
+    std::stringstream(parts[2]) >> Jog.pos_x;
+    std::stringstream(parts[3]) >> Jog.pos_y;
+    
+
+    // Définir le message de d'acquittement
+      acquittement = "ok\n";
+
+      // Envoyer le message d'acquittement
+      Serial.write(acquittement.c_str(), acquittement.size());
+      return true:
+  }
+  else {
+    // Définir le message d'erreur
+    acquittement = "err1\n";
+
+    // Envoyer le message d'acquittement    
+    Serial.write(acquittement.c_str(), acquittement.size());
+    return false;
+  }
 }
 
 int change_action(){

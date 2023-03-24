@@ -21,7 +21,7 @@ def port_init():
     else:
         print(f"\033[31m{port} n'existe pas.\033[0m")
         return False
-        """
+    """
 
     #ser = serial.Serial(port, baudrate)
 
@@ -84,6 +84,15 @@ def msg_lignes(msg):
 
     send_data(msg)
     # à coder
+
+def msg_lignes(msg):
+    msg = sync_msg
+
+    msg += "pixellinges"
+
+    send_data(msg)
+    # à coder
+
 
 # Place l'effecteur à la position X et Y désiré
 def msg_jog(pos_x, pos_y):
