@@ -195,7 +195,7 @@ void pixel_to_pos(int pixel, float pixelPos[2], int nbColumn)
 
 void drawPoint(DynamixelWorkbench& motor, const std::vector<uint8_t> motor_IDs, float angles[2], int pixel, int nbColumn)
 {
-  stepperGoToPos(pixelApproach);
+  
   float pixelPos[2];
   pixel_to_pos(pixel, pixelPos, nbColumn);
   inverse_kinematics( pixelPos[0] , pixelPos[1], angles);

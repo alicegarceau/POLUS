@@ -5,7 +5,7 @@
 #include <DynamixelWorkbench.h>
 #include <vector>
 #include <Servo.h>
-#include <AccelStepper.h>
+//#include <AccelStepper.h>
 #include <math.h>
 #include "inverseKinematics.hpp"
 #include "stepperZ.hpp"

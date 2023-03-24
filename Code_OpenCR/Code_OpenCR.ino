@@ -39,7 +39,7 @@ DynamixelWorkbench dynaArm;
 DynamixelWorkbench dynaCar;
 Servo servoGripper; 
 Servo servoCarrousel; 
-AccelStepper stepper(AccelStepper::DRIVER, 1, 2);
+//AccelStepper stepper(AccelStepper::DRIVER, 1, 2);
 
 float ZOffset = 0;
 
@@ -84,7 +84,16 @@ void setup()
 void loop()
 {  
   next_msg();
-  delay(1000);
+  int Coord[Data.positions.size()];
+  for (int i = 0; i < Data.positions.size(); i++)
+  {
+    Coord[i] = Data.positions[i];
+    // Serial.println(Coord[i]);
+    // Serial.println("_______________________");
+  }  
+  pixelisation(Coord, Data.positions.size(), Data.cols, dynaArm, MOTOR_IDS_ARM, motor_angles_arm, 
+    servoGripper, dynaCar, MOTOR_IDS_CAR, servoCarrousel, Data.color);    
+  delay(10000);
 
 
   // inverse_kinematics( 0 , 270, motor_angles_arm);
