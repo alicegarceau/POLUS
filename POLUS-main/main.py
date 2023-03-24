@@ -53,5 +53,7 @@ if __name__ == "__main__":
         for index_crayon_carrousel in range(1, len(liste_crayons_dispos)+1):
             msg_coords = tm.send_positions(index_crayon_carrousel, liste_rgb_carrés_crayola, liste_crayons_dispos, coordonnées_carrés)
             if msg_coords:
+                if index_crayon_carrousel == 3:
+                    Communication.stop_msg()
                 Communication.msg_pixels(index_crayon_carrousel, nb_carrés, nb_carrés, msg_coords)
                 

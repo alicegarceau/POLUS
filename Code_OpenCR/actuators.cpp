@@ -232,6 +232,15 @@ Servo& servoGripper, DynamixelWorkbench& carMotors, const std::vector<uint8_t>& 
   for(int i = 0; i < sizeArray; i++)
   {
     drawPoint(armMotors, arm_motor_IDs, arm_angles, pixelArray[i], nbColumn);
+    int action = change_action();
+    if (action == 2)
+    {
+      while(action != 4 || action != 1);
+      {
+        action = change_action();
+      }
+    }
+    if (action == 1)  break;
   }
 
   place(servoGripper, armMotors, arm_motor_IDs, arm_angles);

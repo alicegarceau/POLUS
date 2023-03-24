@@ -175,7 +175,7 @@ int change_action(){
     }
     last_time = act_time;
   }
-  else return 0;
+  return 0;
 }
 
 
