@@ -46,7 +46,7 @@ Servo& servoGripper, DynamixelWorkbench& carMotors, const std::vector<uint8_t>& 
 void pixelignation(int* pixelArray, int sizeArray, int nbColumn, DynamixelWorkbench& armMotors, const std::vector<uint8_t> arm_motor_IDs, float arm_angles[2], 
 Servo& servoGripper, DynamixelWorkbench& carMotors, const std::vector<uint8_t>& car_motor_IDs, Servo& servoCarrousel, int carColorIndex);
 
-void drawLine(DynamixelWorkbench& motor, const std::vector<uint8_t> motor_IDs, float angles[2], int pixel, int nbColumn);
+void drawLine(DynamixelWorkbench& motor, const std::vector<uint8_t> motor_IDs, float angles[2], int startingPix, int endingPix, int nbColumn);
 
 void getArmMotorAngles(DynamixelWorkbench& motor, const std::vector<uint8_t> motor_IDs, float angles[2]);
 

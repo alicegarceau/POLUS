@@ -136,7 +136,7 @@ void loop()
     servoGripper, dynaCar, MOTOR_IDS_CAR, servoCarrousel, 15);
     
     pixelisation(pixelArray, sizeArray, nbColumn, dynaArm, MOTOR_IDS_ARM, motor_angles_arm, 
-    servoGripper, dynaCar, MOTOR_IDS_CAR, servoCarrousel, 4);*/
+    servoGripper, dynaCar, MOTOR_IDS_CAR, servoCarrousel, 4);
  
   
 
@@ -162,6 +162,26 @@ void loop()
     }*/
 
 
+  /*for (int i = 0 ; i < (sizeof(data)/sizeof(data[1]))-1 ; i++)
+  {
+    
+    stepperGoToPos(17);
+    inverse_kinematics( data[i][0] , data[i][1], motor_angles_arm);
+    move_to_pos_wait(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+
+    if ((abs(data[i][0]-data[i+1][0]) > 2) || (abs(data[i][1]-data[i+1][1]) > 2))
+    { 
+      Serial.println("MOVE");
+      stepperGoToPos(20);
+      delay(200);
+      inverse_kinematics( data[i+1][0] , data[i+1][1], motor_angles_arm);
+      move_to_pos_wait(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+      stepperGoToPos(17);
+      delay(200);
+    }
+    //stepperGoToPos(16);
+    //delay(100); 
+  }*/
 
 
 
