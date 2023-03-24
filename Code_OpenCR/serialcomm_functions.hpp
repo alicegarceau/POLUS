@@ -34,6 +34,7 @@ struct PixelData {
     int rows = 0;
     int cols = 0;
     std::vector<int> positions;
+    int style = 1;
 };
 
 extern PixelData Data;
@@ -51,15 +52,15 @@ void init_matrix(int size);
 
 std::vector<std::string> Split_msg(String inputString);
 
-void print_data();
-
 bool decode_pixel(std::vector<std::string> parts);
 
 bool decode_lignes(std::vector<std::string> parts);
 
 bool decode_jog(std::vector<std::string> parts);
 
-bool ChangeAction();
+int change_action();
+
+void print_data();
 
 
 #endif

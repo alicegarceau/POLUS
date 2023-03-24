@@ -100,6 +100,7 @@ bool decode_pixel(std::vector<std::string> parts){
         Data.positions[i-5] = value;
     }
 
+    Data.style = 0;
     // Définir le message de d'acquittement
     acquittement = "ok\n";
 
@@ -121,6 +122,7 @@ bool decode_pixel(std::vector<std::string> parts){
 
 bool decode_lignes(std::vector<std::string> parts){
 
+  Data.style = 1;
   return true;
 }
 
@@ -136,7 +138,7 @@ bool decode_jog(std::vector<std::string> parts){
   return false;
 }
 
-bool ChangeAction(){
+int change_action(){
   std::time_t act_time = std::time(nullptr);
   if (act_time-last_time >= 0.5)
   {
@@ -145,16 +147,35 @@ bool ChangeAction(){
     {
       //StopEmile();    
       Serial.println("Arrêt demandé");
-      return true;
+      return 1;
     }
     else if(inputString.startsWith("sync,pause"))
     {
       //PauseEmile();
       Serial.println("Pause demandé");
-      return false;
+      return 2;
+    }
+    else if(inputString.startsWith("sync,play"))
+    {
+      //PlayEmile();
+      Serial.println("Play demandé");
+      return 3;
     } 
+    else if(inputString.startsWith("sync,reprendre"))
+    {
+      //ReprendreEmile();
+      Serial.println("reprendre demandé");
+      return 4;
+    }
+    else if(inputString.startsWith("sync,done"))
+    {
+      //ReprendreEmile();
+      Serial.println("Done demandé");
+      return 5;
+    }
     last_time = act_time;
   }
+  else return 0;
 }
 
 
