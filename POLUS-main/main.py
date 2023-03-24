@@ -6,36 +6,42 @@ import input_UI
 import UI
 from UI import *
 import Communication   
+import threading
 
 # Attendre l'input du UI pour commencer le traitement d'image
+interface = UI.Application()
+lock_traitement.acquire()
 
 # TRAITEMENT D'IMAGE
 # Initialiser un traitement d'image
+
 tm = pixeliser_image.traitement_image()
 
 # Pixéliser l'image au bon nombre de pixels
-tm.pixeliser_image(nom_fichier_image_og, nb_carrés, nom_fichier_image_pixélisée)
+tm.pixeliser_image(interface.nom_fichier_image_og, nb_carrés, interface.nom_fichier_image_pixélisée)
 
 # Aller chercher les RGB dans le CSV
-liste_crayons_dispos = tm.RGB_CSV(fichier_csv)
+liste_crayons_dispos = tm.RGB_CSV(interface.fichier_csv)
 
 # Créer un tableau contenant le RGB de tous les pixels de l'image pixélisée
-liste_rgb_carrés_og = tm.get_RGB_carrés(nom_fichier_image_pixélisée, nb_carrés)
+liste_rgb_carrés_og = tm.get_RGB_carrés(interface.nom_fichier_image_pixélisée, nb_carrés)
 
 # Comparer chaque RGB pour l'associer au crayon correspondant
 liste_rgb_carrés_crayola = tm.get_closest_RGB(liste_rgb_carrés_og, liste_crayons_dispos)
 
 # Tracer l'image avec les RGB disponibles pour visualiser le résultat attendu
-tm.visualiser_resultat(liste_rgb_carrés_crayola, nb_carrés, nom_fichier_image_sortie)
+tm.visualiser_resultat(liste_rgb_carrés_crayola, nb_carrés, interface.nom_fichier_image_sortie,interface.nom_fichier_image_pixélisée)
 
 # Calculer les coordonnées x,y de chaque pixel à tracer
 coordonnées_carrés = tm.calcul_coordonnées_carrés(nb_carrés)
+
+lock_traitement.release()
 
 if __name__ == "__main__":
         
     # INTERFACE
     # Initialiser le UI
-    interface = UI.Application()
+    #interface = UI.Application()
     
     # Initialiser la communication
     if Communication.port_init() is True:
