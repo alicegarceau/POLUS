@@ -7,16 +7,16 @@ const int crayonRetreat = 80;
 const int crayonApproach = 80;  //60
 const int nbAvailableColors = 20;
 
-const int pixelApproach = 28;
+const int pixelApproach = 22;
 const int pixelDraw = 19;
 
 const float epauleRatio = 1.667;
 const float degPulse = 0.088;
 
-const float XCarIn = -157.74; 
-const float YCarIn = 92.81; 
-const float XCarOut = -135.68;
-const float YCarOut = 104.14;
+const float XCarIn = -159.01; 
+const float YCarIn = 96.75; 
+const float XCarOut = -144.93;
+const float YCarOut = 107.01;
 
 
 /// Custom function to convert an angle to a value that can be sent
