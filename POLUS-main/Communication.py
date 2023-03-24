@@ -39,15 +39,21 @@ def check_port(port):
 
 # Choisi l'un des ports disponibles (Ne fonctionne pas)
 def choose_port(baudrate):
-    ports = serial.tools.list_ports.comports()
+    ports = serial.tools.list_ports.grep('Arduino')
     for p in ports:
         port = p[0]
         print(port)
-        if port != "COM7":
-            ser = serial.Serial(port, baudrate)
-            if ser.isOpen():
-                print(f"{port} connecté")
-                return ser
+        auto_ser = serial.Serial(port, baudrate)
+        if auto_ser.isOpen():
+            print(f"{port} connecté")
+            return auto_ser
+    ports = serial.tools.list_ports.comports()
+    print("Available ports:")
+    for i, port in enumerate(ports):
+        print(f"{i}: {port[0]} ({port[1]})")
+    selection = int(input("Select the port number: "))
+    port_name = ports[selection][0]
+    ser_manual = serial.Serial(port_name, baudrate)
     return ser
     
         
