@@ -107,17 +107,17 @@ void loop()
   
   lignes();
 
-  // next_msg();
-  // int Coord[Data.positions.size()];
-  // for (int i = 0; i < Data.positions.size(); i++)
-  // {
-  //   Coord[i] = Data.positions[i];
-  //   // Serial.println(Coord[i]);
-  //   // Serial.println("_______________________");
-  // }  
-  // pixelisation(Coord, Data.positions.size(), Data.cols, dynaArm, MOTOR_IDS_ARM, motor_angles_arm, 
-  //   servoGripper, dynaCar, MOTOR_IDS_CAR, servoCarrousel, Data.color);    
-  // delay(1000);
+  next_msg();
+  int Coord[Data.positions.size()];
+  for (int i = 0; i < Data.positions.size(); i++)
+  {
+    Coord[i] = Data.positions[i];
+    // Serial.println(Coord[i]);
+    // Serial.println("_______________________");
+  }  
+  pixelisation(Coord, Data.positions.size(), Data.cols, dynaArm, MOTOR_IDS_ARM, motor_angles_arm, 
+    servoGripper, dynaCar, MOTOR_IDS_CAR, servoCarrousel, Data.color);    
+  delay(1000);
   
 
   /*int pixelArray[] = {2025, 410};
@@ -242,70 +242,37 @@ void loop()
   // prior code 
 
   
-    /*switch (current_state)
+    switch (current_state)
     {
         case State::Sleep:
         {
-            
-            // Waiting for the signal to start the program
-            send_data("Waiting for the START command.");
-            delay(100);
-            msg = get_data();
-            if(should_start(msg))
-            {
-                send_data("Starting the program.");
-                start_motors(dyna, MOTOR_IDS);
-                go_to_home(dyna, MOTOR_IDS, motor_angles, LINEAR_PIN);
-                current_state = State::Wait;
-            }
-            break;
+          if(ChangeAction() == 4) //wait for changeaction() = play
+          {
+            current_state = State::Moving;
+          }
+          break;
         }
-
-        case State::Wait:
-        {
-            // Waiting for data on the serial port
-            msg = get_data();
-            if (msg.length() != 0)
-            {
-                current_state = State::Parse;
-            }
-            break;
-        }
-
-        case State::Parse:
-        {
-            // Try to parse the received message
-            Nut nut = parse_nut(msg);
-
-            if (nut.is_valid)
-            {
-                current_state = State::Moving;
-                current_nut = nut;
-            }
-            else if (should_stop(msg))
-            {
-                send_data("Stopping the program.");
-                stop_motors(dyna, MOTOR_IDS);
-                current_state = State::Sleep;
-            }
-            else
-            {
-                // Message is invalid
-                current_state = State::Wait;
-            }
-            break;
-        }
-
         case State::Moving:
-        {
-            go_to_pick(current_nut, dyna, MOTOR_IDS, motor_angles, LINEAR_PIN, SOLENOID_PIN);
-            go_to_drop(current_nut, dyna, MOTOR_IDS, motor_angles, LINEAR_PIN, SOLENOID_PIN);
-            send_data("Done");
-            
+        {         
+          next_msg();
+          int Coord[Data.positions.size()];
+          for (int i = 0; i < Data.positions.size(); i++)
+          {
+            Coord[i] = Data.positions[i];
+          }  
+          
+          pixelisation(Coord, Data.positions.size(), Data.cols, dynaArm, MOTOR_IDS_ARM, motor_angles_arm, 
+            servoGripper, dynaCar, MOTOR_IDS_CAR, servoCarrousel, Data.color);    
+
+          delay(1000);
+
+          if(ChangeAction() == 5) //wait for changeaction() = done
+          {
             current_state = State::Wait;
-            break;
+          }
+          break;
         }
-    }*/
+    }
 
     /*
     ///////////////////////////////// CALIBRATION POSITIONS /////////////////////////////////
