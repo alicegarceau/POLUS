@@ -14,15 +14,16 @@ def port_init():
     port = "COM5"
     baudrate = 57600
 
-    # ser = choose_port(baudrate)
-
+    ser = choose_port(baudrate)
+    """
     if check_port(port):
         print(f"{port} exists")
     else:
         print(f"\033[31m{port} n'existe pas.\033[0m")
         return False
+        """
 
-    ser = serial.Serial(port, baudrate)
+    #ser = serial.Serial(port, baudrate)
 
     if not ser.isOpen():
         print("\033[31mImpossible d'ouvrir la liaison série.\033[0m")
@@ -39,22 +40,14 @@ def check_port(port):
 
 # Choisi l'un des ports disponibles (Ne fonctionne pas)
 def choose_port(baudrate):
-    ports = serial.tools.list_ports.grep('Arduino')
-    for p in ports:
-        port = p[0]
-        print(port)
-        auto_ser = serial.Serial(port, baudrate)
-        if auto_ser.isOpen():
-            print(f"{port} connecté")
-            return auto_ser
     ports = serial.tools.list_ports.comports()
-    print("Available ports:")
+    print("ports disponibles:")
     for i, port in enumerate(ports):
         print(f"{i}: {port[0]} ({port[1]})")
-    selection = int(input("Select the port number: "))
+    selection = int(input("selection du numéro du port de la liste (ex.'3'): "))
     port_name = ports[selection][0]
     ser_manual = serial.Serial(port_name, baudrate)
-    return ser
+    return ser_manual
     
         
 

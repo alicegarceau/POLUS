@@ -7,7 +7,7 @@ const int crayonRetreat = 80;
 const int crayonApproach = 80;  //60
 const int nbAvailableColors = 20;
 
-const int pixelApproach = 22;
+const int pixelApproach = 24;
 const int pixelDraw = 19;
 
 const float epauleRatio = 1.667;

@@ -59,7 +59,7 @@ bool decode_lignes(std::vector<std::string> parts);
 
 bool decode_jog(std::vector<std::string> parts);
 
-void ChangeAction();
+bool ChangeAction();
 
 
 #endif

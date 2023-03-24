@@ -50,12 +50,8 @@ if __name__ == "__main__":
         # ENVOYER LES COORDONNÉES SELON LE CRAYON
         # Envoyer la positions des points à faire pour le crayon donné en paramètre
         #FAIRE UNE BOUCLE POUR TOUS LES CRAYONS
-        #for index_crayon_carrousel in range(1,len(liste_crayons_dispos)):
-            #msg_coords = tm.send_positions(index_crayon_carrousel, liste_rgb_carrés_crayola, liste_crayons_dispos, coordonnées_carrés)
-            #if msg_coords:
-                #Communication.msg_pixels(index_crayon_carrousel, nb_carrés, nb_carrés, msg_coords)
-        msg_coords = tm.send_positions(19, liste_rgb_carrés_crayola, liste_crayons_dispos,
-                                       coordonnées_carrés)
-        if msg_coords:
-            Communication.msg_pixels(19, nb_carrés, nb_carrés, msg_coords)
+        for index_crayon_carrousel in range(1, len(liste_crayons_dispos)+1):
+            msg_coords = tm.send_positions(index_crayon_carrousel, liste_rgb_carrés_crayola, liste_crayons_dispos, coordonnées_carrés)
+            if msg_coords:
+                Communication.msg_pixels(index_crayon_carrousel, nb_carrés, nb_carrés, msg_coords)
                 

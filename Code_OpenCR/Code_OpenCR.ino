@@ -12,7 +12,9 @@ Authors: Alec Gagnon,      gaga2120
 #include "inverseKinematics.hpp"
 #include "serialcomm_functions.hpp"
 #include <pthread.h>
-#include "data.h"
+#include "udes.h"
+#include "robo.h"
+
 /*#include "comm_functions.hpp"
 #include "inverse_kinematics.hpp"
 */
@@ -52,7 +54,6 @@ int stepCurrentPos = 0;
 
 int colorIndex = 0;
 
-
 // ---------- Main functions ----------
 void setup()
 {
@@ -78,24 +79,45 @@ void setup()
   homeZ();
 }
 
-
-
+void lignes()
+{
+  pick(servoGripper, dynaArm, MOTOR_IDS_ARM, motor_angles_arm);  
+  inverse_kinematics(udes[0][0] , udes[0][1], motor_angles_arm);
+  move_to_pos_wait(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+  stepperGoToPos(22);
+  for (int i = 0 ; i < (sizeof(udes)/sizeof(udes[1]))-1 ; i++)
+  {
+    inverse_kinematics(udes[i][0] , udes[i][1], motor_angles_arm);
+    move_to_pos_wait(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+    if ((abs(udes[i][0]-udes[i+1][0]) > 2) || (abs(udes[i][1]-udes[i+1][1]) > 2))
+    {
+      Serial.println("MOVE");
+      stepperGoToPos(24);
+      delay(200);
+      inverse_kinematics(udes[i+1][0] , udes[i+1][1], motor_angles_arm);
+      move_to_pos_wait(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+      stepperGoToPos(22);
+      delay(200);
+    }
+  }
+}
 
 void loop()
-{  
-
+{
   
-  next_msg();
-  int Coord[Data.positions.size()];
-  for (int i = 0; i < Data.positions.size(); i++)
-  {
-    Coord[i] = Data.positions[i];
-    // Serial.println(Coord[i]);
-    // Serial.println("_______________________");
-  }  
-  pixelisation(Coord, Data.positions.size(), Data.cols, dynaArm, MOTOR_IDS_ARM, motor_angles_arm, 
-    servoGripper, dynaCar, MOTOR_IDS_CAR, servoCarrousel, Data.color);    
-  delay(1000);
+  lignes();
+
+  // next_msg();
+  // int Coord[Data.positions.size()];
+  // for (int i = 0; i < Data.positions.size(); i++)
+  // {
+  //   Coord[i] = Data.positions[i];
+  //   // Serial.println(Coord[i]);
+  //   // Serial.println("_______________________");
+  // }  
+  // pixelisation(Coord, Data.positions.size(), Data.cols, dynaArm, MOTOR_IDS_ARM, motor_angles_arm, 
+  //   servoGripper, dynaCar, MOTOR_IDS_CAR, servoCarrousel, Data.color);    
+  // delay(1000);
   
 
   /*int pixelArray[] = {2025, 410};

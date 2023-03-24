@@ -126,15 +126,33 @@ bool decode_lignes(std::vector<std::string> parts){
 
 bool decode_jog(std::vector<std::string> parts){
   
-  return true;
+  int pos_x;
+  int pos_y;
+
+  std::stringstream(parts[2]) >> pos_x;
+  std::stringstream(parts[3]) >> pos_y;
+  
+  //return {pos_x, pos_y};
+  return false;
 }
 
-void ChangeAction(){
+bool ChangeAction(){
   std::time_t act_time = std::time(nullptr);
-  if (act_time-last_time >= 1)
+  if (act_time-last_time >= 0.5)
   {
     String inputString = Serial.readStringUntil('\n');
-    if(inputString.startsWith("sync,stop")) Serial.println("Arrêt demandé"); 
+    if(inputString.startsWith("sync,stop")) 
+    {
+      //StopEmile();    
+      Serial.println("Arrêt demandé");
+      return true;
+    }
+    else if(inputString.startsWith("sync,pause"))
+    {
+      //PauseEmile();
+      Serial.println("Pause demandé");
+      return false;
+    } 
     last_time = act_time;
   }
 }
