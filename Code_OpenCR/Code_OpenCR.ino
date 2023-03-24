@@ -83,6 +83,8 @@ void setup()
 
 void loop()
 {  
+
+  
   next_msg();
   int Coord[Data.positions.size()];
   for (int i = 0; i < Data.positions.size(); i++)
@@ -93,14 +95,9 @@ void loop()
   }  
   pixelisation(Coord, Data.positions.size(), Data.cols, dynaArm, MOTOR_IDS_ARM, motor_angles_arm, 
     servoGripper, dynaCar, MOTOR_IDS_CAR, servoCarrousel, Data.color);    
-  delay(10000);
-
-
-  // inverse_kinematics( 0 , 270, motor_angles_arm);
-  // move_to_pos_wait(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
-
-
+  delay(1000);
   
+
   /*int pixelArray[] = {2025, 410};
   int sizeArray = sizeof(pixelArray) / sizeof(pixelArray[0]);
   //index_color(dynaCar, MOTOR_IDS_CAR, servoCarrousel, 2);
@@ -267,4 +264,16 @@ void loop()
             break;
         }
     }*/
+
+    /*
+    ///////////////////////////////// CALIBRATION POSITIONS /////////////////////////////////
+  inverse_kinematics(-159.01, 96.75, motor_angles_arm);
+  move_to_pos_wait(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+  index_color(dynaCar, MOTOR_IDS_CAR, servoCarrousel, 2);
+  while(1){
+    getArmMotorAngles(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+    delay(1000);  
+  }
+/////////////////////////////////////////////////////////////////////////////////////////
+*/
 }
