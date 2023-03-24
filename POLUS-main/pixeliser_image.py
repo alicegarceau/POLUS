@@ -150,7 +150,7 @@ class traitement_image():
         return liste_rgb_carrés_crayola
 
 
-    def visualiser_resultat(self, liste_rgb_carrés_crayola, nb_carrés, nom_fichier_image_sortie):
+    def visualiser_resultat(self, liste_rgb_carrés_crayola, nb_carrés, nom_fichier_image_sortie,nom_fichier_image_pixélisée):
         """Trace le résultat attendu en changeant chaque pixel de chaque carré de l'image pixélisée pour le RGB disponible le plus proche
         Args:
             liste_rgb_carrés_crayola: liste du RGB de chaque carré de l'image de sortie
@@ -163,7 +163,7 @@ class traitement_image():
 
         # Ouvrir l'image pixelisée avec les couleurs d'origine
         cur_path = os.path.dirname(__file__)
-        file = os.path.join(cur_path, UI.nom_fichier_image_pixélisée)
+        file = os.path.join(cur_path, nom_fichier_image_pixélisée)
         im_out = Image.open(file)
 
         # Avoir les dimensions de l'image et d'un carré

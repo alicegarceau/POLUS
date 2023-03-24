@@ -7,20 +7,22 @@ import threading
 import os
 
 # Fichiers
-nom_fichier_image_og = 'image_in.jpg'
-nom_fichier_image_pixélisée = 'image_pix.png'
-nom_fichier_image_sortie = 'image_result.png'
-fichier_csv = 'RGB_20.csv'
+
     
 # Résolution
 nb_carrés = 50
 dim_feuille = 150
 
 # Flags
-flag_fichiers_ok = 0
+lock_traitement = threading.Lock()
 
 class Application(threading.Thread):
+    nom_fichier_image_og = 'image_in.jpg'
+    nom_fichier_image_pixélisée = 'image_pix.png'
+    nom_fichier_image_sortie = 'image_result.png'
+    fichier_csv = 'RGB_20.csv'
 
+    lock_traitement.acquire()
     isrunning = True
 
     def __init__(self):
@@ -99,8 +101,8 @@ class Application(threading.Thread):
         # Créer l'entrée pour le fichier CSV
         default_entry_csv = StringVar()
         default_entry_csv.set("RGB_48.csv")
-        self.entry_img_out = Entry(self.tab1,fg="black", bg="white", width=25, textvariable = default_entry_csv)
-        self.entry_img_out.place(x=350, y=180)
+        self.entry_csv = Entry(self.tab1,fg="black", bg="white", width=25, textvariable = default_entry_csv)
+        self.entry_csv.place(x=350, y=180)
 
         # Créer le bouton ok noms de fichiers
         button_ok_fichiers = Button(self.tab1,text="Envoyer les noms de fichiers", width=69, height=1, bg="white", fg="black", command=self.bouton_fichiers_pushed)
@@ -109,7 +111,7 @@ class Application(threading.Thread):
         # IMAGES
         # Ouvrir et placer l'image originale
         cur_path = os.path.dirname(__file__)
-        image1 = os.path.join(cur_path,nom_fichier_image_og)
+        image1 = os.path.join(cur_path,self.nom_fichier_image_og)
         image1 = Image.open(image1)
         width_window = self.window_test.winfo_width()
         height_window = self.window_test.winfo_height()
@@ -121,7 +123,7 @@ class Application(threading.Thread):
 
         # Ouvrir et placer l'image du résultat attendu
         cur_path = os.path.dirname(__file__)
-        image2 = os.path.join(cur_path,nom_fichier_image_sortie)
+        image2 = os.path.join(cur_path,self.nom_fichier_image_sortie)
         image2 = Image.open(image2)
         image2_resized = image2.resize((width_window+500,height_window+500))
         im_result = ImageTk.PhotoImage(image2_resized)
@@ -230,9 +232,9 @@ class Application(threading.Thread):
 
         # FONCTIONS UPDATE DATA
     def bouton_fichiers_pushed(self):
-        nom_fichier_image_og = self.entry_img_in.get()
-        nom_fichier_image_pixélisée = self.entry_img_pix.get()
-        nom_fichier_image_sortie = self.entry_img_out.get()
+        self.nom_fichier_image_og = self.entry_img_in.get()
+        self.nom_fichier_image_pixélisée = self.entry_img_pix.get()
+        self.nom_fichier_image_sortie = self.entry_img_out.get()
 
         flag_fichiers_ok = 1
 
@@ -241,7 +243,7 @@ class Application(threading.Thread):
     def bouton_resolution_pushed(self):
         nb_carrés = self.entry_nbpix.get()
         #dim_feuille = self.entry_dim.get()
-
+        lock_traitement.release()
         return
     
     def arreter(self):
