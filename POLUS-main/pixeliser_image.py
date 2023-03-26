@@ -36,7 +36,7 @@ class traitement_image():
         img = Image.open(file)
 
         # Modifier l'image pour avoir l'effet pixélisé
-        imgSmall = img.resize((nb_carrés, nb_carrés), resample=Image.Resampling.BILINEAR) # voir si changer pour .nearest
+        imgSmall = img.resize((nb_carrés, nb_carrés), resample=Image.Resampling.NEAREST)
 
         # Modifier les dimensions à un chiffre rond pour le nb de pixel pour éviter l'accumulation d'erreur
         closest_hor = (img.size[0] // nb_carrés) * nb_carrés
