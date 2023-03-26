@@ -12,6 +12,9 @@ Authors: Alec Gagnon,      gaga2120
 #include "inverseKinematics.hpp"
 #include "serialcomm_functions.hpp"
 #include <pthread.h>
+#include "udes.h"
+#include "robo.h"
+
 /*#include "comm_functions.hpp"
 #include "inverse_kinematics.hpp"
 */
@@ -22,23 +25,26 @@ enum class State { Sleep, Wait, Parse, Moving };
 
 // ---------- Constants ----------
 // --- Motors ---
-//const std::vector<uint8_t> MOTOR_IDS = { (const uint8_t)1, (const uint8_t)2 };
-// const std::vector<uint8_t> MOTOR_IDS_ARM = { (const uint8_t)15, (const uint8_t)3 }; //epaule ID = 15, coude ID = 3, caroussel ID = 2
-// const std::vector<uint8_t> MOTOR_IDS_CAR = { (const uint8_t)2 };// { (const uint8_t)15, (const uint8_t)3 }; //epaule ID = 15, coude ID = 3, caroussel ID = 2
+//epaule ID = 20, coude ID = 15, caroussel ID = 3 from: Example/Dynamixel2Arduino/Basic/ScanDynamixel
+const std::vector<uint8_t> MOTOR_IDS_ARM = { (const uint8_t)20, (const uint8_t)15 }; 
+const std::vector<uint8_t> MOTOR_IDS_CAR = { (const uint8_t)2 };
 
-// const uint8_t nbAvailableColors = 20;
+const uint8_t nbAvailableColors = 20;
+const uint8_t nbColumn = 50;
 
-const uint8_t SERVO_PIN = 5;
-const uint8_t SWITCH_PIN = 6;
-
-
+const uint8_t SERVO_PIN = 11;
+const uint8_t SERVO_CAR = 9;
 
 // ---------- Variables ----------
 // --- Motors ---
 DynamixelWorkbench dynaArm;
 DynamixelWorkbench dynaCar;
 Servo servoGripper; 
-Stepper stepperZ(200, 10, 11, 12, 13);
+Servo servoCarrousel; 
+//AccelStepper stepper(AccelStepper::DRIVER, 1, 2);
+
+float ZOffset = 0;
+
 
 // --- Data ---
 State current_state = State::Sleep;
@@ -52,128 +58,215 @@ int colorIndex = 0;
 void setup()
 {
   comm_init();
+  
+  const int BAUDRATE = 115200;
+  Serial.begin(BAUDRATE);
+  setupStepper();
 
-    init_motors(dynaArm, MOTOR_IDS_ARM);
-    init_motors(dynaCar, MOTOR_IDS_CAR);
-    servoGripper.attach(SERVO_PIN);
-    stepperZ.setSpeed(60);
+  init_motors(dynaArm, MOTOR_IDS_ARM);
+  init_motors(dynaCar, MOTOR_IDS_CAR);
 
-    pinMode(SERVO_PIN, OUTPUT);
-    pinMode(SWITCH_PIN, INPUT_PULLUP);
+  pinMode(SERVO_PIN, OUTPUT);
+  pinMode(SERVO_CAR, OUTPUT);
 
-    // Nécessite un interrup pour faire le zero? 
-    //attachInterrupt(digitalPinToInterrupt(SWITCH_PIN), ISRzero, FALLING);
 
-    colorIndex = 10;
+  servoGripper.attach(SERVO_PIN);
+  servoCarrousel.attach(SERVO_CAR);
+
+  inverse_kinematics(0, 150, motor_angles_arm);
+  move_to_pos_wait(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+  index_color(dynaCar, MOTOR_IDS_CAR, servoCarrousel,  1);
+  homeZ();
+}
+
+void lignes()
+{
+  pick(servoGripper, dynaArm, MOTOR_IDS_ARM, motor_angles_arm);  
+  inverse_kinematics(udes[0][0] , udes[0][1], motor_angles_arm);
+  move_to_pos_wait(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+  stepperGoToPos(22);
+  for (int i = 0 ; i < (sizeof(udes)/sizeof(udes[1]))-1 ; i++)
+  {
+    inverse_kinematics(udes[i][0] , udes[i][1], motor_angles_arm);
+    move_to_pos_wait(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+    if ((abs(udes[i][0]-udes[i+1][0]) > 2) || (abs(udes[i][1]-udes[i+1][1]) > 2))
+    {
+      Serial.println("MOVE");
+      stepperGoToPos(24);
+      delay(200);
+      inverse_kinematics(udes[i+1][0] , udes[i+1][1], motor_angles_arm);
+      move_to_pos_wait(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+      stepperGoToPos(22);
+      delay(200);
+    }
+  }
 }
 
 void loop()
-{  
+{
+  
+  // lignes();
+
+  // next_msg();
+  // int Coord[Data.positions.size()];
+  // for (int i = 0; i < Data.positions.size(); i++)
+  // {
+  //   Coord[i] = Data.positions[i];
+  //   // Serial.println(Coord[i]);
+  //   // Serial.println("_______________________");
+  // }  
+  // pixelisation(Coord, Data.positions.size(), Data.cols, dynaArm, MOTOR_IDS_ARM, motor_angles_arm, 
+  //   servoGripper, dynaCar, MOTOR_IDS_CAR, servoCarrousel, Data.color);  
+
   next_msg();
-  print_data();
+  int Coord[Data.positions.size()];
+  for (int i = 0; i < Data.positions.size(); i++)
+  {
+    Coord[i] = Data.positions[i];
+  }  
+  
+  pixelignation(Coord, Data.positions.size(), Data.cols, dynaArm, MOTOR_IDS_ARM, motor_angles_arm, 
+    servoGripper, dynaCar, MOTOR_IDS_CAR, servoCarrousel, Data.color);    
+
+  delay(1000);
+    
+      
+  
+
+  /*int pixelArray[] = {2025, 410};
+  int sizeArray = sizeof(pixelArray) / sizeof(pixelArray[0]);
+  //index_color(dynaCar, MOTOR_IDS_CAR, servoCarrousel, 2);
   delay(1000);
 
 
-  // inverse_kinematics( 0 , 270, motor_angles_arm);
-  // move_to_pos_wait(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+    pixelisation(pixelArray, sizeArray, nbColumn, dynaArm, MOTOR_IDS_ARM, motor_angles_arm, 
+    servoGripper, dynaCar, MOTOR_IDS_CAR, servoCarrousel, 5);
 
-  /* if (stepper.distanceToGo() == 0)
-  {
-    delay(500);
-    pos = -pos;
-    stepper.moveTo(pos);
-  }
-  stepper.run();*/
+    pixelisation(pixelArray, sizeArray, nbColumn, dynaArm, MOTOR_IDS_ARM, motor_angles_arm, 
+    servoGripper, dynaCar, MOTOR_IDS_CAR, servoCarrousel, 2);
 
-  /*for(float i = 0; i < 30; i++)
-  {
-    inverse_kinematics( i , 200, motor_angles_arm);
-    move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
-  }
-
-   for(float j = 200; j < 230; j++)
-  {
-    inverse_kinematics( 30 , j, motor_angles_arm);
-    move_to_pos(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
-  }
-
-   inverse_kinematics( 0 , 200, motor_angles_arm);
-  move_to_pos_wait(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);*/
-
-  /*
-  index_color(dynaCar, MOTOR_IDS_CAR, nbAvailableColors, colorIndex);
-
-  inverse_kinematics(56, 80, motor_angles);
-
-  Serial.println(motor_angles[0]);
-  Serial.println(motor_angles[1]);
-  Serial.println(" ");
-
-  move_to_pos(dyna, MOTOR_IDS, motor_angles);*/
+    pixelisation(pixelArray, sizeArray, nbColumn, dynaArm, MOTOR_IDS_ARM, motor_angles_arm, 
+    servoGripper, dynaCar, MOTOR_IDS_CAR, servoCarrousel, 15);
+    
+    pixelisation(pixelArray, sizeArray, nbColumn, dynaArm, MOTOR_IDS_ARM, motor_angles_arm, 
+    servoGripper, dynaCar, MOTOR_IDS_CAR, servoCarrousel, 4);
+ 
   
-    /*switch (current_state)
+
+
+
+  ////////////////////////Emile Test////////////////////////////////////////////////////////
+  
+  //inverse_kinematics( data[0][0] , data[0][1], motor_angles_arm);
+  //move_to_pos_wait(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+
+  /*inverse_kinematics( 0 , 100, motor_angles_arm);
+  move_to_pos_wait(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+
+  stepperGoToPos(22);
+
+
+  for (float i = 100 ; i < 250 ; i++)
     {
-        case State::Sleep:
-        {
-            
-            // Waiting for the signal to start the program
-            send_data("Waiting for the START command.");
-            delay(100);
-            msg = get_data();
-            if(should_start(msg))
-            {
-                send_data("Starting the program.");
-                start_motors(dyna, MOTOR_IDS);
-                go_to_home(dyna, MOTOR_IDS, motor_angles, LINEAR_PIN);
-                current_state = State::Wait;
-            }
-            break;
-        }
-
-        case State::Wait:
-        {
-            // Waiting for data on the serial port
-            msg = get_data();
-            if (msg.length() != 0)
-            {
-                current_state = State::Parse;
-            }
-            break;
-        }
-
-        case State::Parse:
-        {
-            // Try to parse the received message
-            Nut nut = parse_nut(msg);
-
-            if (nut.is_valid)
-            {
-                current_state = State::Moving;
-                current_nut = nut;
-            }
-            else if (should_stop(msg))
-            {
-                send_data("Stopping the program.");
-                stop_motors(dyna, MOTOR_IDS);
-                current_state = State::Sleep;
-            }
-            else
-            {
-                // Message is invalid
-                current_state = State::Wait;
-            }
-            break;
-        }
-
-        case State::Moving:
-        {
-            go_to_pick(current_nut, dyna, MOTOR_IDS, motor_angles, LINEAR_PIN, SOLENOID_PIN);
-            go_to_drop(current_nut, dyna, MOTOR_IDS, motor_angles, LINEAR_PIN, SOLENOID_PIN);
-            send_data("Done");
-            
-            current_state = State::Wait;
-            break;
-        }
+      
+      //stepperGoToPos(20);
+      inverse_kinematics( 0 , i, motor_angles_arm);
+      move_to_pos_wait(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
     }*/
-    delay(1000);
+
+
+  /*for (int i = 0 ; i < (sizeof(data)/sizeof(data[1]))-1 ; i++)
+  {
+    
+    stepperGoToPos(17);
+    inverse_kinematics( data[i][0] , data[i][1], motor_angles_arm);
+    move_to_pos_wait(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+
+    if ((abs(data[i][0]-data[i+1][0]) > 2) || (abs(data[i][1]-data[i+1][1]) > 2))
+    { 
+      Serial.println("MOVE");
+      stepperGoToPos(20);
+      delay(200);
+      inverse_kinematics( data[i+1][0] , data[i+1][1], motor_angles_arm);
+      move_to_pos_wait(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+      stepperGoToPos(17);
+      delay(200);
+    }
+    //stepperGoToPos(16);
+    //delay(100); 
+  }*/
+
+
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  /*pick(servoGripper, dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+  
+  delay(3000);
+
+  place(servoGripper, dynaArm, MOTOR_IDS_ARM, motor_angles_arm);*/
+
+  /*index_color(dynaCar, MOTOR_IDS_CAR, 2);
+
+  pick(servoGripper, dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+
+  float pixelPos[2];
+
+  for (int pix = 0 ; pix != 49 ; pix++)
+  {
+    
+    pixel_to_pos(pix, pixelPos, nbColumn );
+    inverse_kinematics( pixelPos[0] , pixelPos[1], motor_angles_arm);
+    move_to_pos_wait(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+    stepperGoToPos(16);
+    delay(50);
+    stepperGoToPos(22);
+  }
+  for (int pix = 45 ; pix != 2495 ; pix=pix+50)
+  {
+    pixel_to_pos(pix, pixelPos, nbColumn );
+    inverse_kinematics( pixelPos[0] , pixelPos[1], motor_angles_arm);
+    move_to_pos_wait(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+    stepperGoToPos(16);
+    delay(50);
+    stepperGoToPos(22); 
+  }
+  for (int pix = 2499 ; pix != 2450 ; pix--)
+  {
+    pixel_to_pos(pix, pixelPos, nbColumn );
+    inverse_kinematics( pixelPos[0] , pixelPos[1], motor_angles_arm);
+    move_to_pos_wait(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+    stepperGoToPos(16);
+    delay(50);
+    stepperGoToPos(22); 
+  }
+  for (int pix = 2450 ; pix != 0 ; pix=pix-50)
+  {
+    pixel_to_pos(pix, pixelPos, nbColumn );
+    inverse_kinematics( pixelPos[0] , pixelPos[1], motor_angles_arm);
+    move_to_pos_wait(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+    stepperGoToPos(16);
+    delay(50);
+    stepperGoToPos(22); 
+  }
+
+  place(servoGripper, dynaArm, MOTOR_IDS_ARM, motor_angles_arm);*/
+
+  // prior code 
+
+  
+            
+  
+
+    /*
+    ///////////////////////////////// CALIBRATION POSITIONS /////////////////////////////////
+  inverse_kinematics(-159.01, 96.75, motor_angles_arm);
+  move_to_pos_wait(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+  index_color(dynaCar, MOTOR_IDS_CAR, servoCarrousel, 2);
+  while(1){
+    getArmMotorAngles(dynaArm, MOTOR_IDS_ARM, motor_angles_arm);
+    delay(1000);  
+  }
+/////////////////////////////////////////////////////////////////////////////////////////
+*/
 }

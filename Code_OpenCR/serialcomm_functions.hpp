@@ -29,14 +29,21 @@ const int BAUDRATE = 9600;
 
 class String;
 
-struct PixelData {
+struct DrawData {
     int color = 1;
     int rows = 0;
     int cols = 0;
     std::vector<int> positions;
+    int style = 1;
 };
 
-extern PixelData Data;
+struct JogData {
+    int pos_x = 0;
+    int pos_y = 0;
+};
+
+extern DrawData Data;
+extern JogData Jog;
 // ========= Functions prototype ========
 
 void comm_init();
@@ -51,15 +58,15 @@ void init_matrix(int size);
 
 std::vector<std::string> Split_msg(String inputString);
 
-void print_data();
-
 bool decode_pixel(std::vector<std::string> parts);
 
 bool decode_lignes(std::vector<std::string> parts);
 
 bool decode_jog(std::vector<std::string> parts);
 
-void ChangeAction();
+int change_action();
+
+void print_data();
 
 
 #endif

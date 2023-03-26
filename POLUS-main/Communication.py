@@ -14,15 +14,16 @@ def port_init():
     port = "COM5"
     baudrate = 57600
 
-    # ser = choose_port(baudrate)
-
+    ser = choose_port(baudrate)
+    """
     if check_port(port):
         print(f"{port} exists")
     else:
         print(f"\033[31m{port} n'existe pas.\033[0m")
         return False
+    """
 
-    ser = serial.Serial(port, baudrate)
+    #ser = serial.Serial(port, baudrate)
 
     if not ser.isOpen():
         print("\033[31mImpossible d'ouvrir la liaison série.\033[0m")
@@ -40,15 +41,13 @@ def check_port(port):
 # Choisi l'un des ports disponibles (Ne fonctionne pas)
 def choose_port(baudrate):
     ports = serial.tools.list_ports.comports()
-    for p in ports:
-        port = p[0]
-        print(port)
-        if port != "COM7":
-            ser = serial.Serial(port, baudrate)
-            if ser.isOpen():
-                print(f"{port} connecté")
-                return ser
-    return ser
+    print("ports disponibles:")
+    for i, port in enumerate(ports):
+        print(f"{i}: {port[0]} ({port[1]})")
+    selection = int(input("selection du numéro du port de la liste (ex.'3'): "))
+    port_name = ports[selection][0]
+    ser_manual = serial.Serial(port_name, baudrate)
+    return ser_manual
     
         
 
@@ -86,6 +85,15 @@ def msg_lignes(msg):
     send_data(msg)
     # à coder
 
+def msg_lignes(msg):
+    msg = sync_msg
+
+    msg += "pixellinges"
+
+    send_data(msg)
+    # à coder
+
+
 # Place l'effecteur à la position X et Y désiré
 def msg_jog(pos_x, pos_y):
     msg = sync_msg
@@ -100,6 +108,21 @@ def msg_jog(pos_x, pos_y):
 def stop_msg():
     msg = sync_msg
     msg += "stop"
+    send_data(msg)
+
+def pause_msg():
+    msg = sync_msg
+    msg += "pause"
+    send_data(msg)
+
+def play_msg():
+    msg = sync_msg
+    msg += "play"
+    send_data(msg)
+
+def reprendre_msg():
+    msg = sync_msg
+    msg += "reprendre"
     send_data(msg)
 
 # Envoi du message construit
