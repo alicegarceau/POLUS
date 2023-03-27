@@ -288,7 +288,7 @@ bool shouldStop()
       action = change_action();
     }
   }
-  if (action == 1)  return true
+  if (action == 1)  return true;
   return false;
 }
 

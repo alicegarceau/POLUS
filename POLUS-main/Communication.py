@@ -105,22 +105,22 @@ def msg_jog(pos_x, pos_y):
 
     send_data(msg)
 
-def stop_msg():
+def msg_stop():
     msg = sync_msg
     msg += "stop"
     send_data(msg)
 
-def pause_msg():
+def msg_pause():
     msg = sync_msg
     msg += "pause"
     send_data(msg)
 
-def play_msg():
+def msg_play():
     msg = sync_msg
     msg += "play"
     send_data(msg)
 
-def reprendre_msg():
+def msg_reprendre():
     msg = sync_msg
     msg += "reprendre"
     send_data(msg)

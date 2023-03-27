@@ -10,7 +10,8 @@
 
 #include "serialcomm_functions.hpp"
 
-PixelData Data;
+DrawData Data;
+JogData Jog;
 std::time_t last_time = std::time(nullptr);
 
 // ========= Functions ========
@@ -54,12 +55,12 @@ bool get_msg()
   String inputString = Serial.readStringUntil('\n');
   if (inputString.startsWith("sync")) {
     //Serial.print("Message reçu: ");
-    //Serial.println(inputString);
+    //Serial.println(inputString);    
     std::vector<std::string> parts = Split_msg(inputString);
     
     // déterminer le type de message
     if (parts[1] == "jog") return decode_jog(parts);
-    else decode_pixel(parts);
+    else if (parts[1] == "pixels") decode_pixel(parts);
     else return false;
   }
   else {
@@ -136,7 +137,7 @@ bool decode_jog(std::vector<std::string> parts){
 
       // Envoyer le message d'acquittement
       Serial.write(acquittement.c_str(), acquittement.size());
-      return true:
+      return true;
   }
   else {
     // Définir le message d'erreur
@@ -154,32 +155,27 @@ int change_action(){
   {
     String inputString = Serial.readStringUntil('\n');
     if(inputString.startsWith("sync,stop")) 
-    {
-      //StopEmile();    
+    { 
       Serial.println("Arrêt demandé");
       return 1;
     }
     else if(inputString.startsWith("sync,pause"))
     {
-      //PauseEmile();
       Serial.println("Pause demandé");
       return 2;
     }
     else if(inputString.startsWith("sync,play"))
     {
-      //PlayEmile();
       Serial.println("Play demandé");
       return 3;
     } 
     else if(inputString.startsWith("sync,reprendre"))
     {
-      //ReprendreEmile();
       Serial.println("reprendre demandé");
       return 4;
     }
     else if(inputString.startsWith("sync,done"))
     {
-      //ReprendreEmile();
       Serial.println("Done demandé");
       return 5;
     }

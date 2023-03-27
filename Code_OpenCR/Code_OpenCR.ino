@@ -123,10 +123,13 @@ void loop()
   for (int i = 0; i < Data.positions.size(); i++)
   {
     Coord[i] = Data.positions[i];
-  }  
+  } 
   
-  pixelignation(Coord, Data.positions.size(), Data.cols, dynaArm, MOTOR_IDS_ARM, motor_angles_arm, 
-    servoGripper, dynaCar, MOTOR_IDS_CAR, servoCarrousel, Data.color);    
+  pixelisation(Coord, Data.positions.size(), Data.cols, dynaArm, MOTOR_IDS_ARM, motor_angles_arm, 
+    servoGripper, dynaCar, MOTOR_IDS_CAR, servoCarrousel, Data.color);   
+  
+  // pixelignation(Coord, Data.positions.size(), Data.cols, dynaArm, MOTOR_IDS_ARM, motor_angles_arm, 
+  //   servoGripper, dynaCar, MOTOR_IDS_CAR, servoCarrousel, Data.color);    
 
   delay(1000);
     
