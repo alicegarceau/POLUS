@@ -51,7 +51,7 @@ if __name__ == "__main__":
     #interface = UI.Application()
     
     # Initialiser la communication
-    if Communication.port_init() is True:
+    #if Communication.port_init() is True:
         
         # Envoyer 
 
@@ -63,4 +63,4 @@ if __name__ == "__main__":
             if msg_coords:
                 Communication.msg_pixels(index_crayon_carrousel, interface.nb_carrés, interface.nb_carrés, msg_coords)
                 
-            
+    
