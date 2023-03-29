@@ -66,11 +66,14 @@ Sur un PC Windows :
 * Ouvrir le fichier Code_OpenCR.ino dans Arduino IDE et brancher la carte OpenCR à l'ordinateur. Dans Arduino IDE, sélectionner le "board" OpenCR et téléverser le code.
 * Brancher la carte OpenCR à votre ordinateur avec un fil micro-USB
 * Installer les librairies suivantes:
-  * Python:
-    * pyserial
- - etc.
-  * C++:
- - etc.
+  * Python:  
+    &emsp;&ensp;&nbsp;pyserial  
+    &emsp;&emsp;blabla  
+    &emsp;&emsp;&ensp;blabla  
+  * C++:  
+    &emsp;&emsp;&ensp;blabla  
+    &emsp;&emsp;&ensp;blabla  
+    &emsp;&emsp;&ensp;blabla  
 
 ## Exécuter le programme
 [!!! Alice : Insérer captures d'écran du UI avec un example pour l'image de Stitch]
