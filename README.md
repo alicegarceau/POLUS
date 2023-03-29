@@ -67,7 +67,7 @@ Sur un PC Windows :
 * Brancher la carte OpenCR à votre ordinateur avec un fil micro-USB
 * Installer les librairies suivantes:
   * Python:
-  pyserial
+    * pyserial
  - etc.
   * C++:
  - etc.
