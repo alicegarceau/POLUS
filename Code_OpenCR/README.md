@@ -4,7 +4,8 @@ Ce fichier contient toutes les fonctions en C++ qui s'exécutent sur la carte Op
 
 ## Fichiers
 
-- __actuators.cpp__ : Ce fichier contient toutes les fonctions qui controllent les différents actuateurs du projet POLUS.
+- __actuators.cpp__ : Ce fichier contient les fonctions qui controllent les différents actuateurs du projet POLUS, sauf le moteur pas à pas de l'axe Z.
+- __stepperZ.cpp__ : Ce fichier contient les fonctions qui controllent le moteur pas à pas de l'axe Z. 
 - __inverseKinematics.cpp__ : Ce fichier reçoit en entré une valeur cartésienne (X,Y) et retourne deux angles pour les moteurs du bras scara.
 - __Code_OpenCR.ino__ : Ce fichier est le fichier "main" s'exécutant sur la carte OpenCR.
 
