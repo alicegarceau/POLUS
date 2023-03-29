@@ -61,16 +61,21 @@ Installer les inserts filetés avec un fer à souder à environ 300 deg C dans t
 
 
 ## Installation
-Sur le RaspberryPi :
-* Installer Raspberry Pi OS sur la carte microSD
-* [!!! P-O : ajouter autres étapes de config]
 
 Sur un PC Windows :
 * Ouvrir le fichier Code_OpenCR.ino dans Arduino IDE et brancher la carte OpenCR à l'ordinateur. Dans Arduino IDE, sélectionner le "board" OpenCR et téléverser le code.
-* Brancher la carte OpenCR au Raspberry Pi avec un fil micro-USB
+* Brancher la carte OpenCR à votre ordinateur avec un fil micro-USB
+* Installer les librairies suivantes:
+      Python:
+              - pyserial
+              - etc.
+      C++:
+              - etc.
 
 ## Exécuter le programme
 [!!! Alice : Insérer captures d'écran du UI avec un example pour l'image de Stitch]
+
+- Choisir le port USB pour établir la liaison série avec le OpenCR
 
 ## License
 Apache Version 2.0
