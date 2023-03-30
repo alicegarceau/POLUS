@@ -29,7 +29,7 @@ const int BAUDRATE = 9600;
 
 class String;
 
-struct PixelData {
+struct DrawData {
     int color = 1;
     int rows = 0;
     int cols = 0;
@@ -37,7 +37,13 @@ struct PixelData {
     int style = 1;
 };
 
-extern PixelData Data;
+struct JogData {
+    int pos_x = 0;
+    int pos_y = 0;
+};
+
+extern DrawData Data;
+extern JogData Jog;
 // ========= Functions prototype ========
 
 void comm_init();

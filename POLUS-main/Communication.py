@@ -6,37 +6,40 @@ ser = "uninitialised"
 sync_msg = "sync,"
 msg_type = "pixels" 
 
+
 # Initialisation du port
 def port_init():
     global ser
+    
     # Configuration de la liaison série
-    # port = "/dev/ttyUSB0"
-    port = "COM5"
     baudrate = 57600
 
     ser = choose_port(baudrate)
-    """
-    if check_port(port):
-        print(f"{port} exists")
-    else:
-        print(f"\033[31m{port} n'existe pas.\033[0m")
-        return False
-        """
-
-    #ser = serial.Serial(port, baudrate)
+    
+    #ser = check_port(baudrate):
 
     if not ser.isOpen():
         print("\033[31mImpossible d'ouvrir la liaison série.\033[0m")
         return False
     return True
 
-# Vérifie si le port désiré existe dans la liste disponible
-def check_port(port):
+
+# Trouve un port disponible pour la connection
+def check_port(baudrate):
     ports = serial.tools.list_ports.comports()
-    for p in ports:
-        if port in str(p):
-            return True
-    return False
+    for port in ports:
+        try:
+            # Try to open a connection to the port
+            ser_auto = serial.Serial(port.device, baudrate, timeout=1)
+
+            # If the connection is successful, print the port name and close the connection
+            print("Connected to " + port.device)
+
+        except (OSError, serial.SerialException):
+            # If the connection fails, move on to the next port
+            pass
+    return ser_auto
+
 
 # Choisi l'un des ports disponibles (Ne fonctionne pas)
 def choose_port(baudrate):
@@ -48,8 +51,7 @@ def choose_port(baudrate):
     port_name = ports[selection][0]
     ser_manual = serial.Serial(port_name, baudrate)
     return ser_manual
-    
-        
+
 
 # Vérifie si le OpenCR est prêt pour recevoir un autre message
 def ready():
@@ -57,6 +59,7 @@ def ready():
     if msg.decode() == "done\n":
         return True
     return False
+
 
 # Construction du message pour l'image pixelisé
 def msg_pixels(color, rows, cols, pixels):
@@ -76,6 +79,7 @@ def msg_pixels(color, rows, cols, pixels):
 
     send_data(msg)
 
+
 # Construction du message pour l'image dessiné
 def msg_lignes(msg):
     msg = sync_msg
@@ -84,6 +88,15 @@ def msg_lignes(msg):
 
     send_data(msg)
     # à coder
+
+def msg_lignes(msg):
+    msg = sync_msg
+
+    msg += "pixellinges"
+
+    send_data(msg)
+    # à coder
+
 
 # Place l'effecteur à la position X et Y désiré
 def msg_jog(pos_x, pos_y):
@@ -96,25 +109,26 @@ def msg_jog(pos_x, pos_y):
 
     send_data(msg)
 
-def stop_msg():
+def msg_stop():
     msg = sync_msg
     msg += "stop"
     send_data(msg)
 
-def pause_msg():
+def msg_pause():
     msg = sync_msg
     msg += "pause"
     send_data(msg)
 
-def play_msg():
+def msg_play():
     msg = sync_msg
     msg += "play"
     send_data(msg)
 
-def reprendre_msg():
+def msg_reprendre():
     msg = sync_msg
     msg += "reprendre"
     send_data(msg)
+
 
 # Envoi du message construit
 def send_data(msg):

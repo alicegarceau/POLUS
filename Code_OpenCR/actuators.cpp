@@ -232,6 +232,7 @@ Servo& servoGripper, DynamixelWorkbench& carMotors, const std::vector<uint8_t>& 
   for(int i = 0; i < sizeArray; i++)
   {
     drawPoint(armMotors, arm_motor_IDs, arm_angles, pixelArray[i], nbColumn);
+    if (shouldStop()) break;
   }
 
   place(servoGripper, armMotors, arm_motor_IDs, arm_angles);
@@ -258,22 +259,37 @@ Servo& servoGripper, DynamixelWorkbench& carMotors, const std::vector<uint8_t>& 
       drawPoint(armMotors, arm_motor_IDs, arm_angles, pixelArray[i], nbColumn);
       i++;
     }
-    else{
-
-    startingPix = pixelArray[i];
-    endLine = (startingPix/nbColumn)*nbColumn + nbColumn-1;
-  
-    while(pixelArray[i+1]-pixelArray[i] == 1 || pixelArray[i] < endLine)
+    else
     {
-      i++;
-    }
-    endingPix = pixelArray[i];
+      startingPix = pixelArray[i];
+      endLine = (startingPix/nbColumn)*nbColumn + nbColumn-1;
+    
+      while(pixelArray[i+1]-pixelArray[i] == 1 || pixelArray[i] < endLine)
+      {
+        i++;
+      }
+      endingPix = pixelArray[i];
 
-    drawLine(armMotors, arm_motor_IDs, arm_angles, startingPix, endingPix, nbColumn);
+      drawLine(armMotors, arm_motor_IDs, arm_angles, startingPix, endingPix, nbColumn);
     }
+    if (shouldStop()) break;
   }
   
   place(servoGripper, armMotors, arm_motor_IDs, arm_angles);
+}
+
+bool shouldStop()
+{
+  int action = change_action();
+  if (action == 2)
+  {
+    while(action != 4 || action != 1);
+    {
+      action = change_action();
+    }
+  }
+  if (action == 1)  return true;
+  return false;
 }
 
 void getArmMotorAngles(DynamixelWorkbench& motor, const std::vector<uint8_t> motor_IDs, float angles[2])

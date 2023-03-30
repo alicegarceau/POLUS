@@ -5,6 +5,7 @@
 #include <vector>
 #include <DynamixelWorkbench.h>
 #include <math.h>
+#include <ctime>
 
 class DynamixelWorkbench;
 

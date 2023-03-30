@@ -18,3 +18,5 @@ main.py : fonction main
 pixeliser_image.html : html de la documentation du traitement d'image avec pydoc
 
 pixeliser_image.py : fonctions utilisées pour le traitement d'image
+
+communication.py : Fonctions pour initialiser une liaison série, trouver un port disponible, construire et envoyer des messages à l'OpenCR, et lire l'acquittement de ces messages.
