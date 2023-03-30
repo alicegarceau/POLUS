@@ -13,7 +13,7 @@ Ce fichier contient toutes les fonctions en C++ qui s'exécutent sur la carte Op
 
 L'image suivante démontre la relation entre le code s'exécutant sur le Raspberry Pie et la carte OpenCR.
 
-![image](Diagramme_états.png "Image")
+![image](Diagramme_etats_code.png "Image")
 
 
 
