@@ -1,6 +1,4 @@
-# Fichier Code_OpenCR
-
-Ce fichier contient toutes les fonctions en C++ qui s'exécutent sur la carte OpenCR.
+Le dossier Code_OpenCR contient toutes les fonctions en C++ qui s'exécutent sur la carte OpenCR.
 
 ## Fichiers
 
