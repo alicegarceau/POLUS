@@ -10,7 +10,7 @@
 
 ## Requis matériels
 ### Impression 3D
-Sur une imprimante 3D avec une capacité d'au moins 250 x 250 x 200mm, imprimer tous les fichiers dans le dossier STL [!!! mettre un lien]
+Sur une imprimante 3D avec une capacité d'au moins 250 x 250 x 200mm, imprimer tous les fichiers dans le dossier ([STLs](https://github.com/alicegarceau/POLUS/tree/main/V1_STLs))
 
 ### Autres composants mécaniques
 - [ ] 1 x Paquet de crayons feutres ([Amazon](https://www.amazon.ca/-/fr/dp/B01LXRJKVY?psc=1&))
