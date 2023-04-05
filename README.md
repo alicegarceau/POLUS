@@ -58,6 +58,19 @@ Installer les inserts filetés avec un fer à souder à environ 300 deg C dans t
 * Arduino IDE version 2 ([arduino](https://www.arduino.cc/en/software))
 * Paquet Open-CR du Boards Manager : suivre les instructions d'installation pour Windows ([opencr](https://emanual.robotis.com/docs/en/parts/controller/opencr10/#install-on-windows))
 
+### Fichiers de code du OpenCR
+
+- __actuators.cpp__ : Ce fichier contient les fonctions qui controllent les actuateurs du projet POLUS, sauf le moteur pas à pas de l'axe Z.
+- __stepperZ.cpp__ : Ce fichier contient les fonctions qui controllent le moteur pas à pas de l'axe Z. 
+- __inverseKinematics.cpp__ : Ce fichier reçoit en entré une valeur cartésienne (X,Y) et retourne deux angles pour les moteurs du bras scara.
+- __serialcomm_functions.cpp__: Permet de lire des données depuis un port série, les diviser en parties distinctes et appeler la fonction correspondante en fonction du type de message envoyé.
+- __Code_OpenCR.ino__ : Ce fichier est le fichier "main" s'exécutant sur la carte OpenCR.
+
+### Diagramme d'état du code
+
+L'image suivante démontre la relation entre le code s'exécutant sur l'ordinateur (interface utilisateur) et la carte OpenCR.
+
+![image](Diagramme_etats_code.png "Image")
 
 ## Installation
 
