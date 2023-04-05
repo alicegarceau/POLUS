@@ -1,7 +1,15 @@
 /*
-Project:     SCARUS
-Description: Main code that moves the motors. To be run from the OpenCR.
-Authors: Alec Gagnon,      gaga2120
+Projet: POLUS
+Description: Méthode principale (main) qui gère la communication et les actions du robot à haut niveau
+Auteurs: Frédérik Desaulniers – DESF3105
+         Pierre-Olivier Dupont – DUPP2408
+         Alice Garceau – GARA2507
+         Enrick Hébert – HEBE2701
+         Émile Michaud – MICE1602
+
+Inspiré du travail original de :
+Projet:     SCARUS
+Auteurs: Alec Gagnon,      gaga2120
          Étienne Lefebvre, lefe1001
          Robin Mailhot,    mair1803
          Charles Caya,     cayc2401
