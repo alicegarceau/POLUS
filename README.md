@@ -28,7 +28,6 @@ Sur une imprimante 3D avec une capacité d'au moins 250 x 250 x 200mm, imprimer 
 - [ ] 6 x Attaches de plastique (Tyrap) 3 x 100mm min
 
 ### Composants électriques
-- [ ] 1 x Raspberry Pi 4 Model B, 4GB avec carte micro SD et bloc d'alimentation
 - [ ] 1 x Fil micro-USB de 0.3m
 - [ ] 1 x Microcontrôleur OpenCR 1.0 
 - [ ] 2 x Servomoteurs Dynamixel XM430-W350
