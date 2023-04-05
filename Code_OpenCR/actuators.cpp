@@ -1,3 +1,19 @@
+/*
+Projet: POLUS
+Description: Fonctions qui gerent les actuateurs à haut niveau
+Auteurs: Frédérik Desaulniers – DESF3105
+         Pierre-Olivier Dupont – DUPP2408
+         Alice Garceau – GARA2507
+         Enrick Hébert – HEBE2701
+         Émile Michaud – MICE1602
+Fonctions move_to_pos() et move_to_pos_wait() inspirées du travail original de :
+Projet:     SCARUS
+Auteurs: Alec Gagnon,      gaga2120
+         Étienne Lefebvre, lefe1001
+         Robin Mailhot,    mair1803
+         Charles Caya,     cayc2401
+*/
+
 #include "actuators.hpp"
 #include "stepperZ.hpp"
 #include "inverseKinematics.hpp"
@@ -18,13 +34,15 @@ const float YCarIn = 96.75;
 const float XCarOut = -144.93;
 const float YCarOut = 107.01;
 
-// Convertir un angle a une valeur pour moteur Dynamixel
+
+/// Custom function to convert an angle to a value that can be sent
+/// to the Dynamixel motors.
 int32_t degrees_to_int(const float angle)
 {
     return (int32_t)(4095*(angle+180)/360);
 }
 
-// Bouger le moteur à une position donnée
+/// Moves the motors to a wanted position.
 void move_to_pos(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor_IDs, float angles[2])
 {
     for (size_t i = 0; i < motor_IDs.size(); ++i)
@@ -33,7 +51,7 @@ void move_to_pos(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor_ID
     }
 }
 
-// Appeler move_to_pos et atteint que le mouvement soit fini
+/// Calls move_to_pos and waits until the movements are complete.
 bool move_to_pos_wait(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor_IDs, float angles[2])
 {
     bool move_complete = false;
@@ -64,7 +82,6 @@ bool move_to_pos_wait(DynamixelWorkbench& motor, const std::vector<uint8_t>& mot
     }
 }
 
-// Initialiser les moteurs
 void init_motors(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor_IDs)
 {
     for (size_t i = 0; i < motor_IDs.size(); ++i)
@@ -79,7 +96,6 @@ void init_motors(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor_ID
     }
 }
 
-// Bouger les moteurs à la position de départ
 void go_to_home_arm(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor_IDs, float motor_angles[2])
 {
     for (int i = 0; i < motor_IDs.size(); ++i)
@@ -90,7 +106,6 @@ void go_to_home_arm(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor
     move_to_pos_wait(motor, motor_IDs, motor_angles);
 }
 
-// Départ des moteurs
 void start_motors(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor_IDs)
 {
     for (size_t i = 0; i < motor_IDs.size(); ++i)
@@ -99,7 +114,6 @@ void start_motors(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor_I
     }
 }
 
-// Arrêt des moteurs
 void stop_motors(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor_IDs)
 {
     for (size_t i = 0; i < motor_IDs.size(); ++i)
@@ -108,7 +122,6 @@ void stop_motors(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor_ID
     }
 }
 
-// Ouvrir la pince
 void open_gripper(Servo& servoGripper)
 {
   while(servoGripper.read()!=140)
@@ -117,7 +130,6 @@ void open_gripper(Servo& servoGripper)
   }
 }
 
-// Fermer la pince
 void close_gripper(Servo& servoGripper)
 {
   while(servoGripper.read()!=0)
@@ -128,7 +140,6 @@ void close_gripper(Servo& servoGripper)
 }
 
 
-// Indexer le carrousel à une couleur donnée
 void index_color(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor_IDs, Servo& servoCarrousel, int colorIndex)
 {
     if(colorIndex >= nbAvailableColors)
@@ -153,7 +164,6 @@ void index_color(DynamixelWorkbench& motor, const std::vector<uint8_t>& motor_ID
 
 }
 
-// Prendre un crayon donné dans le carrousel
 void pick(Servo& servoGripper, DynamixelWorkbench& motor, const std::vector<uint8_t> motor_IDs, float angles[2])
 {
   stepperGoToPos(crayonApproach);
@@ -175,7 +185,6 @@ void pick(Servo& servoGripper, DynamixelWorkbench& motor, const std::vector<uint
 
 }
 
-// Déposer un crayon dans le carrousel
 void place(Servo& servoGripper, DynamixelWorkbench& motor, const std::vector<uint8_t> motor_IDs, float angles[2])
 {
   stepperGoToPos(crayonRetreat);
@@ -192,7 +201,6 @@ void place(Servo& servoGripper, DynamixelWorkbench& motor, const std::vector<uin
   delay(1000);
 }
 
-// Convertir une position de pixel en coordonnées XY
 void pixel_to_pos(int pixel, float pixelPos[2], int nbColumn)
 {
   int goalRow = pixel / nbColumn;
@@ -201,7 +209,6 @@ void pixel_to_pos(int pixel, float pixelPos[2], int nbColumn)
   pixelPos[1] = 250 - (goalRow * 3);
 }
 
-// Déplacer et dessiner un point 
 void drawPoint(DynamixelWorkbench& motor, const std::vector<uint8_t> motor_IDs, float angles[2], int pixel, int nbColumn)
 {
   
@@ -214,7 +221,23 @@ void drawPoint(DynamixelWorkbench& motor, const std::vector<uint8_t> motor_IDs, 
   stepperGoToPos(pixelApproach);
 }
 
-// Prendre un crayon, dessiner tous les points d'une couleur et déposer le crayon
+void drawLine(DynamixelWorkbench& motor, const std::vector<uint8_t> motor_IDs, float angles[2], int startingPix, int endingPix, int nbColumn)
+{
+  float pixelStartPos[2];
+  float pixelEndPos[2];
+  pixel_to_pos(startingPix, pixelStartPos, nbColumn);
+  pixel_to_pos(endingPix, pixelEndPos, nbColumn);
+  inverse_kinematics( pixelStartPos[0] , pixelStartPos[1], angles);
+  move_to_pos_wait(motor, motor_IDs, angles);
+  stepperGoToPos(pixelDraw);
+
+  for(float moveX = pixelStartPos[0]; pixelStartPos[0]+moveX < pixelEndPos[0]; moveX = moveX + 0.5)
+  {
+    inverse_kinematics( pixelStartPos[0] + moveX, pixelStartPos[1], angles);
+    move_to_pos_wait(motor, motor_IDs, angles);
+  }
+}
+
 void pixelisation(int* pixelArray, int sizeArray, int nbColumn, DynamixelWorkbench& armMotors, const std::vector<uint8_t> arm_motor_IDs, float arm_angles[2], 
 Servo& servoGripper, DynamixelWorkbench& carMotors, const std::vector<uint8_t>& car_motor_IDs, Servo& servoCarrousel, int carColorIndex)
 {
@@ -231,7 +254,46 @@ Servo& servoGripper, DynamixelWorkbench& carMotors, const std::vector<uint8_t>& 
   place(servoGripper, armMotors, arm_motor_IDs, arm_angles);
 }
 
-// Lire les messages d'entrées pour déterminer les prochaines actions du bras
+void pixelignation(int* pixelArray, int sizeArray, int nbColumn, DynamixelWorkbench& armMotors, const std::vector<uint8_t> arm_motor_IDs, float arm_angles[2], 
+Servo& servoGripper, DynamixelWorkbench& carMotors, const std::vector<uint8_t>& car_motor_IDs, Servo& servoCarrousel, int carColorIndex)
+{
+  bool done = false;
+  int i = 0;
+  int startingPix = 0;
+  int endingPix = 0;
+  int endLine = 0;
+
+  index_color(carMotors, car_motor_IDs, servoCarrousel, carColorIndex);
+  
+  pick(servoGripper, armMotors, arm_motor_IDs, arm_angles);
+
+  while(done != true)
+  {
+
+    if(pixelArray[i+1]-pixelArray[i] > 1)
+    {
+      drawPoint(armMotors, arm_motor_IDs, arm_angles, pixelArray[i], nbColumn);
+      i++;
+    }
+    else
+    {
+      startingPix = pixelArray[i];
+      endLine = (startingPix/nbColumn)*nbColumn + nbColumn-1;
+    
+      while(pixelArray[i+1]-pixelArray[i] == 1 || pixelArray[i] < endLine)
+      {
+        i++;
+      }
+      endingPix = pixelArray[i];
+
+      drawLine(armMotors, arm_motor_IDs, arm_angles, startingPix, endingPix, nbColumn);
+    }
+    if (shouldStop()) break;
+  }
+  
+  place(servoGripper, armMotors, arm_motor_IDs, arm_angles);
+}
+
 bool shouldStop()
 {
   int action = change_action();
@@ -246,7 +308,6 @@ bool shouldStop()
   return false;
 }
 
-// Retourner les angles des moteurs
 void getArmMotorAngles(DynamixelWorkbench& motor, const std::vector<uint8_t> motor_IDs, float angles[2])
 {
   int32_t pos0 = 0;
