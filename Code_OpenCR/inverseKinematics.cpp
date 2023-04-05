@@ -1,3 +1,13 @@
+/*
+Projet: POLUS
+Description: Fonctions qui gerent la cinematique inverse du robot
+Auteurs: Frédérik Desaulniers – DESF3105
+         Pierre-Olivier Dupont – DUPP2408
+         Alice Garceau – GARA2507
+         Enrick Hébert – HEBE2701
+         Émile Michaud – MICE1602
+*/
+
 #include "inverseKinematics.hpp"
 const float epauleRatio = 1.667;
 const float LA = 150; //mm
