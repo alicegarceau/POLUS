@@ -42,17 +42,22 @@ Sur une imprimante 3D avec une capacité d'au moins 250 x 250 x 200mm, imprimer 
 ![image](SchemaElectrique.png "Image")
 
 ### Assemblage mécanique
+
 Installer les inserts filetés avec un fer à souder à environ 300 deg C dans toutes les pièces qui doivent en recevoir.
 
 [!!! Enrick : Insérer vues explosées des sections du robot]
 
 #### Avant-bras et pince
 
+![image](Arm.png "Image")
+
 #### Bras et épaule (plateforme mobile en Z)
 
 #### Base
+![image](Base.png "Image")
 
 #### Carousel
+![image](Carrousel.png "Image")
 
 ## Requis logiciels
 * Arduino IDE version 2 ([arduino](https://www.arduino.cc/en/software))
