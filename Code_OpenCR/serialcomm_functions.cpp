@@ -1,11 +1,11 @@
 /*
-  Project:      CAGIUS
-  Description:  Function Serial Com.
-  Authors:      Florence Millette
-                Aissatou
-                Alexandre
-                Laurie Croteau
-                Natael Laroche-Latulippe
+Projet: POLUS
+Description: Fonctions qui gerent les actuateurs à haut niveau
+Auteurs: Frédérik Desaulniers – DESF3105
+         Pierre-Olivier Dupont – DUPP2408
+         Alice Garceau – GARA2507
+         Enrick Hébert – HEBE2701
+         Émile Michaud – MICE1602
 */
 
 #include "serialcomm_functions.hpp"
@@ -25,12 +25,12 @@ void comm_init()
  */
   Serial.begin(BAUDRATE);
   while (!Serial) {
-    ; // wait for serial port to connect. Needed for native USB
+    ; // Attendre que la connexion soit etablie
   }
 }
 
-// Alloue la mémoire de la liste des positions.
 void init_positions(int size) 
+// Alloue la mémoire de la liste des positions.
 {
     std::vector<int> temp(size);
     Data.positions = temp;
@@ -49,8 +49,8 @@ void next_msg()
   }
 }
 
-// Lit les données du port série et appelle la bonne fonction selon le type de message envoyé.
 bool get_msg()
+// Lit les données du port série et appelle la bonne fonction selon le type de message envoyé.
 {
   String inputString = Serial.readStringUntil('\n');
   if (inputString.startsWith("sync")) {
@@ -69,8 +69,8 @@ bool get_msg()
   }
 }
 
-// Divise la chaîne d'entrée en parties distinctes.
 std::vector<std::string> Split_msg(String inputString)
+// Divise la chaîne d'entrée en parties distinctes.
 {
   std::string inputStr = inputString.c_str(); // Convert to std::string
   std::vector<std::string> parts;
