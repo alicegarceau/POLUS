@@ -1,6 +1,6 @@
 /*
 Projet: POLUS
-Description: Fonctions qui gerent la cinematique inverse du robot
+Description: Fonctions qui gerent la cinematique inverse du robot 
 Auteurs: Frédérik Desaulniers – DESF3105
          Pierre-Olivier Dupont – DUPP2408
          Alice Garceau – GARA2507
