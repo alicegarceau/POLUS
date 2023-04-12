@@ -63,8 +63,8 @@ Installer les inserts filetés avec un fer à souder à environ 300 deg C dans t
 
 ### Fichiers de code du OpenCR
 Le dossier Code_OpenCR contient toutes les fonctions en C++ qui s'exécutent sur la carte OpenCR.
-- __actuators.cpp__ : Ce fichier contient les fonctions qui controllent les actuateurs du projet POLUS, sauf le moteur pas à pas de l'axe Z.
-- __stepperZ.cpp__ : Ce fichier contient les fonctions qui controllent le moteur pas à pas de l'axe Z. 
+- __actuators.cpp__ : Ce fichier contient les fonctions qui contrôlent les actuateurs du projet POLUS, sauf le moteur pas à pas de l'axe Z.
+- __stepperZ.cpp__ : Ce fichier contient les fonctions qui contrôlent le moteur pas à pas de l'axe Z. 
 - __inverseKinematics.cpp__ : Ce fichier reçoit en entré une valeur cartésienne (X,Y) et retourne deux angles pour les moteurs du bras scara.
 - __serialcomm_functions.cpp__: Permet de lire des données depuis un port série, les diviser en parties distinctes et appeler la fonction correspondante en fonction du type de message envoyé.
 - __Code_OpenCR.ino__ : Ce fichier est le fichier "main" s'exécutant sur la carte OpenCR.
