@@ -6,21 +6,24 @@ from PIL import ImageTk, Image
 import threading
 import os
 
+# Fichiers
+
+    
+# Résolution
+nb_carrés = 50
+dim_feuille = 150
+
+# Flags
+lock_traitement = threading.Lock()
 
 class Application(threading.Thread):
     nom_fichier_image_og = 'image_in.jpg'
     nom_fichier_image_pixélisée = 'image_pix.png'
     nom_fichier_image_sortie = 'image_result.png'
     fichier_csv = 'RGB_20.csv'
-    nb_carrés = 50
-    dim_feuille = 150
-    lock_traitement = threading.Lock()
+
     lock_traitement.acquire()
     isrunning = True
-    window_test = Tk()
-    imagebox = Label(window_test)
-    #imagebox.place(x=750, y=15)
-    imagebox.pack()
 
     def __init__(self):
         self.isrunning = True
@@ -28,33 +31,13 @@ class Application(threading.Thread):
         self.start()
         self.creer_interface()
 
-    def creer_images(self,imagefile):
-        # IMAGES
-        # Ouvrir et placer l'image originale
-        cur_path = os.path.dirname(__file__)
-        image1 = os.path.join(cur_path,imagefile)
-        image = ImageTk.PhotoImage(file=image1)
-        self.imagebox.config(image=image, height=500, width=500, anchor=E)
-        self.imagebox.image = image
-
-        print(image1)
-        """
-        # Ouvrir et placer l'image du résultat attendu
-        cur_path = os.path.dirname(__file__)
-        image2 = os.path.join(cur_path,self.nom_fichier_image_sortie)
-        image2 = Image.open(image2)
-        image2_resized = image2.resize((500,500))
-        im_result = ImageTk.PhotoImage(image2_resized)
-        label_im_result = Label(self.tab1,image=im_result)
-        label_im_result.image = im_result
-        label_im_result.place(x=750, y=20+height_window+500)
-        """
+    # fonction pour changer l'état
 
     def creer_interface(self):
         # CRÉER L'INTERFACE
         # Créer la fenêtre
-        #self.window_test = Tk()
-        self.window_test.title("POLUS")
+        self.window_test = Tk()
+        self.window_test.title("POLUS - TESTS")
         # Avoir la grandeur de l'écran pour définir comme la grandeur de la window
         width_screen = self.window_test.winfo_screenwidth()
         height_screen = self.window_test.winfo_screenheight()
@@ -99,7 +82,7 @@ class Application(threading.Thread):
 
         # Créer l'entrée pour le fichier d'origine
         default_entry_img_in = StringVar()
-        default_entry_img_in.set("burger.jpg")
+        default_entry_img_in.set("image_in.jpg")
         self.entry_img_in = Entry(self.tab1,fg="black", bg="white", width=25,textvariable = default_entry_img_in)
         self.entry_img_in.place(x=350, y=60)
 
@@ -117,14 +100,14 @@ class Application(threading.Thread):
 
         # Créer l'entrée pour le fichier CSV
         default_entry_csv = StringVar()
-        default_entry_csv.set("RGB_20.csv")
+        default_entry_csv.set("RGB_48.csv")
         self.entry_csv = Entry(self.tab1,fg="black", bg="white", width=25, textvariable = default_entry_csv)
         self.entry_csv.place(x=350, y=180)
 
         # Créer le bouton ok noms de fichiers
         button_ok_fichiers = Button(self.tab1,text="Envoyer les noms de fichiers", width=69, height=1, bg="white", fg="black", command=self.bouton_fichiers_pushed)
         button_ok_fichiers.place(x=10, y=220)
-        """
+
         # IMAGES
         # Ouvrir et placer l'image originale
         cur_path = os.path.dirname(__file__)
@@ -147,7 +130,7 @@ class Application(threading.Thread):
         label_im_result = Label(self.tab1,image=im_result)
         label_im_result.image = im_result
         label_im_result.place(x=750, y=20+height_window+500)
-        """
+
         # NB PIXELS
         # Créer le label pour le nombre de pixels
         label_nbpix = Label(self.tab1, text= "Entrer le nombre de pixels voulus")
@@ -244,32 +227,27 @@ class Application(threading.Thread):
         button_ok_carrousel = Button(self.tab2,text="Tourner le carrousel", width=25, height=1, bg="white", fg="black")#, command=input_UI.bouton_ok_coords_clicked)
         button_ok_carrousel.place(x=50, y=300)
 
-        #def Refresher():
-        #   self.window_test.after(1000,Refresher)
-
-        #Refresher()
-
         self.window_test.mainloop()
+
 
         # FONCTIONS UPDATE DATA
     def bouton_fichiers_pushed(self):
-        print('bouton pesé')
         self.nom_fichier_image_og = self.entry_img_in.get()
         self.nom_fichier_image_pixélisée = self.entry_img_pix.get()
         self.nom_fichier_image_sortie = self.entry_img_out.get()
 
-        self.creer_images(self.nom_fichier_image_og)
+        flag_fichiers_ok = 1
 
+        return
 
     def bouton_resolution_pushed(self):
-        self.nb_carrés = self.entry_nbpix.get()
-        self.dim_feuille = self.entry_dim.get()
-        self.lock_traitement.release()
-        
+        nb_carrés = self.entry_nbpix.get()
+        #dim_feuille = self.entry_dim.get()
+        lock_traitement.release()
+        return
     
     def arreter(self):
         return
-    
 
     # kill le main.py lorsqu'on clique sur le X
     # rajouter une fenêtre pour demander si on veut vrm arrêter

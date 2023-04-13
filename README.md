@@ -1,5 +1,13 @@
 # POLUS
 
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=78BupOIvDnI
+" target="_blank"><img src="http://img.youtube.com/vi/78BupOIvDnI/0.jpg" 
+alt="Dessin pixels" width="240" height="180" border="10" /></a>
+
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=hgMGZM_LDB8
+" target="_blank"><img src="http://img.youtube.com/vi/hgMGZM_LDB8/0.jpg" 
+alt="Dessin lignes" width="240" height="180" border="10" /></a>
+
 ## Table des matières
 * [Requis matériels](#requis-matériels)
 * [Assemblage](#assemblage)
@@ -10,7 +18,7 @@
 
 ## Requis matériels
 ### Impression 3D
-Sur une imprimante 3D avec une capacité d'au moins 250 x 250 x 200mm, imprimer tous les fichiers dans le dossier STL [!!! mettre un lien]
+Sur une imprimante 3D avec une capacité d'au moins 250 x 250 x 200mm, imprimer tous les fichiers dans le dossier ([STLs](https://github.com/alicegarceau/POLUS/tree/main/V1_STLs))
 
 ### Autres composants mécaniques
 - [ ] 1 x Paquet de crayons feutres ([Amazon](https://www.amazon.ca/-/fr/dp/B01LXRJKVY?psc=1&))
@@ -28,7 +36,6 @@ Sur une imprimante 3D avec une capacité d'au moins 250 x 250 x 200mm, imprimer 
 - [ ] 6 x Attaches de plastique (Tyrap) 3 x 100mm min
 
 ### Composants électriques
-- [ ] 1 x Raspberry Pi 4 Model B, 4GB avec carte micro SD et bloc d'alimentation
 - [ ] 1 x Fil micro-USB de 0.3m
 - [ ] 1 x Microcontrôleur OpenCR 1.0 
 - [ ] 2 x Servomoteurs Dynamixel XM430-W350
@@ -43,40 +50,52 @@ Sur une imprimante 3D avec une capacité d'au moins 250 x 250 x 200mm, imprimer 
 ![image](SchemaElectrique.png "Image")
 
 ### Assemblage mécanique
+
 Installer les inserts filetés avec un fer à souder à environ 300 deg C dans toutes les pièces qui doivent en recevoir.
 
-[!!! Enrick : Insérer vues explosées des sections du robot]
-
 #### Avant-bras et pince
+
+![image](Arm.png "Image")
 
 #### Bras et épaule (plateforme mobile en Z)
 
 #### Base
+![image](Base.png "Image")
 
 #### Carousel
+![image](Carrousel.png "Image")
 
 ## Requis logiciels
 * Arduino IDE version 2 ([arduino](https://www.arduino.cc/en/software))
 * Paquet Open-CR du Boards Manager : suivre les instructions d'installation pour Windows ([opencr](https://emanual.robotis.com/docs/en/parts/controller/opencr10/#install-on-windows))
 
+### Fichiers de code du OpenCR
+Le dossier Code_OpenCR contient toutes les fonctions en C++ qui s'exécutent sur la carte OpenCR.
+- __actuators.cpp__ : Ce fichier contient les fonctions qui contrôlent les actuateurs du projet POLUS, sauf le moteur pas à pas de l'axe Z.
+- __stepperZ.cpp__ : Ce fichier contient les fonctions qui contrôlent le moteur pas à pas de l'axe Z. 
+- __inverseKinematics.cpp__ : Ce fichier reçoit en entré une valeur cartésienne (X,Y) et retourne deux angles pour les moteurs du bras scara.
+- __serialcomm_functions.cpp__: Permet de lire des données depuis un port série, les diviser en parties distinctes et appeler la fonction correspondante en fonction du type de message envoyé.
+- __Code_OpenCR.ino__ : Ce fichier est le fichier "main" s'exécutant sur la carte OpenCR.
+
+### Diagramme d'état du code
+
+L'image suivante démontre la relation entre le code s'exécutant sur l'ordinateur (interface utilisateur) et la carte OpenCR.
+
+![image](Diagramme_etats_code.png "Image")
 
 ## Installation
 
 Sur un PC Windows :
 * Ouvrir le fichier Code_OpenCR.ino dans Arduino IDE et brancher la carte OpenCR à l'ordinateur. Dans Arduino IDE, sélectionner le "board" OpenCR et téléverser le code.
 * Brancher la carte OpenCR à votre ordinateur avec un fil micro-USB
-* Installer les librairies suivantes:
+* Installer les librairies suivantes avec pip:
   * Python:  
-    &emsp;&ensp;&nbsp;pyserial  
-    &emsp;&emsp;blabla  
-    &emsp;&emsp;&ensp;blabla  
-  * C++:  
-    &emsp;&emsp;&ensp;blabla  
-    &emsp;&emsp;&ensp;blabla  
-    &emsp;&emsp;&ensp;blabla  
+    pyserial  
+    [!!! Alice : à compléter]
+
 
 ## Exécuter le programme
-[!!! Alice : Insérer captures d'écran du UI avec un example pour l'image de Stitch]
+[!!! Alice : Insérer captures d'écran du UI avec un example pour une image]
 
 - Choisir le port USB pour établir la liaison série avec le OpenCR
 

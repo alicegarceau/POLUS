@@ -1,3 +1,20 @@
+/*
+Projet: POLUS
+Description: Fonctions qui gerent les actuateurs à haut niveau
+Auteurs: Frédérik Desaulniers – DESF3105
+         Pierre-Olivier Dupont – DUPP2408
+         Alice Garceau – GARA2507
+         Enrick Hébert – HEBE2701
+         Émile Michaud – MICE1602
+Fonctions degrees_to_int(), init_motors(), go_to_home_arm(), start_motors(), 
+stop_motors(), move_to_pos() et move_to_pos_wait() inspirées du travail original de :
+Projet:     SCARUS
+Auteurs: Alec Gagnon,      gaga2120
+         Étienne Lefebvre, lefe1001
+         Robin Mailhot,    mair1803
+         Charles Caya,     cayc2401
+*/
+
 #include "actuators.hpp"
 #include "stepperZ.hpp"
 #include "inverseKinematics.hpp"
