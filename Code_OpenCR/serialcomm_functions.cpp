@@ -1,11 +1,12 @@
 /*
-  Project:      CAGIUS
+  Projet:       Polus
   Description:  Function Serial Com.
-  Authors:      Florence Millette
-                Aissatou
-                Alexandre
-                Laurie Croteau
-                Natael Laroche-Latulippe
+  Auteurs:      Pierre-Olivier Dupont
+                Enrick Hébert
+                Frédérik Desaulniers
+                Alice Garceau
+                Émile Michaud
+
 */
 
 #include "serialcomm_functions.hpp"
@@ -25,7 +26,7 @@ void comm_init()
  */
   Serial.begin(BAUDRATE);
   while (!Serial) {
-    ; // wait for serial port to connect. Needed for native USB
+    ; // Attend la connexion du Serial
   }
 }
 
