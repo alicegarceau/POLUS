@@ -1,5 +1,6 @@
 # POLUS
 
+Démonstrations des habiletés de P-O le petit robot :
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=78BupOIvDnI
 " target="_blank"><img src="http://img.youtube.com/vi/78BupOIvDnI/0.jpg" 
 alt="Dessin pixels" width="240" height="180" border="10" /></a>
