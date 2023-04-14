@@ -1,5 +1,15 @@
 # POLUS
 
+Démonstrations des habiletés de P-O le petit robot :
+
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=78BupOIvDnI
+" target="_blank"><img src="http://img.youtube.com/vi/78BupOIvDnI/0.jpg" 
+alt="Dessin pixels" width="240" height="180" border="10" /></a>
+
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=hgMGZM_LDB8
+" target="_blank"><img src="http://img.youtube.com/vi/hgMGZM_LDB8/0.jpg" 
+alt="Dessin lignes" width="240" height="180" border="10" /></a>
+
 ## Table des matières
 * [Requis matériels](#requis-matériels)
 * [Assemblage](#assemblage)
