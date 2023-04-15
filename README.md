@@ -97,10 +97,17 @@ Sur un PC Windows :
 
 
 ## Exécuter le programme
-[!!! Alice : Insérer captures d'écran du UI avec un example pour une image]
+- Lancer le programme main.py
+- L'interface utilisateur suivant s'ouvre :
 ![image](https://user-images.githubusercontent.com/91690445/232227874-43189c9b-3651-40b1-a4d3-dccfd20dde41.png)
 
-- Choisir le port USB pour établir la liaison série avec le OpenCR
+- Dans l'interface utilisateur, entrer les bonnes informations dans les différents champs :
+   *** Précisions :
+   - Le fichier des RGB doit être un fichier .CSV où chaque rangée et les valeur R,G,B d'un crayon      du carrousel, la 1ère ligne du fichier correspond au crayon à l'index 1 et ainsi de suite.          C'est de cette manière que le robot sait quel crayon se trouve à quel endroit dans le              carrousel.
+   - Le nombre de pixels voulus représente le nombre de pixels pour une dimension. Dans cet              exemple, l'image dessinée fera 50x50 pixels.
+- Apuuyer sur les boutons "Envoyer les noms de fichiers" et "Envoyer la résolution de l'image".
+- Fermer l'interface graphique pour lancer le traitement d'image.
+- Dans le terminal, un message s'affiche pour choisir le port USB pour établir la liaison série avec le OpenCR (ce message peut prendre plusieurs secondes à s'afficher).
 
 ## License
 Apache Version 2.0
