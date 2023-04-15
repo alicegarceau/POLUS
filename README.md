@@ -93,8 +93,13 @@ Sur un PC Windows :
 * Installer les librairies suivantes avec pip:
   * Python:  
     pyserial  
-    [!!! Alice : à compléter]
-
+    threading
+    PIL
+    os
+    csv
+    numpy
+    colormath
+    tkinter
 
 ## Exécuter le programme
 - Lancer le programme main.py
@@ -103,11 +108,12 @@ Sur un PC Windows :
 
 - Dans l'interface utilisateur, entrer les bonnes informations dans les différents champs :
    *** Précisions :
-   - Le fichier des RGB doit être un fichier .CSV où chaque rangée et les valeur R,G,B d'un crayon      du carrousel, la 1ère ligne du fichier correspond au crayon à l'index 1 et ainsi de suite.          C'est de cette manière que le robot sait quel crayon se trouve à quel endroit dans le              carrousel.
-   - Le nombre de pixels voulus représente le nombre de pixels pour une dimension. Dans cet              exemple, l'image dessinée fera 50x50 pixels.
-- Apuuyer sur les boutons "Envoyer les noms de fichiers" et "Envoyer la résolution de l'image".
+   - Le fichier des RGB doit être un fichier .CSV où chaque rangée contient les valeur R,G,B d'un crayon du carrousel. La 1ère ligne du fichier correspond au crayon à      l'index 1 et ainsi de suite. C'est de cette manière que le robot sait quel crayon se trouve à quel endroit dans le carrousel.
+   - Le nombre de pixels voulus représente le nombre de pixels pour une dimension. Dans cet exemple, l'image dessinée fera 50x50 pixels.
+- Appuyer sur les boutons "Envoyer les noms de fichiers" et "Envoyer la résolution de l'image".
 - Fermer l'interface graphique pour lancer le traitement d'image.
-- Dans le terminal, un message s'affiche pour choisir le port USB pour établir la liaison série avec le OpenCR (ce message peut prendre plusieurs secondes à s'afficher).
+- Dans le terminal, un message s'affiche pour choisir le port USB pour établir la liaison série avec le OpenCR (ce message peut prendre plusieurs secondes à             s'afficher).
+- L'utilisateur n'a plus rien à faire à partir d'ici.
 
 ## License
 Apache Version 2.0
