@@ -98,6 +98,7 @@ Sur un PC Windows :
 
 ## Exécuter le programme
 [!!! Alice : Insérer captures d'écran du UI avec un example pour une image]
+![image](https://user-images.githubusercontent.com/91690445/232227874-43189c9b-3651-40b1-a4d3-dccfd20dde41.png)
 
 - Choisir le port USB pour établir la liaison série avec le OpenCR
 
