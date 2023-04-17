@@ -90,8 +90,7 @@ L'image suivante démontre la relation entre le code s'exécutant sur l'ordinate
 Sur un PC Windows :
 * Ouvrir le fichier Code_OpenCR.ino dans Arduino IDE et brancher la carte OpenCR à l'ordinateur. Dans Arduino IDE, sélectionner le "board" OpenCR et téléverser le code.
 * Brancher la carte OpenCR à votre ordinateur avec un fil micro-USB
-* Installer les librairies suivantes avec pip:
-  * Python:
+* Installer les librairies Python suivantes avec pip:
    - pyserial
    - threading
    - PIL
