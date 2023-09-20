@@ -6,7 +6,7 @@
 
 //Declare pins
 #define PIN_STP 0
-#define PIN_DIR 1
+#define PIN_DIR 7
 #define PIN_MS1 2
 #define PIN_MS2 3
 #define PIN_EN  4

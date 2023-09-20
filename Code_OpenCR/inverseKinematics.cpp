@@ -12,8 +12,8 @@ Auteurs: Frédérik Desaulniers – DESF3105
 const float epauleRatio = 1.667;
 const float LA = 150; //mm
 const float LB = 114.78; //mm
-const float epauleZeroOffset = -2.73;
-const float coudeZeroOffset = 1.97;
+const float epauleZeroOffset = -3.05; //-2.73
+const float coudeZeroOffset = 2.33; //1.97
 
 void inverse_kinematics(float x, float y, float THETA[2])
 {

@@ -13,7 +13,7 @@ Auteurs: Frédérik Desaulniers – DESF3105
 //Declare variables for functions
 const int MAX_MM = 100; // Limit logicielle, hauteur maximale permise par rapport à la position d'origine (interrupteur de fin de course)
 const int MIN_MM =   5; // Limit logicielle, hauteur minimale permise par rapport à la position d'origine (interrupteur de fin de course)
-static int currPosmm; // Position actuelle en mm
+static float currPosmm; // Position actuelle en mm
 const float OffsetCoeff = 0.0025;
 
 int oneTime = 1;
@@ -90,7 +90,8 @@ void stepperGoToPos(float goalmm) // goalmm,
 
   float displacementmm = goalmm - currPosmm; 
   currPosmm += displacementmm;
-  int nMicroSteps = abs((displacementmm / MM_PER_TURN) * STEPS_PER_TURN * MICRO_STEPS); // Calcul du nombre de micro-pas requis pour atteindre la destination
+  float nMicroStepsFloat = abs((displacementmm / MM_PER_TURN) * STEPS_PER_TURN * MICRO_STEPS);
+  int nMicroSteps = round(nMicroStepsFloat);
   int direction;
   if (displacementmm < 0) {
     direction = LOW;
@@ -108,6 +109,7 @@ void stepperGoToPos(float goalmm) // goalmm,
     delayMicroseconds(100);     // Délais minimal de 100 microsecondes pour laisser le temps au rotor d'arriver à sa position de micro-pas
     digitalWrite(PIN_STP,LOW); // Remettre la broche à l'état BAS, pour pouvoir la réactiver
     delayMicroseconds(100);
+
   }
 
 }
